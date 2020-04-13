@@ -1,0 +1,30 @@
+info:
+  app:
+    name: Elephone Management
+    version: 1.0.0
+
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/elephone
+    username: elephone
+    password: elephone
+    continue-on-error: true
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 20000
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: create.sql
+
