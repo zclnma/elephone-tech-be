@@ -12,22 +12,22 @@ import javax.validation.constraints.Min;
 public class StoreLocation {
 
     @Column
-    @Min(-90)
-    @Max(90)
+    @Min(value = -90, message = "Latitude should not be less thant -90.")
+    @Max(value = 90, message = "Latitude should not be more thant 90.")
     private Integer latStart;
 
     @Column
-    @Min(-90)
-    @Max(90)
+    @Min(value = -90, message = "Latitude should not be less thant -90.")
+    @Max(value = 90, message = "Latitude should not be more thant 90.")
     private Integer latEnd;
 
     @Column
-    @Min(-90)
-    @Max(90)
+    @Min(value = -90, message = "Longitude should not be less thant -90.")
+    @Max(value = 90, message = "Longitude should not be more thant 90.")
     private Integer lngStart;
 
     @Column
-    @Min(-90)
-    @Max(90)
+    @Min(value = -90, message = "Longitude should not be less thant -90.")
+    @Max(value = 90, message = "Longitude should not be more thant 90.")
     private Integer lngEnd;
 }

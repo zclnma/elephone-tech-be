@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,11 +37,11 @@ public class StoreResource {
     @GetMapping
     @ApiOperation(value = "List stores", notes = "List a number of tickets.")
     public ResponseEntity<List<StoreDTO>> list(
-            @ApiParam(name = "page") @RequestParam(required = false, defaultValue = "0") Integer page,
-            @ApiParam(name = "perPage") @RequestParam(required = false, defaultValue = "10") Integer perPage
+            @ApiParam(name = "page", required = false, defaultValue = "0") @RequestParam(required = false, defaultValue = "0") int page,
+            @ApiParam(name = "perPage", required = false, defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage
     ) {
         Page<Store> stores = storeService.listStores(page, perPage);
-        List<StoreDTO> dtoStores = stores.stream().map(storeDTOMapper::toStoreDTO).collect(Collectors.toList());
+        List<StoreDTO> dtoStores = stores.stream().map(storeDTOMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(stores.getTotalElements()));
         return new ResponseEntity<>(dtoStores, headers, HttpStatus.OK);
@@ -48,7 +50,30 @@ public class StoreResource {
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
     public ResponseEntity<StoreDTO> create(@Valid @RequestBody StoreDTO storeDTO) {
-        Store store =  storeService.createStore(storeDTOMapper.toStore(storeDTO));
-        return new ResponseEntity<>(storeDTOMapper.toStoreDTO(store), HttpStatus.CREATED);
+        Store store = storeService.createStore(storeDTOMapper.fromDTO(storeDTO));
+        return new ResponseEntity<>(storeDTOMapper.toDTO(store), HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Get store by store id", notes = "Get store by store id")
+    public ResponseEntity<StoreDTO> getById(@PathVariable UUID id) {
+        return new ResponseEntity<>(storeDTOMapper.toDTO(storeService.getStoreById(id)), HttpStatus.OK);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Modify store", notes = "Modify store by store id")
+    public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody StoreDTO storeDTO) {
+        Store store = storeService.updateStoreById(storeDTOMapper.fromDTO(storeDTO));
+        return new ResponseEntity<>(storeDTOMapper.toDTO(store), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
+    public ResponseEntity<?> deleteById(@PathVariable UUID id) {
+        storeService.deleteStoreById(id);
+        return new ResponseEntity<>(new HashMap<String, String>() {{
+            put("message", "Store: " + id + " has been deleted");
+        }}, HttpStatus.ACCEPTED);
+    }
+
 }

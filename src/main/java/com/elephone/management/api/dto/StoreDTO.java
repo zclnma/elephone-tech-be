@@ -24,7 +24,7 @@ public class StoreDTO {
     private EnumStoreRole role;
 
     @JsonProperty(value = "abn")
-    @Pattern(regexp = "[0-9]{10}", message = "Invalid abn number")
+    @Pattern(regexp = "[0-9]{10}", message = "Invalid abn number.")
     private String abn;
 
     @JsonProperty(value = "sequence")

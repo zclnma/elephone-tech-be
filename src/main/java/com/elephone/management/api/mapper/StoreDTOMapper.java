@@ -9,9 +9,9 @@ import java.util.HashSet;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface StoreDTOMapper {
 
-    StoreDTO toStoreDTO(Store store);
+    StoreDTO toDTO(Store store);
 
-    Store toStore(StoreDTO storeDTO);
+    Store fromDTO(StoreDTO storeDTO);
 
 //    @AfterMapping
 //    default void addEmptySet(StoreDTO storeDTO, @MappingTarget Store store) {

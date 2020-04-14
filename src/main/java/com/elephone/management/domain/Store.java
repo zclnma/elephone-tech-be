@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -30,7 +31,6 @@ public class Store {
     private UUID id;
 
     @Column
-    @NotBlank(message = "Role can")
     private EnumStoreRole role;
 
     @Column
@@ -47,10 +47,6 @@ public class Store {
 
     @Embedded
     private StoreLocation storeLocation;
-
-    @Column
-    @OneToMany(mappedBy = "store")
-    private Set<Income> incomes = new HashSet<>();
 
     @Column
     @OneToMany(mappedBy = "workingStore")

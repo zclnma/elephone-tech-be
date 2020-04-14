@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StoreService {
@@ -25,12 +29,33 @@ public class StoreService {
     }
 
     public Store createStore(Store store) {
-        if(store.getId() != null) {
-            throw new StoreException("Do not set storeid when creating store");
+        if (store.getId() != null) {
+            throw new StoreException("Do not set store ID when creating store");
         }
-        store.setIncomes(new HashSet<>());
-        store.setWorkingEmployees(new HashSet<>());
-        store.setEmployees(new HashSet<>());
         return storeRepository.save(store);
     }
+
+    public Store getStoreById(UUID id) {
+        if (id == null) {
+            throw new StoreException("Store ID is required.");
+        }
+        return storeRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public Store updateStoreById(Store store) {
+        if (store.getId() == null) {
+            throw new StoreException("Store ID is required.");
+        }
+        return storeRepository.save(store);
+    }
+
+    @Transactional
+    public void deleteStoreById(UUID id) {
+        if (id == null) {
+            throw new StoreException("Store ID is required.");
+        }
+        storeRepository.deleteById(id);
+    }
+
 }
