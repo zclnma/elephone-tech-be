@@ -3,12 +3,31 @@ info:
     name: Elephone Management
     version: 1.0.0
 
+#cloud:
+#  aws:
+#    region:
+#      static: ap-southeast-2
+#      auto: false
+#    credentials:
+#      access-key: AKIAY2SZAZO3MIFCDM6A
+#      secret-key: 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
+#      instance-profile: false
+#      use-default-aws-credentials-chain: false
+#    rds:
+#      database-2:
+#        username: postgres
+#        password: postgres
+#        databaseName: postgres
+
+
 spring:
+  application:
+    name: management
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/elephone
-    username: elephone
-    password: elephone
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
     continue-on-error: true
     hikari:
       maximum-pool-size: 5
@@ -19,18 +38,20 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: create
-#    properties:
-#      javax:
-#        persistence:
-#          schema-generation:
-#            create-source: metadata
-#            scripts:
-#              action: create
-#              create-target: create.sql
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: create.sql
   security:
-    user:
-      name: user
-      password: password
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_jDwyhIu0J
+
 
 
 

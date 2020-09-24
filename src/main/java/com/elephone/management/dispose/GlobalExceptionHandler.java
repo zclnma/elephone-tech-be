@@ -1,7 +1,7 @@
 package com.elephone.management.dispose;
 
 
-import com.elephone.management.dispose.exception.StoreException;
+import com.elephone.management.dispose.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,15 +19,35 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleInvalidMethodArgumentException(MethodArgumentNotValidException ex) {
         List<FieldError> errors = ex.getBindingResult().getFieldErrors();
-        if(errors.isEmpty()) {
+        if (errors.isEmpty()) {
             return responseEntity("Validation Error", HttpStatus.BAD_REQUEST);
         }
-        return responseEntity(errors.get(0).getDefaultMessage(),HttpStatus.BAD_REQUEST);
+        return responseEntity(errors.get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(StoreException.class)
     public ResponseEntity<ErrorResponse> handleStoreException(StoreException ex) {
-        return responseEntity(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity<ErrorResponse> handleEmployeeException(EmployeeException ex) {
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IncomeException.class)
+    public ResponseEntity<ErrorResponse> handleIncomeException(IncomeException ex) {
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TransactionException.class)
+    public ResponseEntity<ErrorResponse> handleTransactionException (TransactionException ex) {
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WorkHistoryException.class)
+    public ResponseEntity<ErrorResponse> handleWorkHistoryException(WorkHistoryException ex) {
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     private static ResponseEntity<ErrorResponse> responseEntity(String message, HttpStatus status) {

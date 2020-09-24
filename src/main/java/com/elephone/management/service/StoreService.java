@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class StoreService {
@@ -35,6 +37,10 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
+    public List<Store> createStoreBatch(List<Store> stores) {
+        return storeRepository.saveAll(stores);
+    }
+
     public Store getStoreById(UUID id) {
         if (id == null) {
             throw new StoreException("Store ID is required.");
@@ -43,7 +49,7 @@ public class StoreService {
     }
 
     @Transactional
-    public Store updateStoreById(Store store) {
+    public Store updateStore(Store store) {
         if (store.getId() == null) {
             throw new StoreException("Store ID is required.");
         }

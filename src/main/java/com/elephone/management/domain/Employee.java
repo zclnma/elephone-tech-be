@@ -1,10 +1,7 @@
 package com.elephone.management.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +11,8 @@ import javax.validation.constraints.Email;
 import java.util.*;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,39 +35,31 @@ public class Employee {
     private EnumGender gender;
 
     @Column
-    private Date birthday;
+    private String birthday;
 
     @Column
     private String contact;
 
     @Column
-    @Email
     private String email;
 
     @Column
     private String tfn;
 
-    @Column
-    private EnumEmployeeStatus status;
-
-    @Column
-    @OneToMany(mappedBy = "employee")
-    private Set<WorkHistory> workHistories = new HashSet<>();
-
     @ManyToOne
-    @JoinColumn(name = "working_store_id", nullable = false)
+    @JoinColumn(name = "working_store_id")
     private Store workingStore;
 
     @Column
     @ManyToMany(mappedBy = "employees")
-    private Set<Store> store = new HashSet<>();
+    private Set<Store> stores = new HashSet<>();
 
     @JsonIgnore
     @LastModifiedDate
-    private long lastModifiedDate;
+    private Date lastModifiedDate;
 
     @JsonIgnore
     @CreatedDate
-    private long createdDate;
+    private Date createdDate;
 
 }

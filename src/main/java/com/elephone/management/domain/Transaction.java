@@ -10,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -52,24 +54,42 @@ public class Transaction {
     @Column
     private String resolution;
 
-    @Column
-    private Boolean inspection;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean inspection = false;
 
     @Column
     private String transactionNumber;
 
     @Column
-    private EnumTransactionStatus status;
+    private EnumTransactionStatus status = EnumTransactionStatus.WAIT;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isFinalised = false;
 
     @Column
-    private boolean isFinalised;
+    private String finalisedTime;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private Employee createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "finalised_by")
+    private Employee finalisedBy;
+
+    @ElementCollection
+    private List<TransactionProduct> products;
 
     @JsonIgnore
     @CreatedDate
-    private long createdDate;
+    private Date createdDate;
 
     @JsonIgnore
     @LastModifiedDate
-    private long lastModifiedDate;
+    private Date lastModifiedDate;
 
 }

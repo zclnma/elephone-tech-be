@@ -1,7 +1,8 @@
 package com.elephone.management.domain;
 
-public enum  EnumTransactionStatus {
+public enum EnumTransactionStatus {
     WAIT,
     SENT,
     DONE
+
 }

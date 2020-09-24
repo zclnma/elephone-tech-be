@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -19,6 +20,9 @@ public class StoreDTO {
     @JsonProperty(value = "contact")
     @Pattern(regexp = "(\\+61|0)[0-9]{9}", message = "Invalid contact number.")
     private String contact;
+
+    @JsonProperty(value = "name")
+    private String name;
 
     @JsonProperty(value = "role")
     private EnumStoreRole role;
@@ -38,4 +42,6 @@ public class StoreDTO {
     @NotNull(message = "Store location cannot be null.")
     private StoreLocation storeLocation;
 
+    @JsonProperty(value = "employeeIds")
+    private Set<UUID> employeeIds;
 }

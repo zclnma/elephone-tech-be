@@ -1,0 +1,1 @@
+mvn package && docker build -t elephone-management . && docker-compose up -d
