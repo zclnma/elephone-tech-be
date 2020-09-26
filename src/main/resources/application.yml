@@ -3,23 +3,6 @@ info:
     name: Elephone Management
     version: 1.0.0
 
-#cloud:
-#  aws:
-#    region:
-#      static: ap-southeast-2
-#      auto: false
-#    credentials:
-#      access-key: AKIAY2SZAZO3MIFCDM6A
-#      secret-key: 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
-#      instance-profile: false
-#      use-default-aws-credentials-chain: false
-#    rds:
-#      database-2:
-#        username: postgres
-#        password: postgres
-#        databaseName: postgres
-
-
 spring:
   application:
     name: management

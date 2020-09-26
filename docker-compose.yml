@@ -14,6 +14,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:54320/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_SECURITY_OAUTH2_ISSUER_URI: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_jDwyhIu0J
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "localhost:8081/actuator/health 2>&1 | grep UP || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
     depends_on:
       - postgres
     networks:
