@@ -7,8 +7,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,15 +45,8 @@ public class Store {
     @Column
     private Integer warranty;
 
-    @Column
-    private String password;
-
     @Embedded
     private StoreLocation storeLocation;
-//
-//    @Column
-//    @OneToMany(mappedBy = "store")
-//    private Set<Income> incomes = new HashSet<>();
 
     @Column
     @OneToMany(mappedBy = "workingStore")

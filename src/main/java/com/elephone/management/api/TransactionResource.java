@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 //import org.springframework.security.core.context.SecurityContext;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/transaction")
 @Api(tags = "Transaction management")
-//@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 public class TransactionResource {
 
     public TransactionDTOMapper transactionDTOMapper;
@@ -52,9 +53,9 @@ public class TransactionResource {
             @ApiParam(name = "page", defaultValue = "0") @RequestParam( name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam( name = "perPage", defaultValue = "10") int perPage,
             @ApiParam(name = "isFinalised", defaultValue = "false") @RequestParam(name = "isFinalised", defaultValue = "false") boolean isFinalised,
-            @ApiParam(name = "transactionNumber", required = false) @RequestParam(name = "transactionNumber", required = false) String transactionNumber,
-            @ApiParam(name = "customerName", required = false) @RequestParam(name = "customerName", required = false) String customerName,
-            @ApiParam(name = "contact", required = false) @RequestParam(name = "contact", required = false) String contact
+            @ApiParam(name = "transactionNumber") @RequestParam(name = "transactionNumber", required = false) String transactionNumber,
+            @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
+            @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact
     ) {
 //        SecurityContext securityContext = SecurityContextHolder.getContext();
         Page<Transaction> transactions = transactionService.listTransactions(page, perPage, isFinalised, transactionNumber, customerName, contact);

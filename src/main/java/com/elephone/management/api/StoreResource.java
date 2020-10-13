@@ -118,7 +118,6 @@ public class StoreResource {
                     .name(legacyStore.getName())
                     .sequence(legacyStore.getNumber())
                     .warranty(legacyStore.getWarrenty() == null ? 90 : Integer.parseInt(legacyStore.getWarrenty()))
-                    .password(legacyStore.getPassword())
                     .employees(new HashSet<>())
                     .workingEmployees(new HashSet<>())
                     .storeLocation(
