@@ -216,7 +216,7 @@ public class StoreResource {
                     .builder()
                     .id(UUID.randomUUID())
                     .color(legacyTransaction.getColor())
-
+                    .comments(new HashSet<>())
                     .transactionNumber(legacyTransaction.getSequentialNumber())
                     .contact(legacyTransaction.getNumber())
                     .device(legacyTransaction.getDevice())

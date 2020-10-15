@@ -2,6 +2,7 @@ package com.elephone.management.dispose;
 
 
 import com.elephone.management.dispose.exception.*;
+import com.elephone.management.domain.Comment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -47,6 +48,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WorkHistoryException.class)
     public ResponseEntity<ErrorResponse> handleWorkHistoryException(WorkHistoryException ex) {
+        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CommentException.class)
+    public ResponseEntity<ErrorResponse> handleCommentException(CommentException ex) {
         return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

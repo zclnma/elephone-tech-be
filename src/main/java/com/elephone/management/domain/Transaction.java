@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -69,6 +70,10 @@ public class Transaction {
     @Column
     private String finalisedTime;
 
+    @Column
+    @OneToMany(mappedBy = "employee")
+    private Set<Comment> comments;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
@@ -80,6 +85,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "finalised_by")
     private Employee finalisedBy;
+
 
     @ElementCollection
     private List<TransactionProduct> products;
