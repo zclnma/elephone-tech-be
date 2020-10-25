@@ -2,8 +2,10 @@ package com.elephone.management.api;
 
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.api.dto.TransactionDTO;
+import com.elephone.management.api.mapper.CommentDTOMapper;
 import com.elephone.management.api.mapper.TransactionDTOMapper;
 import com.elephone.management.domain.*;
+import com.elephone.management.service.CommentService;
 import com.elephone.management.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,9 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.context.SecurityContext;
-//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +30,17 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 public class TransactionResource {
 
-    public TransactionDTOMapper transactionDTOMapper;
-    public TransactionService transactionService;
+    private TransactionDTOMapper transactionDTOMapper;
+    private TransactionService transactionService;
+    private CommentService commentService;
+    private CommentDTOMapper commentDTOMapper;
 
     @Autowired
-    public TransactionResource(TransactionService transactionService, TransactionDTOMapper transactionDTOMapper) {
+    public TransactionResource(TransactionService transactionService, TransactionDTOMapper transactionDTOMapper, CommentService commentService, CommentDTOMapper commentDTOMapper) {
         this.transactionDTOMapper = transactionDTOMapper;
         this.transactionService = transactionService;
+        this.commentDTOMapper = commentDTOMapper;
+        this.commentService = commentService;
     }
 
     @PostMapping
@@ -94,4 +97,6 @@ public class TransactionResource {
             put("message", "Transaction: " + id + " has been deleted");
         }}, HttpStatus.ACCEPTED);
     }
+
+
 }

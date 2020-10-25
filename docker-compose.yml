@@ -2,10 +2,7 @@ version: '3.7'
 
 services:
   elephone-management:
-    image: elephone-management
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: 606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:latest
     container_name: elephone-management
     ports:
       - 8080:8080

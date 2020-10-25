@@ -49,7 +49,7 @@ public class Transaction {
     @Column(columnDefinition = "text")
     private String issue;
 
-    @Column
+    @Column(name = "product_condition")
     private String condition;
 
     @Column

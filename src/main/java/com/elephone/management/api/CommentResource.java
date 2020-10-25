@@ -19,7 +19,7 @@ import java.util.logging.Handler;
 
 @RestController
 @RequestMapping("/api/v1/comment")
-@Api(tags = "Employee Management")
+@Api(tags = "Comment Management")
 @PreAuthorize("hasAuthority('USER')")
 public class CommentResource {
 

@@ -16,7 +16,7 @@ spring:
       maximum-pool-size: 5
       connection-timeout: 20000
   jpa:
-    database: POSTGRESQL
+    database: postgresql
     show-sql: true
     generate-ddl: true
     hibernate:
