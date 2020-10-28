@@ -33,7 +33,7 @@ public class EmployeeDTOMapper {
         }
 
         if (employee.getStores() != null) {
-            employeeDTO.setStoreId(
+            employeeDTO.setStoreIds(
                     employee.getStores()
                             .stream()
                             .map(Store::getId)
@@ -63,7 +63,7 @@ public class EmployeeDTOMapper {
             employee.setWorkingStore(Store.builder().id(employeeDTO.getWorkingStoreId()).build());
         }
         Set<Store> stores = employeeDTO
-                .getStoreId()
+                .getStoreIds()
                 .stream()
                 .map(storeId -> Store.builder().id(storeId).build())
                 .collect(Collectors.toSet());

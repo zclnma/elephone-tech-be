@@ -1,13 +1,13 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.Employee;
+import com.elephone.management.domain.Comment;
 import com.elephone.management.domain.EnumTransactionStatus;
-import com.elephone.management.domain.Store;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -47,6 +47,7 @@ public class TransactionDTO {
     private Boolean inspection;
 
     @JsonProperty
+    @NotNull
     private UUID storeId;
 
     @JsonProperty
@@ -66,4 +67,7 @@ public class TransactionDTO {
 
     @JsonProperty
     private List<UUID> productId;
+
+    @JsonProperty
+    private Set<Comment> comments;
 }

@@ -2,7 +2,11 @@ package com.elephone.management.api.dto;
 
 import com.elephone.management.domain.EnumGender;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.HashSet;
@@ -10,6 +14,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDTO {
 
     @JsonProperty
@@ -42,5 +49,5 @@ public class EmployeeDTO {
     private UUID workingStoreId;
 
     @JsonProperty
-    private Set<UUID> storeId = new HashSet<>();
+    private Set<UUID> storeIds = new HashSet<>();
 }

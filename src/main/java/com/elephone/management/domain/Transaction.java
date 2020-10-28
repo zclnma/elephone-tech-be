@@ -86,7 +86,6 @@ public class Transaction {
     @JoinColumn(name = "finalised_by")
     private Employee finalisedBy;
 
-
     @ElementCollection
     private List<TransactionProduct> products;
 

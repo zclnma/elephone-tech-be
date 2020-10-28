@@ -4,6 +4,7 @@ import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.EnumTransactionStatus;
+import com.elephone.management.domain.Store;
 import com.elephone.management.domain.Transaction;
 import com.elephone.management.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Service
 public class TransactionService {
+    private final String ADMIN_INDEX = "00";
     private int transactionNumber = 0;
     private TransactionRepository transactionRepository;
     private StoreService storeService;
@@ -47,11 +49,23 @@ public class TransactionService {
     }
 
     public Transaction create(Transaction transaction) {
+        String transactionNumber;
         int year = LocalDate.now().getYear();
         int month = LocalDate.now().getMonthValue();
         int date = LocalDate.now().getDayOfMonth();
-        String storeSequence = storeService.getStoreById(transaction.getStore().getId()).getSequence();
-        String transactionNumber = storeSequence + Integer.toString(year) +  Integer.toString(month) + Integer.toString(date) + String.format("%04d", this.transactionNumber++);
+        Store store = transaction.getStore();
+        if (store == null) {
+            transactionNumber = ADMIN_INDEX + year + month + date + String.format("%04d", this.transactionNumber++);
+        } else {
+            Store dbStore = storeService.getStoreById(store.getId());
+            if (dbStore == null) {
+                transactionNumber = ADMIN_INDEX + year + month + date + String.format("%04d", this.transactionNumber++);
+            } else {
+                String storeSequence = store.getSequence();
+                transactionNumber = storeSequence + year + month + date + String.format("%04d", this.transactionNumber++);
+            }
+        }
+
         transaction.setTransactionNumber(transactionNumber);
 
         return transactionRepository.save(transaction);
@@ -61,7 +75,7 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, boolean isFinalised, String transactionNumber, String customerName, String contact){
+    public Page<Transaction> listTransactions(int page, int pageSize, boolean isFinalised, String transactionNumber, String customerName, String contact) {
         if (transactionNumber != null) {
             return transactionRepository.findAllByIsFinalisedAndTransactionNumberContaining(PageRequest.of(page, pageSize), isFinalised, transactionNumber);
         } else if (customerName != null) {
@@ -73,8 +87,8 @@ public class TransactionService {
         }
     }
 
-    public Transaction getTransactionById (UUID id) {
-        if(id == null) {
+    public Transaction getTransactionById(UUID id) {
+        if (id == null) {
             throw new TransactionException("Transaction id is required");
         }
         return transactionRepository.findById(id).orElse(null);
@@ -82,13 +96,13 @@ public class TransactionService {
 
     @Transactional
     public Transaction updateTransactionStatus(UUID id, EnumTransactionStatus status) {
-        if(id == null) {
+        if (id == null) {
             throw new TransactionException("Transaction id is required");
         }
 
         Optional<Transaction> transaction = transactionRepository.findById(id);
 
-        if(transaction.isPresent()) {
+        if (transaction.isPresent()) {
             Transaction newTransaction = transaction.get();
             newTransaction.setStatus(status);
             return transactionRepository.save(newTransaction);
@@ -103,7 +117,7 @@ public class TransactionService {
         Employee employee = employeeService.getEmployeeById(employeeId);
         Optional<Transaction> transaction = transactionRepository.findById(transactionId);
 
-        if(transaction.isPresent()) {
+        if (transaction.isPresent()) {
             Transaction newTransaction = transaction.get();
             newTransaction.setIsFinalised(true);
             newTransaction.setFinalisedBy(employee);

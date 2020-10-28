@@ -6,6 +6,9 @@ import com.elephone.management.domain.Store;
 import com.elephone.management.domain.Transaction;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 @Component
 public class TransactionDTOMapper {
 
@@ -19,10 +22,11 @@ public class TransactionDTOMapper {
         transactionDTO.setInspection(transaction.getInspection());
         transactionDTO.setCondition(transaction.getCondition());
         transactionDTO.setContact(transaction.getContact());
+        transactionDTO.setComments(transaction.getComments());
         transactionDTO.setCustomerName(transaction.getCustomerName());
         transactionDTO.setDevice(transaction.getDevice());
-        transactionDTO.setCreatedBy(transaction.getCreatedBy().getId());
-        transactionDTO.setFinalisedBy(transaction.getFinalisedBy().getId());
+        transactionDTO.setCreatedBy(transaction.getCreatedBy() == null ? null : transaction.getCreatedBy().getId());
+        transactionDTO.setFinalisedBy(transaction.getFinalisedBy() == null ? null : transaction.getFinalisedBy().getId());
         transactionDTO.setIsFinalised(transaction.getIsFinalised());
         transactionDTO.setId(transaction.getId());
         transactionDTO.setImei(transaction.getImei());
@@ -30,7 +34,7 @@ public class TransactionDTOMapper {
         transactionDTO.setPickupTime(transaction.getPickupTime());
         transactionDTO.setResolution(transaction.getResolution());
         transactionDTO.setStatus(transaction.getStatus());
-        transactionDTO.setStoreId(transaction.getStore().getId());
+        transactionDTO.setStoreId(transaction.getStore() == null ? null : transaction.getStore().getId());
         transactionDTO.setTransactionNumber(transaction.getTransactionNumber());
 
         return transactionDTO;
@@ -44,7 +48,6 @@ public class TransactionDTOMapper {
 
         Transaction transaction = new Transaction();
         transaction.setColor(transactionDTO.getColor());
-
         transaction.setCondition(transactionDTO.getCondition());
         transaction.setContact(transactionDTO.getContact());
         transaction.setCustomerName(transactionDTO.getCustomerName());

@@ -85,7 +85,7 @@ public class TransactionResource {
     @PutMapping("/{id}/finalise")
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
     public ResponseEntity<TransactionDTO> finalise (@PathVariable UUID id, @Valid @RequestBody TransactionFinalise transactionFinalise) {
-        Transaction transaction = transactionService.finaliseTransaction(id, transactionFinalise.getEmployeeId());
+        Transaction transaction = transactionService.finaliseTransaction(id, transactionFinalise.getFinalisedBy());
         return new ResponseEntity<>(transactionDTOMapper.toDTO(transaction), HttpStatus.OK);
     }
 
