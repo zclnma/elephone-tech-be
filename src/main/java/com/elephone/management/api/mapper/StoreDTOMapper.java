@@ -47,6 +47,7 @@ public class StoreDTOMapper {
         store.setRole(storeDTO.getRole());
         store.setContact(storeDTO.getContact());
         store.setAbn(storeDTO.getAbn());
+        store.setCognitoId(storeDTO.getCognitoId());
         store.setSequence(storeDTO.getSequence());
         store.setWarranty(storeDTO.getWarranty());
         store.setStoreLocation(storeDTO.getStoreLocation());

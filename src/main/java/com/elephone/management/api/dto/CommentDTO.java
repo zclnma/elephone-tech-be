@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class CommentDTO {
 
@@ -18,7 +16,7 @@ public class CommentDTO {
 
     private String content;
 
-    private Store store;
+    private UUID storeId;
 
-    private Employee employee;
+    private UUID employeeId;
 }

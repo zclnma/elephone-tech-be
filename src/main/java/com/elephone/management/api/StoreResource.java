@@ -14,18 +14,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.swing.text.html.Option;
 import javax.validation.Valid;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/store")
 @Api(tags = "Store Management")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class StoreResource {
 
     private final TransactionService transactionService;
@@ -47,6 +51,7 @@ public class StoreResource {
 
     @GetMapping
     @ApiOperation(value = "List stores", notes = "List a number of tickets.")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<StoreDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(required = false, defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage
@@ -60,19 +65,30 @@ public class StoreResource {
 
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<StoreDTO> create(@Valid @RequestBody StoreDTO storeDTO) {
         Store store = storeService.createStore(storeDTOMapper.fromDTO(storeDTO));
         return new ResponseEntity<>(storeDTOMapper.toDTO(store), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "Get store by store id", notes = "Get store by store id")
-    public ResponseEntity<StoreDTO> getById(@PathVariable UUID id) {
-        return new ResponseEntity<>(storeDTOMapper.toDTO(storeService.getStoreById(id)), HttpStatus.OK);
+    @GetMapping("/{uniqueId}")
+    @ApiOperation(value = "Get store by store id or name", notes = "Get store by store id or name")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<StoreDTO> getById(@PathVariable String uniqueId, @CurrentSecurityContext SecurityContext context) {
+        String[] split = uniqueId.split("_");
+        String type = split[0];
+        UUID uuid = UUID.fromString(split[1]);
+        Class credentials = context.getAuthentication().getCredentials().getClass();
+        if("cognito".equals(type)) {
+            return new ResponseEntity<>(storeDTOMapper.toDTO(storeService.getStoreByCognitoId(uuid)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(storeDTOMapper.toDTO(storeService.getStoreById(uuid)), HttpStatus.OK);
+        }
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Modify store", notes = "Modify store by store id")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody StoreDTO storeDTO) {
         Store store = storeService.updateStore(storeDTOMapper.fromDTO(storeDTO));
         return new ResponseEntity<>(storeDTOMapper.toDTO(store), HttpStatus.OK);
@@ -80,6 +96,7 @@ public class StoreResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         storeService.deleteStoreById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
@@ -89,6 +106,7 @@ public class StoreResource {
 
     @GetMapping(value = "/migration/{token}")
     @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<LegacyStore>> a(@PathVariable String token) {
 
         String history = "https://elephone.tech/api/history/?page=0&perPage=10";

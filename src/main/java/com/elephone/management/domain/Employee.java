@@ -11,11 +11,10 @@ import javax.validation.constraints.Email;
 import java.util.*;
 
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "employee")
 @EntityListeners(AuditingEntityListener.class)
@@ -51,7 +50,12 @@ public class Employee {
     private Store workingStore;
 
     @Column
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany
+    @JoinTable(
+            name = "employee_store",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "store_id")
+    )
     private Set<Store> stores = new HashSet<>();
 
     @JsonIgnore

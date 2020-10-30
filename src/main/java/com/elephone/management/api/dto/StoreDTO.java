@@ -17,6 +17,9 @@ public class StoreDTO {
     @JsonProperty(value = "id")
     private UUID id;
 
+    @JsonProperty
+    private UUID cognitoId;
+
     @JsonProperty(value = "contact")
     @Pattern(regexp = "(\\+61|0)[0-9]{9}", message = "Invalid contact number.")
     private String contact;

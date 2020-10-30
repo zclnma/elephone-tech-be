@@ -27,11 +27,14 @@ public class Store {
     @Column
     private UUID id;
 
-    @Column
-    private EnumStoreRole role;
+    @Column(unique = true)
+    private UUID cognitoId;
+
+    @Column(unique = true)
+    private String name;
 
     @Column
-    private String name;
+    private EnumStoreRole role;
 
     @Column
     private String contact;
@@ -53,13 +56,9 @@ public class Store {
     private Set<Employee> workingEmployees = new HashSet<>();
 
     @Column
-    @ManyToMany
-    @JoinTable(
-            name = "store_employee",
-            joinColumns = @JoinColumn(name = "store_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
+    @ManyToMany(mappedBy = "stores")
     private Set<Employee> employees = new HashSet<>();
+
 
     @JsonIgnore
     @LastModifiedDate

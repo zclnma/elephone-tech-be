@@ -58,7 +58,7 @@ public class Transaction {
     @Column(columnDefinition = "boolean default false")
     private Boolean inspection = false;
 
-    @Column
+    @Column(unique = true)
     private String transactionNumber;
 
     @Column

@@ -12,17 +12,23 @@ import java.util.UUID;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
-    Page<Transaction> findByStore_IdOrderByLastModifiedDateDesc (UUID storeId, Pageable pageable);
+    Page<Transaction> findAllByStore_IdOrderByLastModifiedDateDesc(UUID storeId, Pageable pageable);
 
-    Page<Transaction> findAllByOrderByLastModifiedDateDesc (UUID storeId, Pageable pageable);
+    Page<Transaction> findAllByStore_IdAndIsFinalisedOrderByLastModifiedDate(Pageable pageable, UUID storeId, boolean isFinalised);
 
-    Page<Transaction> findAllByIsFinalised(Pageable pageable, boolean isFinalised);
+    Page<Transaction> findAllByStore_IdAndIsFinalisedAndTransactionNumberContainingOrderByLastModifiedDate(Pageable pageable, UUID storeId, boolean isFinalised, String transactionNumber);
 
-    Page<Transaction> findAllByIsFinalisedAndTransactionNumberContaining(Pageable pageable, boolean isFinalised, String transactionNumber);
+    Page<Transaction> findAllByStore_IdAndIsFinalisedAndContactContainingOrderByLastModifiedDate(Pageable pageable, UUID storeId, boolean isFinalised, String contact);
 
-    Page<Transaction> findAllByIsFinalisedAndContactContaining(Pageable pageable,boolean isFinalised,String contact);
+    Page<Transaction> findAllByStore_IdAndIsFinalisedAndCustomerNameContainingOrderByLastModifiedDate(Pageable pageable, UUID storeId, boolean isFinalised, String customerName);
 
-    Page<Transaction> findAllByIsFinalisedAndCustomerNameContaining(Pageable pageable,boolean isFinalised,String customerName);
+    Page<Transaction> findAllByIsFinalisedOrderByLastModifiedDate(Pageable pageable, boolean isFinalised);
+
+    Page<Transaction> findAllByIsFinalisedAndTransactionNumberContainingOrderByLastModifiedDate(Pageable pageable, boolean isFinalised, String transactionNumber);
+
+    Page<Transaction> findAllByIsFinalisedAndContactContainingOrderByLastModifiedDate(Pageable pageable, boolean isFinalised, String contact);
+
+    Page<Transaction> findAllByIsFinalisedAndCustomerNameContainingOrderByLastModifiedDate(Pageable pageable, boolean isFinalised, String customerName);
 
 }
 

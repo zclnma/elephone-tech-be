@@ -13,11 +13,11 @@ public class CommentDTOMapper {
                 return null;
             }
 
-        return new CommentDTO().builder()
+        return CommentDTO.builder()
                     .id(comment.getId())
                     .content(comment.getContent())
-                    .store(comment.getStore())
-                    .employee(comment.getEmployee())
+                    .storeId(comment.getStore().getId())
+                    .employeeId(comment.getEmployee().getId())
                     .build();
 
     }
@@ -27,11 +27,11 @@ public class CommentDTOMapper {
             return null;
         }
 
-        return new Comment().builder()
+        return Comment.builder()
                 .id(commentDTO.getId())
                 .content(commentDTO.getContent())
-                .store(new Store().builder().id(commentDTO.getStore().getId()).build())
-                .employee(new Employee().builder().id(commentDTO.getEmployee().getId()).build())
+                .store(Store.builder().id(commentDTO.getId()).build())
+                .employee(Employee.builder().id(commentDTO.getEmployeeId()).build())
                 .build();
     }
 }

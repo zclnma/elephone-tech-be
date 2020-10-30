@@ -1,19 +1,22 @@
 create table comment (id uuid not null, content varchar(255), created_date varchar(255), last_modified_date timestamp, employee_id uuid not null, store_id uuid not null, primary key (id))
 create table employee (id uuid not null, birthday varchar(255), contact varchar(255), created_date timestamp, email varchar(255), first_name varchar(255), gender int4, last_modified_date timestamp, last_name varchar(255), tfn varchar(255), working_store_id uuid, primary key (id))
+create table employee_store (employee_id uuid not null, store_id uuid not null, primary key (employee_id, store_id))
 create table income (id uuid not null, cash int4, created_date timestamp, efpos int4, last_modified_date timestamp, employee_id uuid, store_id uuid not null, primary key (id))
 create table product (id uuid not null, brand varchar(255), category varchar(255), created_date timestamp, description varchar(255), last_modified_date timestamp, name varchar(255), price float4, series varchar(255), primary key (id))
-create table store (id uuid not null, abn varchar(255), contact varchar(255), created_date timestamp, last_modified_date timestamp, name varchar(255), role int4, sequence varchar(255), lat_end float4, lat_start float4, lng_end float4, lng_start float4, warranty int4, primary key (id))
-create table store_employee (store_id uuid not null, employee_id uuid not null, primary key (store_id, employee_id))
+create table store (id uuid not null, abn varchar(255), cognito_id uuid, contact varchar(255), created_date timestamp, last_modified_date timestamp, name varchar(255), role int4, sequence varchar(255), lat_end float4, lat_start float4, lng_end float4, lng_start float4, warranty int4, primary key (id))
 create table transaction (id uuid not null, color varchar(255), product_condition varchar(255), contact varchar(255), created_date timestamp, customer_name varchar(255), device varchar(255), finalised_time varchar(255), imei varchar(255), inspection boolean default false, is_finalised boolean default false, issue text, last_modified_date timestamp, pickup_time varchar(255), resolution varchar(255), status int4, transaction_number varchar(255), created_by uuid, finalised_by uuid, store_id uuid, primary key (id))
 create table transaction_products (transaction_id uuid not null, description varchar(255), number varchar(255), price varchar(255), product_id uuid)
 create table work_history (id uuid not null, created_date timestamp, finish varchar(255), last_modified_date timestamp, start varchar(255), employee_id uuid not null, primary key (id))
+alter table if exists store add constraint UK_muglfrr8q4e0uuqr36xk4mohw unique (cognito_id)
+alter table if exists store add constraint UK_d0p5ly1cv6guij7sq1mbnr8ec unique (name)
+alter table if exists transaction add constraint UK_44jtkuk58kmk5m7hobrk9v7ho unique (transaction_number)
 alter table if exists comment add constraint FKcdf32ke5u3365kjpxgjejuhsg foreign key (employee_id) references employee
 alter table if exists comment add constraint FKgotffi66bqjpkid9st6lsq9uj foreign key (store_id) references store
 alter table if exists employee add constraint FKid5aqtc2af5yoif4a905xpvsh foreign key (working_store_id) references store
+alter table if exists employee_store add constraint FKsviyscw7hc9afsjroyur5dwxu foreign key (store_id) references store
+alter table if exists employee_store add constraint FK30fc25ej0rcdgdfrm1chfo6kj foreign key (employee_id) references employee
 alter table if exists income add constraint FKevjfnwv5rp70ajrfda6417iyc foreign key (employee_id) references employee
 alter table if exists income add constraint FKjhgvs0kbdkc7u23cjijeb86fp foreign key (store_id) references store
-alter table if exists store_employee add constraint FKaiarlsd3an33ej4om56tjs677 foreign key (employee_id) references employee
-alter table if exists store_employee add constraint FKtafd4sk846bi7lgvv0q5wegnb foreign key (store_id) references store
 alter table if exists transaction add constraint FKrpx9b019itm9mwitcw53ui0tb foreign key (created_by) references employee
 alter table if exists transaction add constraint FKcckopmu8rb9im7f2a20jkeloh foreign key (finalised_by) references employee
 alter table if exists transaction add constraint FK1eprpvnt4sd424pavi0mc91a5 foreign key (store_id) references store

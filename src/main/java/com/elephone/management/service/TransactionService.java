@@ -45,7 +45,7 @@ public class TransactionService {
     }
 
     public Page<Transaction> listByStoreId(UUID storeId, int page, int perPage) {
-        return transactionRepository.findByStore_IdOrderByLastModifiedDateDesc(storeId, PageRequest.of(page, perPage));
+        return transactionRepository.findAllByStore_IdOrderByLastModifiedDateDesc(storeId, PageRequest.of(page, perPage));
     }
 
     public Transaction create(Transaction transaction) {
@@ -75,15 +75,28 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
+    public Page<Transaction> listTransactions(int page, int pageSize, boolean isFinalised, String transactionNumber, String customerName, String contact, String stringId) {
+        UUID storeId = UUID.fromString(stringId);
+        if (transactionNumber != null) {
+            return transactionRepository.findAllByStore_IdAndIsFinalisedAndTransactionNumberContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), storeId, isFinalised, transactionNumber);
+        } else if (customerName != null) {
+            return transactionRepository.findAllByStore_IdAndIsFinalisedAndCustomerNameContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), storeId, isFinalised, customerName);
+        } else if (contact != null) {
+            return transactionRepository.findAllByStore_IdAndIsFinalisedAndContactContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), storeId, isFinalised, contact);
+        } else {
+            return transactionRepository.findAllByStore_IdAndIsFinalisedOrderByLastModifiedDate(PageRequest.of(page, pageSize), storeId, isFinalised);
+        }
+    }
+
     public Page<Transaction> listTransactions(int page, int pageSize, boolean isFinalised, String transactionNumber, String customerName, String contact) {
         if (transactionNumber != null) {
-            return transactionRepository.findAllByIsFinalisedAndTransactionNumberContaining(PageRequest.of(page, pageSize), isFinalised, transactionNumber);
+            return transactionRepository.findAllByIsFinalisedAndTransactionNumberContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), isFinalised, transactionNumber);
         } else if (customerName != null) {
-            return transactionRepository.findAllByIsFinalisedAndCustomerNameContaining(PageRequest.of(page, pageSize), isFinalised, customerName);
+            return transactionRepository.findAllByIsFinalisedAndCustomerNameContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), isFinalised, customerName);
         } else if (contact != null) {
-            return transactionRepository.findAllByIsFinalisedAndContactContaining(PageRequest.of(page, pageSize), isFinalised, contact);
+            return transactionRepository.findAllByIsFinalisedAndContactContainingOrderByLastModifiedDate(PageRequest.of(page, pageSize), isFinalised, contact);
         } else {
-            return transactionRepository.findAllByIsFinalised(PageRequest.of(page, pageSize), isFinalised);
+            return transactionRepository.findAllByIsFinalisedOrderByLastModifiedDate(PageRequest.of(page, pageSize), isFinalised);
         }
     }
 

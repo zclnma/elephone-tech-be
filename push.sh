@@ -1,0 +1,1 @@
+docker tag elephone-management:latest 606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:latest && aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 606850829238.dkr.ecr.ap-southeast-2.amazonaws.com && docker push 606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:latest

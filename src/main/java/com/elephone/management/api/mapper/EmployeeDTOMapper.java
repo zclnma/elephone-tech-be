@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +29,7 @@ public class EmployeeDTOMapper {
         employeeDTO.setContact(employee.getContact());
         employeeDTO.setEmail(employee.getEmail());
         employeeDTO.setTfn(employee.getTfn());
-        if(employee.getWorkingStore() != null) {
+        if (employee.getWorkingStore() != null) {
             employeeDTO.setWorkingStoreId(employee.getWorkingStore().getId());
         }
 
@@ -49,26 +50,26 @@ public class EmployeeDTOMapper {
             return null;
         }
 
-        Employee employee = new Employee();
+        UUID workingStoreId = employeeDTO.getWorkingStoreId();
 
-        employee.setId(employeeDTO.getId());
-        employee.setFirstName(employeeDTO.getFirstName());
-        employee.setLastName(employeeDTO.getLastName());
-        employee.setGender(employeeDTO.getGender());
-        employee.setBirthday(employeeDTO.getBirthday());
-        employee.setContact(employeeDTO.getContact());
-        employee.setEmail(employeeDTO.getEmail());
-        employee.setTfn(employeeDTO.getTfn());
-        if(employeeDTO.getWorkingStoreId() != null) {
-            employee.setWorkingStore(Store.builder().id(employeeDTO.getWorkingStoreId()).build());
-        }
         Set<Store> stores = employeeDTO
                 .getStoreIds()
                 .stream()
                 .map(storeId -> Store.builder().id(storeId).build())
                 .collect(Collectors.toSet());
 
-        employee.setStores(new HashSet<>(stores));
+        Employee employee = Employee.builder()
+                .id(employeeDTO.getId())
+                .firstName(employeeDTO.getFirstName())
+                .lastName(employeeDTO.getLastName())
+                .gender(employeeDTO.getGender())
+                .birthday(employeeDTO.getBirthday())
+                .contact(employeeDTO.getContact())
+                .email(employeeDTO.getEmail())
+                .tfn(employeeDTO.getTfn())
+                .workingStore(workingStoreId == null ? null : Store.builder().id(employeeDTO.getWorkingStoreId()).build())
+                .stores(stores)
+                .build();
 
         return employee;
     }
