@@ -69,5 +69,5 @@ public class TransactionDTO {
     private List<UUID> productId;
 
     @JsonProperty
-    private Set<Comment> comments;
+    private Set<CommentDTO> comments;
 }

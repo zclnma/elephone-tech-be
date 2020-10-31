@@ -42,7 +42,7 @@ public class Store {
     @Column
     private String abn;
 
-    @Column
+    @Column(unique = true)
     private String sequence;
 
     @Column
@@ -52,13 +52,8 @@ public class Store {
     private StoreLocation storeLocation;
 
     @Column
-    @OneToMany(mappedBy = "workingStore")
-    private Set<Employee> workingEmployees = new HashSet<>();
-
-    @Column
     @ManyToMany(mappedBy = "stores")
     private Set<Employee> employees = new HashSet<>();
-
 
     @JsonIgnore
     @LastModifiedDate

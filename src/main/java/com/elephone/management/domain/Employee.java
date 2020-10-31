@@ -45,10 +45,6 @@ public class Employee {
     @Column
     private String tfn;
 
-    @ManyToOne
-    @JoinColumn(name = "working_store_id")
-    private Store workingStore;
-
     @Column
     @ManyToMany
     @JoinTable(

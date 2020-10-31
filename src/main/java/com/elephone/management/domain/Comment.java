@@ -1,5 +1,7 @@
 package com.elephone.management.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,12 +32,13 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
-
-    @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "transaction_id", nullable = false)
+    @JsonIgnore
+    private Transaction transaction;
 
     @CreatedDate
     private String createdDate;

@@ -4,6 +4,7 @@ import com.elephone.management.api.dto.CommentDTO;
 import com.elephone.management.domain.Comment;
 import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.Store;
+import com.elephone.management.domain.Transaction;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +17,7 @@ public class CommentDTOMapper {
         return CommentDTO.builder()
                     .id(comment.getId())
                     .content(comment.getContent())
-                    .storeId(comment.getStore().getId())
+                    .transactionId(comment.getTransaction().getId())
                     .employeeId(comment.getEmployee().getId())
                     .build();
 
@@ -30,7 +31,7 @@ public class CommentDTOMapper {
         return Comment.builder()
                 .id(commentDTO.getId())
                 .content(commentDTO.getContent())
-                .store(Store.builder().id(commentDTO.getId()).build())
+                .transaction(Transaction.builder().id(commentDTO.getTransactionId()).build())
                 .employee(Employee.builder().id(commentDTO.getEmployeeId()).build())
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.elephone.management.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -71,8 +69,9 @@ public class Transaction {
     private String finalisedTime;
 
     @Column
-    @OneToMany(mappedBy = "employee")
-    private Set<Comment> comments;
+    @OneToMany(mappedBy = "transaction")
+    @JsonManagedReference
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_id")

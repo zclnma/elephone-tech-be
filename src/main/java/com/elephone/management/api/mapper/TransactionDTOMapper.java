@@ -1,5 +1,6 @@
 package com.elephone.management.api.mapper;
 
+import com.elephone.management.api.dto.CommentDTO;
 import com.elephone.management.api.dto.TransactionDTO;
 import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.Store;
@@ -8,11 +9,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionDTOMapper {
 
     public TransactionDTO toDTO(Transaction transaction) {
+        CommentDTOMapper commentDTOMapper = new CommentDTOMapper();
         if (transaction == null) {
             return null;
         }
@@ -22,7 +25,7 @@ public class TransactionDTOMapper {
         transactionDTO.setInspection(transaction.getInspection());
         transactionDTO.setCondition(transaction.getCondition());
         transactionDTO.setContact(transaction.getContact());
-        transactionDTO.setComments(transaction.getComments());
+        transactionDTO.setComments(transaction.getComments().stream().map(commentDTOMapper::toDTO).collect(Collectors.toSet()));
         transactionDTO.setCustomerName(transaction.getCustomerName());
         transactionDTO.setDevice(transaction.getDevice());
         transactionDTO.setCreatedBy(transaction.getCreatedBy() == null ? null : transaction.getCreatedBy().getId());

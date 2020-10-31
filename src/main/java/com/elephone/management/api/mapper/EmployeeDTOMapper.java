@@ -29,9 +29,6 @@ public class EmployeeDTOMapper {
         employeeDTO.setContact(employee.getContact());
         employeeDTO.setEmail(employee.getEmail());
         employeeDTO.setTfn(employee.getTfn());
-        if (employee.getWorkingStore() != null) {
-            employeeDTO.setWorkingStoreId(employee.getWorkingStore().getId());
-        }
 
         if (employee.getStores() != null) {
             employeeDTO.setStoreIds(
@@ -50,8 +47,6 @@ public class EmployeeDTOMapper {
             return null;
         }
 
-        UUID workingStoreId = employeeDTO.getWorkingStoreId();
-
         Set<Store> stores = employeeDTO
                 .getStoreIds()
                 .stream()
@@ -67,7 +62,6 @@ public class EmployeeDTOMapper {
                 .contact(employeeDTO.getContact())
                 .email(employeeDTO.getEmail())
                 .tfn(employeeDTO.getTfn())
-                .workingStore(workingStoreId == null ? null : Store.builder().id(employeeDTO.getWorkingStoreId()).build())
                 .stores(stores)
                 .build();
 

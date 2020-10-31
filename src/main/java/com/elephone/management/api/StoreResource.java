@@ -137,7 +137,6 @@ public class StoreResource {
                     .sequence(legacyStore.getNumber())
                     .warranty(legacyStore.getWarrenty() == null ? 90 : Integer.parseInt(legacyStore.getWarrenty()))
                     .employees(new HashSet<>())
-                    .workingEmployees(new HashSet<>())
                     .storeLocation(
                             StoreLocation.builder()
                                     .latStart((float) -999)
@@ -234,7 +233,6 @@ public class StoreResource {
                     .builder()
                     .id(UUID.randomUUID())
                     .color(legacyTransaction.getColor())
-                    .comments(new HashSet<>())
                     .transactionNumber(legacyTransaction.getSequentialNumber())
                     .contact(legacyTransaction.getNumber())
                     .device(legacyTransaction.getDevice())
