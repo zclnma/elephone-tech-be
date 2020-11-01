@@ -10,21 +10,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentDTOMapper {
     public CommentDTO toDTO(Comment comment) {
-            if(comment == null) {
-                return null;
-            }
+        if (comment == null) {
+            return null;
+        }
 
         return CommentDTO.builder()
-                    .id(comment.getId())
-                    .content(comment.getContent())
-                    .transactionId(comment.getTransaction().getId())
-                    .employeeId(comment.getEmployee().getId())
-                    .build();
+                .id(comment.getId())
+                .content(comment.getContent())
+                .transactionId(comment.getTransaction().getId())
+                .employeeId(comment.getEmployee().getId())
+                .lastModifiedDate(comment.getLastModifiedDate())
+                .build();
 
     }
 
     public Comment fromDTO(CommentDTO commentDTO) {
-        if(commentDTO == null) {
+        if (commentDTO == null) {
             return null;
         }
 

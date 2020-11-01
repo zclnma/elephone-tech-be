@@ -43,7 +43,6 @@ public class Product {
     @Column
     private String series;
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 

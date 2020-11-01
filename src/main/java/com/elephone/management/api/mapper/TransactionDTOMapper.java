@@ -20,34 +20,34 @@ public class TransactionDTOMapper {
             return null;
         }
 
-        TransactionDTO transactionDTO = new TransactionDTO();
-        transactionDTO.setColor(transaction.getColor());
-        transactionDTO.setInspection(transaction.getInspection());
-        transactionDTO.setCondition(transaction.getCondition());
-        transactionDTO.setContact(transaction.getContact());
-        transactionDTO.setComments(transaction.getComments().stream().map(commentDTOMapper::toDTO).collect(Collectors.toSet()));
-        transactionDTO.setCustomerName(transaction.getCustomerName());
-        transactionDTO.setDevice(transaction.getDevice());
-        transactionDTO.setCreatedBy(transaction.getCreatedBy() == null ? null : transaction.getCreatedBy().getId());
-        transactionDTO.setFinalisedBy(transaction.getFinalisedBy() == null ? null : transaction.getFinalisedBy().getId());
-        transactionDTO.setIsFinalised(transaction.getIsFinalised());
-        transactionDTO.setId(transaction.getId());
-        transactionDTO.setImei(transaction.getImei());
-        transactionDTO.setIssue(transaction.getIssue());
-        transactionDTO.setPickupTime(transaction.getPickupTime());
-        transactionDTO.setResolution(transaction.getResolution());
-        transactionDTO.setStatus(transaction.getStatus());
-        transactionDTO.setStoreId(transaction.getStore() == null ? null : transaction.getStore().getId());
-        transactionDTO.setTransactionNumber(transaction.getTransactionNumber());
-
-        return transactionDTO;
+        return TransactionDTO.builder()
+                .id(transaction.getId())
+                .color(transaction.getColor())
+                .inspection(transaction.getInspection())
+                .condition(transaction.getCondition())
+                .contact(transaction.getContact())
+                .comments(transaction.getComments().stream().map(commentDTOMapper::toDTO).collect(Collectors.toList()))
+                .customerName(transaction.getCustomerName())
+                .device(transaction.getDevice())
+                .isFinalised(transaction.getIsFinalised())
+                .createdBy(transaction.getCreatedBy() == null ? null : transaction.getCreatedBy().getId())
+                .finalisedBy(transaction.getFinalisedBy() == null ? null : transaction.getFinalisedBy().getId())
+                .imei(transaction.getImei())
+                .issue(transaction.getIssue())
+                .pickupTime(transaction.getPickupTime())
+                .resolution(transaction.getResolution())
+                .status(transaction.getStatus())
+                .transactionNumber(transaction.getTransactionNumber())
+                .storeId(transaction.getStore() == null ? null : transaction.getStore().getId())
+                .build();
     }
 
     public Transaction fromDTO(TransactionDTO transactionDTO) {
 
         if (transactionDTO == null) {
             return null;
-        };
+        }
+        ;
 
         Transaction transaction = new Transaction();
         transaction.setColor(transactionDTO.getColor());
@@ -61,22 +61,22 @@ public class TransactionDTOMapper {
         transaction.setPickupTime(transactionDTO.getPickupTime());
         transaction.setResolution(transactionDTO.getResolution());
         transaction.setTransactionNumber(transactionDTO.getTransactionNumber());
-        if(transactionDTO.getIsFinalised() != null) {
+        if (transactionDTO.getIsFinalised() != null) {
             transaction.setIsFinalised(transactionDTO.getIsFinalised());
         }
-        if(transactionDTO.getStatus() != null) {
+        if (transactionDTO.getStatus() != null) {
             transaction.setStatus(transactionDTO.getStatus());
         }
-        if(transactionDTO.getInspection() != null) {
+        if (transactionDTO.getInspection() != null) {
             transaction.setInspection(transactionDTO.getInspection());
         }
-        if(transactionDTO.getStoreId() != null) {
+        if (transactionDTO.getStoreId() != null) {
             transaction.setStore(Store.builder().id(transactionDTO.getStoreId()).build());
         }
-        if(transactionDTO.getCreatedBy() != null) {
+        if (transactionDTO.getCreatedBy() != null) {
             transaction.setCreatedBy(Employee.builder().id(transactionDTO.getCreatedBy()).build());
         }
-        if(transactionDTO.getFinalisedBy() != null) {
+        if (transactionDTO.getFinalisedBy() != null) {
             transaction.setCreatedBy(Employee.builder().id(transactionDTO.getFinalisedBy()).build());
         }
 

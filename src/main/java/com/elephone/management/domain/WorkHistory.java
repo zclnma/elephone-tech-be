@@ -37,11 +37,9 @@ public class WorkHistory {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @JsonIgnore
     @CreatedDate
     private Date createdDate;
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 }

@@ -13,10 +13,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "transaction")
 @EntityListeners(AuditingEntityListener.class)
@@ -88,11 +88,9 @@ public class Transaction {
     @ElementCollection
     private List<TransactionProduct> products;
 
-    @JsonIgnore
     @CreatedDate
     private Date createdDate;
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 

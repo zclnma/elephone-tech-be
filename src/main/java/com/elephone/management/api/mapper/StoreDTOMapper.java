@@ -17,23 +17,18 @@ public class StoreDTOMapper {
             return null;
         }
 
-        StoreDTO storeDTO = new StoreDTO();
-        storeDTO.setId(store.getId());
-        storeDTO.setName(store.getName());
-        storeDTO.setContact(store.getContact());
-        storeDTO.setRole(store.getRole());
-        storeDTO.setAbn(store.getAbn());
-        storeDTO.setSequence(store.getSequence());
-        storeDTO.setWarranty(store.getWarranty());
-        storeDTO.setStoreLocation(store.getStoreLocation());
-        Set<UUID> employeeId = store
-                .getEmployees()
-                .stream()
-                .map(Employee::getId)
-                .collect(Collectors.toSet());
+        return StoreDTO.builder()
+                .id(store.getId())
+                .name(store.getName())
+                .contact(store.getContact())
+                .role(store.getRole())
+                .abn(store.getAbn())
+                .sequence(store.getSequence())
+                .warranty(store.getWarranty())
+                .storeLocation(store.getStoreLocation())
+                .employeeIds(store.getEmployees().stream().map(Employee::getId).collect(Collectors.toSet()))
+                .build();
 
-        storeDTO.setEmployeeIds(employeeId);
-        return storeDTO;
     }
 
     public Store fromDTO(StoreDTO storeDTO) {
@@ -51,7 +46,7 @@ public class StoreDTOMapper {
         store.setSequence(storeDTO.getSequence());
         store.setWarranty(storeDTO.getWarranty());
         store.setStoreLocation(storeDTO.getStoreLocation());
-        if(storeDTO.getEmployeeIds() != null) {
+        if (storeDTO.getEmployeeIds() != null) {
             Set<Employee> employees = storeDTO
                     .getEmployeeIds()
                     .stream()

@@ -8,35 +8,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class IncomeDTOMapper {
 
-    public IncomeDTO toDTO (Income income) {
+    public IncomeDTO toDTO(Income income) {
         if (income == null) {
             return null;
         }
 
-        IncomeDTO incomeDTO = new IncomeDTO();
-        incomeDTO.setId(income.getId());
-        incomeDTO.setCreatedDate(income.getCreatedDate());
-        incomeDTO.setCash(income.getCash());
-        incomeDTO.setEfpos(income.getEfpos());
-        incomeDTO.setStoreId(income.getStore().getId());
-
-        return incomeDTO;
+        return IncomeDTO.builder()
+                .id(income.getId())
+                .createdDate(income.getCreatedDate())
+                .cash(income.getCash())
+                .efpos(income.getEfpos())
+                .storeId(income.getStore().getId())
+                .build();
     }
 
     public Income fromDTO(IncomeDTO incomeDTO) {
-        if(incomeDTO == null) {
+        if (incomeDTO == null) {
             return null;
         }
 
-        Income income = new Income();
-        income.setCash(incomeDTO.getCash());
-        income.setEfpos(incomeDTO.getEfpos());
-        income.setId(incomeDTO.getId());
-        if(incomeDTO.getStoreId() != null) {
-            income.setStore(Store.builder().id(incomeDTO.getStoreId()).build());
-        }
-
-        return income;
+        return Income.builder()
+                .cash(incomeDTO.getCash())
+                .efpos(incomeDTO.getEfpos())
+                .id(incomeDTO.getId())
+                .store(incomeDTO.getStoreId() == null ? null : Store.builder().id(incomeDTO.getStoreId()).build())
+                .build();
     }
 
 }

@@ -13,13 +13,13 @@ public class WorkHistoryMapper {
             return null;
         }
 
-        WorkHistoryDTO workHistoryDTO = new WorkHistoryDTO();
-        workHistoryDTO.setId(workHistory.getId());
-        workHistoryDTO.setStart(workHistory.getStart());
-        workHistoryDTO.setFinish(workHistory.getFinish());
-        workHistoryDTO.setEmployeeId(workHistory.getEmployee().getId());
+        return WorkHistoryDTO.builder()
+                .id(workHistory.getId())
+                .start(workHistory.getStart())
+                .finish(workHistory.getFinish())
+                .employeeId(workHistory.getEmployee().getId())
+                .build();
 
-        return workHistoryDTO;
     }
 
     public WorkHistory fromDTO(WorkHistoryDTO workHistoryDTO) {

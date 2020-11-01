@@ -37,7 +37,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "transaction_id", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Transaction transaction;
 
     @CreatedDate

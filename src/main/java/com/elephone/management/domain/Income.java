@@ -41,11 +41,9 @@ public class Income {
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
-    @JsonIgnore
     @CreatedDate
     private Date createdDate;
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 }

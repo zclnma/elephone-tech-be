@@ -19,27 +19,20 @@ public class EmployeeDTOMapper {
             return null;
         }
 
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setFirstName(employee.getFirstName());
-        employeeDTO.setLastName(employee.getLastName());
-        employeeDTO.setGender(employee.getGender());
-        employeeDTO.setBirthday(employee.getBirthday());
-        employeeDTO.setContact(employee.getContact());
-        employeeDTO.setEmail(employee.getEmail());
-        employeeDTO.setTfn(employee.getTfn());
-
-        if (employee.getStores() != null) {
-            employeeDTO.setStoreIds(
-                    employee.getStores()
-                            .stream()
-                            .map(Store::getId)
-                            .collect(Collectors.toSet())
-            );
-        }
-
-        return employeeDTO;
+        return EmployeeDTO.builder()
+                .id(employee.getId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .gender(employee.getGender())
+                .birthday(employee.getBirthday())
+                .contact(employee.getContact())
+                .email(employee.getEmail())
+                .tfn(employee.getTfn())
+                .storeIds(employee.getStores() == null ? null : employee.getStores()
+                        .stream()
+                        .map(Store::getId)
+                        .collect(Collectors.toSet()))
+                .build();
     }
 
     public Employee fromDTO(EmployeeDTO employeeDTO) {

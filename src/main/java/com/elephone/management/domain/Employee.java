@@ -54,11 +54,9 @@ public class Employee {
     )
     private Set<Store> stores = new HashSet<>();
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 
-    @JsonIgnore
     @CreatedDate
     private Date createdDate;
 

@@ -55,11 +55,9 @@ public class Store {
     @ManyToMany(mappedBy = "stores")
     private Set<Employee> employees = new HashSet<>();
 
-    @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
 
-    @JsonIgnore
     @CreatedDate
     private Date createdDate;
 }
