@@ -1,22 +1,20 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.Employee;
-import com.elephone.management.domain.Store;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.Date;
 import java.util.UUID;
 
-@Data
+@Getter
 @Jacksonized
 @Builder
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentDTO {
 
@@ -24,9 +22,10 @@ public class CommentDTO {
 
     private String content;
 
-    private UUID employeeId;
+    private EmployeeDTO employee;
 
-    private UUID transactionId;
+    @JsonBackReference
+    private TransactionDTO transaction;
 
     private Date lastModifiedDate;
 }

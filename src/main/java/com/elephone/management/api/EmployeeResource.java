@@ -1,8 +1,9 @@
 package com.elephone.management.api;
 
 import com.elephone.management.api.dto.EmployeeDTO;
-import com.elephone.management.api.mapper.EmployeeDTOMapper;
+import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.domain.Employee;
+import com.elephone.management.service.CognitoService;
 import com.elephone.management.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,8 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,11 +30,14 @@ import java.util.stream.Collectors;
 public class EmployeeResource {
 
     private EmployeeService employeeService;
-    private EmployeeDTOMapper employeeDTOMapper;
+    private EmployeeMapper employeeMapper;
+    private CognitoService cognitoService;
+
     @Autowired
-    public EmployeeResource (EmployeeService employeeService, EmployeeDTOMapper employeeDTOMapper) {
+    public EmployeeResource (EmployeeService employeeService, EmployeeMapper employeeMapper, CognitoService cognitoService) {
         this.employeeService = employeeService;
-        this.employeeDTOMapper = employeeDTOMapper;
+        this.employeeMapper = employeeMapper;
+        this.cognitoService = cognitoService;
     }
 
     @GetMapping
@@ -44,7 +49,7 @@ public class EmployeeResource {
             @ApiParam(name = "storeId", required = false) @RequestParam(name = "storeId", required = false) String storeId
     ) {
         Page<Employee> employees = employeeService.listEmployees(page, perPage, storeId);
-        List<EmployeeDTO> dtoEmployees = employees.stream().map(employeeDTOMapper::toDTO).collect(Collectors.toList());
+        List<EmployeeDTO> dtoEmployees = employees.stream().map(employeeMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(employees.getTotalElements()));
         return new ResponseEntity<>(dtoEmployees, headers, HttpStatus.OK);
@@ -52,26 +57,43 @@ public class EmployeeResource {
 
     @PostMapping
     @ApiOperation(value = "Create employee", notes = "Create Employee")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<EmployeeDTO> create(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = employeeService.createEmployee(employeeDTOMapper.fromDTO(employeeDTO));
-        return new ResponseEntity<>(employeeDTOMapper.toDTO(employee), HttpStatus.CREATED);
+        Employee employee = employeeService.createEmployee(employeeDTO);
+        return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "Get employee by id", notes = "Get employee by id")
+    @GetMapping("/{uniqueId}")
+    @ApiOperation(value = "Get store by store id or name", notes = "Get store by store id or name")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<EmployeeDTO> getById (@PathVariable UUID id) {
-        Employee employee = employeeService.getEmployeeById(id);
-        return new ResponseEntity<>(employeeDTOMapper.toDTO(employee), HttpStatus.OK);
+    public ResponseEntity<EmployeeDTO> getById(@PathVariable String uniqueId, @CurrentSecurityContext SecurityContext context) {
+        String[] split = uniqueId.split("_");
+        String type = split[0];
+        UUID uuid = UUID.fromString(split[1]);
+        return new ResponseEntity<>(employeeMapper.toDTO(employeeService.getEmployeeByUniqueId(type, uuid)), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/activate")
+    @ApiOperation(value = "Activate employee", notes = "Activate employee")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<EmployeeDTO> activateEmployee (@PathVariable UUID id) {
+        Employee employee = employeeService.activateEmployeeById(id);
+        return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/deactivate")
+    @ApiOperation(value = "Deactivate employee", notes = "Deactivate employee")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<EmployeeDTO> deActivateEmployee (@PathVariable UUID id) {
+        Employee employee = employeeService.deActivateEmployeeById(id);
+        return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
     }
 
     @PutMapping
     @ApiOperation(value = "Update Employee", notes = "Update Employee")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<EmployeeDTO> update (@Valid @RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = employeeService.updateEmployee(employeeDTOMapper.fromDTO(employeeDTO));
-        return new ResponseEntity<>(employeeDTOMapper.toDTO(employee), HttpStatus.OK);
+        Employee employee = employeeService.updateEmployee(employeeDTO);
+        return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

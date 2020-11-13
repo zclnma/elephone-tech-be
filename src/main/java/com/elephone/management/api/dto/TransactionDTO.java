@@ -1,20 +1,23 @@
 package com.elephone.management.api.dto;
 
 import com.elephone.management.domain.EnumTransactionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
 @Jacksonized
 @Builder
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDTO {
 
@@ -32,28 +35,42 @@ public class TransactionDTO {
 
     private String imei;
 
+    private String passcode;
+
     private String issue;
 
     private String condition;
 
     private String resolution;
 
-    private Boolean inspection;
+    private String battery;
+
+    private List<String> inspections;
+
+    private String email;
+
+    private String signature;
 
     @NotNull
-    private UUID storeId;
+    private StoreDTO store;
 
-    private UUID createdBy;
+    @NotNull
+    private EmployeeDTO createdBy;
 
-    private UUID finalisedBy;
+    private EmployeeDTO finalisedBy;
 
     private String transactionNumber;
 
     private EnumTransactionStatus status;
 
+    @JsonIgnore
     private Boolean isFinalised;
+
+    @JsonIgnore
+    private Boolean isDeleted;
 
     private List<UUID> productId;
 
+    @JsonManagedReference
     private List<CommentDTO> comments;
 }

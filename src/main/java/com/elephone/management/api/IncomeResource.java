@@ -1,7 +1,7 @@
 package com.elephone.management.api;
 
 import com.elephone.management.api.dto.IncomeDTO;
-import com.elephone.management.api.mapper.IncomeDTOMapper;
+import com.elephone.management.api.mapper.IncomeMapper;
 import com.elephone.management.domain.Income;
 import com.elephone.management.service.IncomeService;
 import io.swagger.annotations.Api;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +27,12 @@ import java.util.stream.Collectors;
 public class IncomeResource {
 
     private IncomeService incomeService;
-    private IncomeDTOMapper incomeDTOMapper;
+    private IncomeMapper incomeMapper;
 
     @Autowired
-    public IncomeResource(IncomeService incomeService, IncomeDTOMapper incomeDTOMapper) {
+    public IncomeResource(IncomeService incomeService, IncomeMapper incomeMapper) {
         this.incomeService = incomeService;
-        this.incomeDTOMapper = incomeDTOMapper;
+        this.incomeMapper = incomeMapper;
     }
 
     @GetMapping("/{storeId}")
@@ -44,7 +43,7 @@ public class IncomeResource {
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage) {
 
         Page<Income> incomes = incomeService.listIncomesByStoreId(storeId, page, perPage);
-        List<IncomeDTO> incomeDTOS = incomes.stream().map(incomeDTOMapper::toDTO).collect(Collectors.toList());
+        List<IncomeDTO> incomeDTOS = incomes.stream().map(incomeMapper::toDTO).collect(Collectors.toList());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Total-Count", Long.toString(incomes.getTotalElements()));
         return new ResponseEntity<>(incomeDTOS, httpHeaders, HttpStatus.OK);
@@ -57,7 +56,7 @@ public class IncomeResource {
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage
     ) {
         Page<Income> incomes = incomeService.listIncomes(page, perPage);
-        List<IncomeDTO> incomeDTOS = incomes.stream().map(incomeDTOMapper::toDTO).collect(Collectors.toList());
+        List<IncomeDTO> incomeDTOS = incomes.stream().map(incomeMapper::toDTO).collect(Collectors.toList());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Total-Count", Long.toString(incomes.getTotalElements()));
         return new ResponseEntity<>(incomeDTOS, httpHeaders, HttpStatus.OK);
@@ -66,8 +65,8 @@ public class IncomeResource {
     @PostMapping
     @ApiOperation(value = "Create Income", notes = "Create Income")
     public ResponseEntity<IncomeDTO> create(@Valid @RequestBody IncomeDTO incomeDTO) {
-        Income income = incomeService.createIncome(incomeDTOMapper.fromDTO(incomeDTO));
-        return new ResponseEntity<>(incomeDTOMapper.toDTO(income), HttpStatus.CREATED);
+        Income income = incomeService.createIncome(incomeMapper.fromDTO(incomeDTO));
+        return new ResponseEntity<>(incomeMapper.toDTO(income), HttpStatus.CREATED);
     }
 
 }

@@ -1,20 +1,19 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.Store;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
-@Data
+@Getter
 @Jacksonized
 @Builder
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IncomeDTO {
 
@@ -26,5 +25,5 @@ public class IncomeDTO {
 
     private Date createdDate;
 
-    private UUID storeId;
+    private StoreDTO store;
 }

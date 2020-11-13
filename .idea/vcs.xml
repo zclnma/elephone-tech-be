@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/client" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/client-new" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/server" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/serverless" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/serverless-backend" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone-new/test" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone/backend" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone/client" vcs="" />
+    <mapping directory="$PROJECT_DIR$/elephone/graphql/backend" vcs="" />
+    <mapping directory="$PROJECT_DIR$/web-server" vcs="" />
+    <mapping directory="$PROJECT_DIR$/website" vcs="" />
+  </component>
+</project>

@@ -1,39 +1,46 @@
 package com.elephone.management.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 public class AwsConfig {
 
-    private String LOCAL_PROFILE = "default";
+    @Value("${cloud.aws.credentials.accessKey}")
+    private String accessKeyId;
 
-    @Bean
-    @Profile("local")
-    public SesV2Client sesV2ClientLocal() {
-        return SesV2Client.builder()
-                .region(Region.AP_SOUTHEAST_2)
-                .credentialsProvider(
-                        ProfileCredentialsProvider
-                                .builder()
-                                .profileName(LOCAL_PROFILE)
-                                .build()
+    @Value("${cloud.aws.credentials.secretKey}")
+    private String secretAccessKey;
 
-                ).build();
+    private AwsCredentialsProvider awsCredentialsProvider;
+
+    @PostConstruct
+    private void init() {
+        awsCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey));
     }
 
     @Bean
-    @Profile("docker")
-    public SesV2Client sesV2ClientDocker() {
+    public SesV2Client sesV2Client() {
         return SesV2Client.builder()
                 .region(Region.AP_SOUTHEAST_2)
-                .credentialsProvider(
-                        EnvironmentVariableCredentialsProvider.create()
-                ).build();
+                .credentialsProvider(awsCredentialsProvider)
+                .build();
     }
+
+    @Bean
+    public CognitoIdentityProviderClient cognitoIdentityClient() {
+        return CognitoIdentityProviderClient
+                .builder()
+                .region(Region.AP_SOUTHEAST_2)
+                .credentialsProvider(awsCredentialsProvider)
+                .build();
+    }
+
 }

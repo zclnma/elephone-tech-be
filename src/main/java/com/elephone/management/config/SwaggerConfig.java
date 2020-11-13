@@ -24,7 +24,6 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-@Profile({"docker","local"})
 public class SwaggerConfig {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";

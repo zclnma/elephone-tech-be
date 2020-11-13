@@ -1,9 +1,6 @@
 package com.elephone.management.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -13,12 +10,12 @@ import javax.persistence.OneToOne;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionProduct {
 
-    @OneToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+//    @OneToOne
+//    @JoinColumn(name = "product_id", referencedColumnName = "id")
+//    private Product product;
 
     private String number;
 

@@ -1,10 +1,13 @@
 package com.elephone.management.api;
 
+import com.elephone.management.api.dto.EmailDTO;
 import com.elephone.management.service.SesService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/email")
@@ -17,11 +20,11 @@ public class EmailResource {
         this.sesService = sesService;
     }
 
-    @GetMapping
-    public void sendEmail() {
-        String SEND_FROM = "elephonefix@elephoneaus.com";
-        String SUBJECT = "Elephone Repair Confirmation";
-        String TEST_DESTINATION = "test@elephoneaus.com";
-        sesService.sendEmail(SEND_FROM, TEST_DESTINATION, SUBJECT, "Lionel");
+    @PostMapping
+    @ApiOperation(value = "Send email", notes = "Send email")
+    @PreAuthorize("hasAuthority('USER')")
+    public void sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
+
+        sesService.sendEmail(emailDTO.getTransactionId());
     }
 }

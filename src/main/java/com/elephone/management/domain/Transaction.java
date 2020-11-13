@@ -2,10 +2,7 @@ package com.elephone.management.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,18 +10,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.*;
 
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "transaction")
+@Table
 @EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column
+    private String email;
 
     @Column
     private String customerName;
@@ -44,6 +44,12 @@ public class Transaction {
     @Column
     private String imei;
 
+    @Column
+    private String passcode;
+
+    @Column
+    private String additionInfo;
+
     @Column(columnDefinition = "text")
     private String issue;
 
@@ -53,17 +59,27 @@ public class Transaction {
     @Column
     private String resolution;
 
-    @Column(columnDefinition = "boolean default false")
-    private Boolean inspection = false;
+    @Column
+    private String signature;
+
+    @Column
+    @ElementCollection
+    private List<String> inspections = new ArrayList<>();
 
     @Column(unique = true)
     private String transactionNumber;
 
     @Column
+    @Builder.Default
     private EnumTransactionStatus status = EnumTransactionStatus.WAIT;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column
+    @Builder.Default
     private Boolean isFinalised = false;
+
+    @Column
+    @Builder.Default
+    private Boolean isDeleted = false;
 
     @Column
     private String finalisedTime;
@@ -71,6 +87,7 @@ public class Transaction {
     @Column
     @OneToMany(mappedBy = "transaction")
     @JsonManagedReference
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
@@ -87,6 +104,12 @@ public class Transaction {
 
     @ElementCollection
     private List<TransactionProduct> products;
+
+    @Column
+    private Date doneTime;
+
+    @Column
+    private Date sendTime;
 
     @CreatedDate
     private Date createdDate;

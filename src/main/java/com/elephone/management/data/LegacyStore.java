@@ -20,5 +20,4 @@ public class LegacyStore {
     private List<StoreEmployee> workingEmployee;
     private List<StoreEmployee> employees;
 
-
 }

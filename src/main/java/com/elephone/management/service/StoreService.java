@@ -48,10 +48,6 @@ public class StoreService {
         return storeRepository.findById(id).orElse(null);
     }
 
-    public Store getStoreByCognitoId(UUID cognitoId) {
-        return  storeRepository.findByCognitoId(cognitoId);
-    }
-
     @Transactional
     public Store updateStore(Store store) {
         if (store.getId() == null) {
@@ -65,7 +61,7 @@ public class StoreService {
         if (id == null) {
             throw new StoreException("Store ID is required.");
         }
-        storeRepository.deleteById(id);
+        storeRepository.updateDeleteStatus(true,id);
     }
 
 }
