@@ -29,6 +29,9 @@ public class Employee {
     private UUID cognitoId;
 
     @Column(updatable = false)
+    private String username;
+
+    @Column(updatable = false)
     private String firstName;
 
     @Column(updatable = false)
@@ -53,12 +56,10 @@ public class Employee {
     private EnumRole role;
 
     @Column
-    @Builder.Default
-    private boolean isActive = true;
+    private Boolean isActive;
 
     @Column
-    @Builder.Default
-    private boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @Column
     @ManyToMany

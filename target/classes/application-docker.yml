@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: docker
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v

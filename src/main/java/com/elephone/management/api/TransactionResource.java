@@ -130,33 +130,5 @@ public class TransactionResource {
         }}, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/inspection")
-    @ApiOperation(value = "Get available inspection", notes = "Get available inspection")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<List<InspectionDTO>> getInspections() {
-        List<InspectionDTO> inspectionDTOS = new ArrayList<>();
-        for (EnumInspection inspection : EnumInspection.values()) {
-            InspectionDTO inspectionDTO = InspectionDTO.builder()
-                    .key(inspection.getKey())
-                    .displayName(inspection.getDisplayName())
-                    .build();
-            inspectionDTOS.add(inspectionDTO);
-        }
-        return new ResponseEntity<>(inspectionDTOS, HttpStatus.OK);
-    }
 
-    @GetMapping("/status")
-    @ApiOperation(value = "Get available status", notes = "Get available status")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<List<TransactionStatusDTO>> getTransactionStatus() {
-        List<TransactionStatusDTO> transactionStatusDTOS = new ArrayList<>();
-        for (EnumTransactionStatus transactionStatus : EnumTransactionStatus.values()) {
-            TransactionStatusDTO transactionStatusDTO = TransactionStatusDTO.builder()
-                    .key(transactionStatus.getKey())
-                    .displayName(transactionStatus.getDisplayName())
-                    .build();
-            transactionStatusDTOS.add(transactionStatusDTO);
-        }
-        return new ResponseEntity<>(transactionStatusDTOS, HttpStatus.OK);
-    }
 }

@@ -15,8 +15,7 @@
     <description>Management system for elephone</description>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>8</java.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <lombok.version>1.18.16</lombok.version>
         <aws-java-jdk.version>2.15.11</aws-java-jdk.version>
@@ -180,7 +179,6 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
@@ -189,10 +187,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.5.1</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -215,7 +213,6 @@
                     </configuration>
                 </plugin>
             </plugins>
-        </pluginManagement>
     </build>
 
 </project>

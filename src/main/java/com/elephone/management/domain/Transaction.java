@@ -64,22 +64,19 @@ public class Transaction {
 
     @Column
     @ElementCollection
-    private List<String> inspections = new ArrayList<>();
+    private List<EnumInspection> inspections;
 
     @Column(unique = true)
     private String transactionNumber;
 
     @Column
-    @Builder.Default
-    private EnumTransactionStatus status = EnumTransactionStatus.WAIT;
+    private EnumTransactionStatus status;
 
     @Column
-    @Builder.Default
-    private Boolean isFinalised = false;
+    private Boolean isFinalised;
 
     @Column
-    @Builder.Default
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @Column
     private String finalisedTime;
@@ -87,8 +84,7 @@ public class Transaction {
     @Column
     @OneToMany(mappedBy = "transaction")
     @JsonManagedReference
-    @Builder.Default
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "store_id")

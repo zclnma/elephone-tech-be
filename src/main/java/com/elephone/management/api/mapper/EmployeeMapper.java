@@ -1,22 +1,20 @@
 package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.EmployeeDTO;
+import com.elephone.management.config.MapstructConfig;
 import com.elephone.management.domain.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = StoreMapper.class)
+@Mapper(config = MapstructConfig.class, uses = {StoreMapper.class, EnumGenderMapper.class, EnumRoleMapper.class})
 public interface EmployeeMapper {
 
-    @Named("NoStore")
-    @Mapping(target = "stores", ignore = true)
-    Employee toDTONoStore(EmployeeDTO employeeDTO);
-
-
-//    @Mapping(target = "stores", qualifiedByName = "NoEmployee")
     EmployeeDTO toDTO(Employee employee);
 
+    @Mappings({
+            @Mapping(target = "isActive", constant = "true"),
+            @Mapping(target = "isDeleted", constant = "false"),
+    })
     Employee fromDTO(EmployeeDTO employeeDTO);
 }

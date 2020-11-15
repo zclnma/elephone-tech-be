@@ -31,13 +31,11 @@ public enum EnumInspection {
     }
 
     public static EnumInspection fromKey(String key) {
-        EnumInspection inspection = null;
         for (EnumInspection item : EnumInspection.values()) {
             if (StringUtils.equals(item.getKey(), key)) {
-                inspection = item;
-                break;
+                return item;
             }
         }
-        return inspection;
+        return null;
     }
 }

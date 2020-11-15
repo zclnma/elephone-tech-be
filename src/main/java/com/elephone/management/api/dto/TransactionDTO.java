@@ -61,7 +61,7 @@ public class TransactionDTO {
 
     private String transactionNumber;
 
-    private EnumTransactionStatus status;
+    private String status;
 
     @JsonIgnore
     private Boolean isFinalised;

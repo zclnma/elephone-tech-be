@@ -28,6 +28,9 @@ public class Comment {
     @Column
     private String content;
 
+    @Column
+    private String reason;
+
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;

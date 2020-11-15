@@ -6,6 +6,7 @@ import com.elephone.management.dispose.exception.EmployeeException;
 import com.elephone.management.dispose.exception.NotFoundException;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Employee;
+import com.elephone.management.domain.EnumRole;
 import com.elephone.management.domain.Store;
 import com.elephone.management.repository.EmployeeRepository;
 import com.elephone.management.repository.StoreRepository;
@@ -37,10 +38,6 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
         this.storeRepository = storeRepository;
         this.cognitoService = cognitoService;
-    }
-
-    public Page<Employee> listEmployees(int page, int pageSize) {
-        return employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public Page<Employee> listEmployees(int page, int pageSize, String storeId) {
@@ -75,20 +72,17 @@ public class EmployeeService {
             throw new EmployeeException("Do not set Employee Id when creating employee.");
         }
         try {
-            String cognitoUsername = cognitoService.getCognitoUsername(employeeDTO.getFirstName(), employeeDTO.getLastName());
-
-            UserType cognitoUser = cognitoService.createUser(cognitoUsername, employeeDTO.getPassword(), employeeDTO.getRole().toString());
+            UserType cognitoUser = cognitoService.createUser(employeeDTO.getUsername(), employeeDTO.getPassword(), EnumRole.fromKey(employeeDTO.getRole()).toString());
             AttributeType attributeType = cognitoUser.attributes().stream()
                     .filter(attribute -> StringUtils.equals(attribute.name(), "sub"))
                     .findAny().orElseThrow(() -> new RuntimeException("Cognito error"));
-
             UUID cognitoID;
             cognitoID = UUID.fromString(attributeType.value());
             Employee employee = employeeMapper.fromDTO(employeeDTO);
             employee.setCognitoId(cognitoID);
             return employeeRepository.save(employee);
         } catch (Exception ex) {
-            throw new RuntimeException("Something went wrong.");
+            throw new RuntimeException(ex.getMessage());
         }
 
     }
@@ -106,36 +100,33 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(employeedto.getId())
                 .orElseThrow(() -> new NotFoundException("Exployee not found."));
 
-        String username = cognitoService.getCognitoUsername(employeedto.getFirstName(), employeedto.getLastName());
-
         try {
             if (employeedto.getPassword() != null) {
-                cognitoService.setPassword(username, employeedto.getPassword());
+                cognitoService.setPassword(employeedto.getUsername(), employeedto.getPassword());
             }
 
-            if (employee.getRole() != employeedto.getRole()) {
-                cognitoService.removeUserFromGroup(username, employee.getRole().toString());
-                cognitoService.addUserToGroup(username, employeedto.getRole().toString());
+            if (StringUtils.equals(employee.getRole().toString(), employeedto.getRole())) {
+                cognitoService.removeUserFromGroup(employeedto.getUsername(), employee.getRole().toString());
+                cognitoService.addUserToGroup(employeedto.getUsername(), employeedto.getRole().toString());
+                employee.setRole(EnumRole.fromKey(employeedto.getRole()));
             }
 
-            Employee newEmployee = employeeMapper.fromDTO(employeedto);
-            newEmployee.setCognitoId(employee.getCognitoId());
-
-            if (newEmployee.getStores() == null) {
-                return employeeRepository.save(newEmployee);
-            }
-
-            List<Store> stores = storeRepository.findAllById(newEmployee.getStores().stream().map(Store::getId).collect(Collectors.toList()));
-            Employee savedEmployee = employeeRepository.saveAndFlush(newEmployee);
+            List<Store> newStores = employeeMapper.fromDTO(employeedto).getStores();
+            employee.setStores(newStores);
+            List<Store> stores = storeRepository.findAllById(newStores
+                    .stream()
+                    .map(Store::getId)
+                    .collect(Collectors.toList()));
+            Employee employeeToReturn = employeeRepository.saveAndFlush(employee);
 
             stores.forEach(store -> {
-                if (!store.getEmployees().remove(newEmployee)) {
-                    store.getEmployees().add(newEmployee);
+                if (!store.getEmployees().remove(employee)) {
+                    store.getEmployees().add(employee);
                 }
             });
             storeRepository.saveAll(stores);
 
-            return savedEmployee;
+            return employeeToReturn;
 
         } catch (Exception ex) {
             throw new EmployeeException(ex.getMessage());
@@ -149,8 +140,8 @@ public class EmployeeService {
             throw new EmployeeException("Employee Id is required.");
         }
         Employee employee = getEmployeeById(id);
-        cognitoService.enableUser(cognitoService.getCognitoUsername(employee.getFirstName(), employee.getLastName()));
-        employee.setActive(true);
+        cognitoService.enableUser(employee.getUsername());
+        employee.setIsActive(true);
         return employeeRepository.save(employee);
     }
 
@@ -160,8 +151,8 @@ public class EmployeeService {
             throw new EmployeeException("Employee Id is required.");
         }
         Employee employee = getEmployeeById(id);
-        cognitoService.disableUser(cognitoService.getCognitoUsername(employee.getFirstName(), employee.getLastName()));
-        employee.setActive(false);
+        cognitoService.disableUser(employee.getUsername());
+        employee.setIsActive(false);
         return employeeRepository.save(employee);
     }
 
@@ -172,9 +163,9 @@ public class EmployeeService {
         }
 
         Employee employee = getEmployeeById(id);
-        cognitoService.deleteUser(cognitoService.getCognitoUsername(employee.getFirstName(), employee.getLastName()));
+        cognitoService.deleteUser(employee.getUsername());
         employee.setCognitoId(null);
-        employee.setDeleted(true);
+        employee.setIsDeleted(true);
         employeeRepository.save(employee);
     }
 

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -34,30 +35,39 @@ public class EmployeeDTO {
     private UUID cognitoId;
 
     @NotNull
+    private String username;
+
+    @NotNull
     private String firstName;
 
     @NotNull
     private String lastName;
 
     @NotNull
-    private EnumGender gender;
+    private String gender;
 
     @NotNull
     private String birthday;
 
     @NotNull
-    private EnumRole role;
+    private String role;
 
     @NotNull
-    @Pattern(regexp="[\\d]{10}")
+    @Pattern(regexp = "[\\d]{10}")
     private String contact;
 
     @NotNull
     @Email(message = "Email format is not valid")
     private String email;
 
+    @JsonIgnore
+    private Boolean isActive;
+
+    @JsonIgnore
+    private Boolean isDeleted;
+
     @NotNull
-    @Pattern(regexp="[\\d]{10}")
+    @Pattern(regexp = "[\\d]{10}")
     private String tfn;
 
     private List<StoreDTO> stores;

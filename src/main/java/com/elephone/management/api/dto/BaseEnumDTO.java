@@ -1,6 +1,5 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.EnumTransactionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransactionStatusDTO {
+public class BaseEnumDTO {
     String key;
     String displayName;
 }

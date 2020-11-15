@@ -10,7 +10,7 @@ public enum EnumTransactionStatus {
     private String key;
     private String displayName;
 
-    EnumTransactionStatus(String key, String displayName){
+    EnumTransactionStatus(String key, String displayName) {
         this.key = key;
         this.displayName = displayName;
     }
@@ -24,13 +24,11 @@ public enum EnumTransactionStatus {
     }
 
     public static EnumTransactionStatus fromKey(String key) {
-        EnumTransactionStatus status = null;
         for (EnumTransactionStatus transactionStatus : EnumTransactionStatus.values()) {
             if (StringUtils.equals(transactionStatus.getKey(), key)) {
-                status = transactionStatus;
-                break;
+                return transactionStatus;
             }
         }
-        return status;
+        return WAIT;
     }
 }

@@ -1,10 +1,12 @@
 package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.TransactionDTO;
+import com.elephone.management.config.MapstructConfig;
+import com.elephone.management.domain.EnumInspection;
 import com.elephone.management.domain.Transaction;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {StoreMapper.class, EmployeeMapper.class})
+@Mapper(config = MapstructConfig.class, uses = {StoreMapper.class, EmployeeMapper.class, EnumTransactionStatusMapper.class, EnumInspectionMapper.class, EnumRoleMapper.class})
 public interface TransactionMapper {
 
     TransactionDTO toDTO(Transaction transaction);
@@ -12,8 +14,6 @@ public interface TransactionMapper {
     @Mappings({
             @Mapping(target = "isFinalised", source = "isFinalised", defaultValue = "false"),
             @Mapping(target = "isDeleted", source = "isDeleted", defaultValue = "false"),
-            @Mapping(target = "status", source = "status", defaultValue = "WAIT")
     })
     Transaction fromDTO(TransactionDTO transaction);
-
 }

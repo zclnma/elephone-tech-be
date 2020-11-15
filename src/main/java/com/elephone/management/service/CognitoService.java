@@ -24,9 +24,6 @@ public class CognitoService {
         this.cognitoClient = cognitoClient;
     }
 
-    public String getCognitoUsername(String firstName, String lastName) {
-        return firstName + lastName;
-    }
 
     public void removeUserFromGroup(String username, String group) {
         AdminRemoveUserFromGroupRequest request = AdminRemoveUserFromGroupRequest.builder()
@@ -70,7 +67,6 @@ public class CognitoService {
                 .build();
 
         AdminCreateUserResponse response = cognitoClient.adminCreateUser(request);
-
         UserType cognitoUser = response.user();
 
         setPassword(username, password);
