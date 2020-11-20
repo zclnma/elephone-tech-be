@@ -71,6 +71,5 @@ public class TransactionDTO {
 
     private List<UUID> productId;
 
-    @JsonManagedReference
     private List<CommentDTO> comments;
 }

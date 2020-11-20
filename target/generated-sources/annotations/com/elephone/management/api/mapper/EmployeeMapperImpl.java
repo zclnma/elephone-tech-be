@@ -3,6 +3,7 @@ package com.elephone.management.api.mapper;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.domain.Employee;
+import com.elephone.management.domain.Employee.EmployeeBuilder;
 import com.elephone.management.domain.Store;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-15T17:18:20+1100",
+    date = "2020-11-20T18:33:26+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
@@ -75,25 +76,25 @@ public class EmployeeMapperImpl implements EmployeeMapper {
             return null;
         }
 
-        Employee employee = new Employee();
+        EmployeeBuilder employee = Employee.builder();
 
-        employee.setId( employeeDTO.getId() );
-        employee.setCognitoId( employeeDTO.getCognitoId() );
-        employee.setUsername( employeeDTO.getUsername() );
-        employee.setFirstName( employeeDTO.getFirstName() );
-        employee.setLastName( employeeDTO.getLastName() );
-        employee.setGender( enumGenderMapper.toEnum( employeeDTO.getGender() ) );
-        employee.setBirthday( employeeDTO.getBirthday() );
-        employee.setContact( employeeDTO.getContact() );
-        employee.setEmail( employeeDTO.getEmail() );
-        employee.setTfn( employeeDTO.getTfn() );
-        employee.setRole( enumRoleMapper.toEnum( employeeDTO.getRole() ) );
-        employee.setStores( storeDTOListToStoreList( employeeDTO.getStores() ) );
+        employee.id( employeeDTO.getId() );
+        employee.cognitoId( employeeDTO.getCognitoId() );
+        employee.username( employeeDTO.getUsername() );
+        employee.firstName( employeeDTO.getFirstName() );
+        employee.lastName( employeeDTO.getLastName() );
+        employee.gender( enumGenderMapper.toEnum( employeeDTO.getGender() ) );
+        employee.birthday( employeeDTO.getBirthday() );
+        employee.contact( employeeDTO.getContact() );
+        employee.email( employeeDTO.getEmail() );
+        employee.tfn( employeeDTO.getTfn() );
+        employee.role( enumRoleMapper.toEnum( employeeDTO.getRole() ) );
+        employee.stores( storeDTOListToStoreList( employeeDTO.getStores() ) );
 
-        employee.setIsActive( true );
-        employee.setIsDeleted( false );
+        employee.isActive( true );
+        employee.isDeleted( false );
 
-        return employee;
+        return employee.build();
     }
 
     protected List<StoreDTO> storeListToStoreDTOList(List<Store> list) {

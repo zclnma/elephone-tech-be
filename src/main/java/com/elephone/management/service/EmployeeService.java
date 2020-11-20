@@ -42,14 +42,14 @@ public class EmployeeService {
 
     public Page<Employee> listEmployees(int page, int pageSize, String storeId) {
         if (StringUtils.isEmpty(storeId)) {
-            return employeeRepository.findAll(PageRequest.of(page, pageSize));
+            return employeeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
         }
         UUID uuid = UUID.fromString(storeId);
         Store store = storeRepository.findById(uuid).orElse(null);
         if (store == null) {
             throw new StoreException("Can't find store with id: " + storeId);
         }
-        return employeeRepository.findAllByStores(PageRequest.of(page, pageSize), store);
+        return employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store,false);
     }
 
     public Employee getEmployeeByUniqueId(String type, UUID id) {

@@ -1,26 +1,19 @@
 package com.elephone.management.api.mapper;
 
-import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.dto.StoreDTO;
-import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.Store;
-import java.util.ArrayList;
-import java.util.List;
+import com.elephone.management.domain.Store.StoreBuilder;
 import java.util.UUID;
 import javax.annotation.Generated;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-15T17:18:20+1100",
+    date = "2020-11-20T18:33:26+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
 public class StoreMapperImpl implements StoreMapper {
-
-    @Autowired
-    private EmployeeMapper employeeMapper;
 
     @Override
     public StoreDTO toDTO(Store store) {
@@ -42,9 +35,7 @@ public class StoreMapperImpl implements StoreMapper {
         sequence = store.getSequence();
         warranty = store.getWarranty();
 
-        List<EmployeeDTO> employees = null;
-
-        StoreDTO storeDTO = new StoreDTO( id, contact, name, abn, sequence, warranty, employees );
+        StoreDTO storeDTO = new StoreDTO( id, contact, name, abn, sequence, warranty );
 
         return storeDTO;
     }
@@ -55,29 +46,17 @@ public class StoreMapperImpl implements StoreMapper {
             return null;
         }
 
-        Store store1 = new Store();
+        StoreBuilder store1 = Store.builder();
 
-        store1.setId( store.getId() );
-        store1.setName( store.getName() );
-        store1.setContact( store.getContact() );
-        store1.setAbn( store.getAbn() );
-        store1.setSequence( store.getSequence() );
-        store1.setWarranty( store.getWarranty() );
-        store1.setEmployees( employeeDTOListToEmployeeList( store.getEmployees() ) );
+        store1.id( store.getId() );
+        store1.name( store.getName() );
+        store1.contact( store.getContact() );
+        store1.abn( store.getAbn() );
+        store1.sequence( store.getSequence() );
+        store1.warranty( store.getWarranty() );
 
-        return store1;
-    }
+        store1.isDeleted( false );
 
-    protected List<Employee> employeeDTOListToEmployeeList(List<EmployeeDTO> list) {
-        if ( list == null ) {
-            return null;
-        }
-
-        List<Employee> list1 = new ArrayList<Employee>( list.size() );
-        for ( EmployeeDTO employeeDTO : list ) {
-            list1.add( employeeMapper.fromDTO( employeeDTO ) );
-        }
-
-        return list1;
+        return store1.build();
     }
 }

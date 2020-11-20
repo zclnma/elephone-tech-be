@@ -27,7 +27,7 @@ public class StoreService {
     }
 
     public Page<Store> listStores(int page, int pageSize) {
-        return storeRepository.findAll(PageRequest.of(page, pageSize));
+        return storeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
     }
 
     public Store createStore(Store store) {

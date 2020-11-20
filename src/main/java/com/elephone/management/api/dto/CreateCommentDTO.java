@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,13 +17,17 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommentDTO {
+public class CreateCommentDTO {
 
+    @NotNull
     private UUID id;
 
     private String content;
 
-    private EmployeeDTO employee;
+    @NotNull
+    private UUID employeeId;
 
-    private Date lastModifiedDate;
+    @NotNull
+    private UUID transactionId;
+
 }

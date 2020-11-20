@@ -2,8 +2,8 @@ package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.CommentDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
-import com.elephone.management.api.dto.TransactionDTO;
 import com.elephone.management.domain.Comment;
+import com.elephone.management.domain.Comment.CommentBuilder;
 import java.util.Date;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -12,14 +12,12 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-15T17:18:20+1100",
+    date = "2020-11-20T18:47:37+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
 public class CommentMapperImpl implements CommentMapper {
 
-    @Autowired
-    private TransactionMapper transactionMapper;
     @Autowired
     private EmployeeMapper employeeMapper;
 
@@ -32,16 +30,14 @@ public class CommentMapperImpl implements CommentMapper {
         UUID id = null;
         String content = null;
         EmployeeDTO employee = null;
-        TransactionDTO transaction = null;
         Date lastModifiedDate = null;
 
         id = comment.getId();
         content = comment.getContent();
         employee = employeeMapper.toDTO( comment.getEmployee() );
-        transaction = transactionMapper.toDTO( comment.getTransaction() );
         lastModifiedDate = comment.getLastModifiedDate();
 
-        CommentDTO commentDTO = new CommentDTO( id, content, employee, transaction, lastModifiedDate );
+        CommentDTO commentDTO = new CommentDTO( id, content, employee, lastModifiedDate );
 
         return commentDTO;
     }
@@ -52,14 +48,13 @@ public class CommentMapperImpl implements CommentMapper {
             return null;
         }
 
-        Comment comment1 = new Comment();
+        CommentBuilder comment1 = Comment.builder();
 
-        comment1.setId( comment.getId() );
-        comment1.setContent( comment.getContent() );
-        comment1.setEmployee( employeeMapper.fromDTO( comment.getEmployee() ) );
-        comment1.setTransaction( transactionMapper.fromDTO( comment.getTransaction() ) );
-        comment1.setLastModifiedDate( comment.getLastModifiedDate() );
+        comment1.id( comment.getId() );
+        comment1.content( comment.getContent() );
+        comment1.employee( employeeMapper.fromDTO( comment.getEmployee() ) );
+        comment1.lastModifiedDate( comment.getLastModifiedDate() );
 
-        return comment1;
+        return comment1.build();
     }
 }

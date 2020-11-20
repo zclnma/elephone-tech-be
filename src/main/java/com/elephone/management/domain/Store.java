@@ -33,6 +33,12 @@ public class Store {
     @Column
     private String abn;
 
+    @Column
+    private String email;
+
+    @Column
+    private String address;
+
     @Column(unique = true)
     private String sequence;
 
@@ -41,7 +47,7 @@ public class Store {
 
     @Column
     @Builder.Default
-    private Boolean isDeleted = true;
+    private Boolean isDeleted = false;
 
     @Column
     @ManyToMany(mappedBy = "stores")

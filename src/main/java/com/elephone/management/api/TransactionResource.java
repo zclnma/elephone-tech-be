@@ -107,16 +107,16 @@ public class TransactionResource {
     @PostMapping("/comment")
     @ApiOperation(value = "Create comment", notes = "Create comment")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<CommentDTO> create(@Valid @RequestBody CommentDTO commentDTO) {
-        Comment comment = commentService.createComment(commentMapper.fromDTO(commentDTO));
+    public ResponseEntity<CommentDTO> create(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
+        Comment comment = commentService.createComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.CREATED);
     }
 
     @PutMapping("/comment")
     @ApiOperation(value = "Update comment", notes = "Update comment")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<CommentDTO> update(@Valid @RequestBody CommentDTO commentDTO) {
-        Comment comment = commentService.updateComment(commentMapper.fromDTO(commentDTO));
+    public ResponseEntity<CommentDTO> update(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
+        Comment comment = commentService.updateComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.OK);
     }
 

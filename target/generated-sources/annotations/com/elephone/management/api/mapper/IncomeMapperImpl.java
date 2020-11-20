@@ -3,6 +3,7 @@ package com.elephone.management.api.mapper;
 import com.elephone.management.api.dto.IncomeDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.domain.Income;
+import com.elephone.management.domain.Income.IncomeBuilder;
 import java.util.Date;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-15T17:18:20+1100",
+    date = "2020-11-20T18:07:44+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
@@ -49,14 +50,14 @@ public class IncomeMapperImpl implements IncomeMapper {
             return null;
         }
 
-        Income income = new Income();
+        IncomeBuilder income = Income.builder();
 
-        income.setId( incomeDTO.getId() );
-        income.setCash( incomeDTO.getCash() );
-        income.setEfpos( incomeDTO.getEfpos() );
-        income.setStore( storeMapper.fromDTO( incomeDTO.getStore() ) );
-        income.setCreatedDate( incomeDTO.getCreatedDate() );
+        income.id( incomeDTO.getId() );
+        income.cash( incomeDTO.getCash() );
+        income.efpos( incomeDTO.getEfpos() );
+        income.store( storeMapper.fromDTO( incomeDTO.getStore() ) );
+        income.createdDate( incomeDTO.getCreatedDate() );
 
-        return income;
+        return income.build();
     }
 }

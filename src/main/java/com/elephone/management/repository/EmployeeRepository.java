@@ -18,7 +18,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     Optional<Employee> findByCognitoId(UUID id);
 
-    Page<Employee> findAllByStores(Pageable pageable, Store store);
+    Page<Employee> findAllByStoresAndIsDeleted(Pageable pageable, Store store, Boolean isDeleted);
+
+    Page<Employee> findAllByIsDeleted(Pageable pageable, Boolean isDeleted);
+
 
     @Modifying
     @Query("update Employee e set e.isDeleted = :isDeleted where e.id = :id")

@@ -48,6 +48,9 @@ public class Transaction {
     private String passcode;
 
     @Column
+    private String battery;
+
+    @Column
     private String additionInfo;
 
     @Column(columnDefinition = "text")
@@ -59,7 +62,7 @@ public class Transaction {
     @Column
     private String resolution;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String signature;
 
     @Column

@@ -30,6 +30,7 @@ public class StoreDTO {
 
     private Integer warranty;
 
-    @JsonIgnore
-    private List<EmployeeDTO> employees;
+    private String address;
+
+    private String email;
 }
