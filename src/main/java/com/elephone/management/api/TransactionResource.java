@@ -46,8 +46,8 @@ public class TransactionResource {
     @PostMapping
     @ApiOperation(value = "create transaction", notes = "create transaction")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<TransactionDTO> create(@Valid @RequestBody TransactionDTO transactionDTO) {
-        Transaction transaction = transactionService.create(transactionMapper.fromDTO(transactionDTO));
+    public ResponseEntity<TransactionDTO> create(@Valid @RequestBody CreateTransactionDTO transactionDTO) {
+        Transaction transaction = transactionService.create(transactionDTO);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
@@ -94,6 +94,14 @@ public class TransactionResource {
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
+    @PutMapping("/{id}/move/{storeId}")
+    @ApiOperation(value = "move transaction store", notes = "move transaction store")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @PathVariable UUID storeId) {
+        Transaction transaction = transactionService.moveTransaction(id, storeId);
+        return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     @ApiOperation(value = "delete transaction", notes = "delete transaction")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -129,6 +137,4 @@ public class TransactionResource {
             put("message", "Comment: " + id + " has been deleted");
         }}, HttpStatus.ACCEPTED);
     }
-
-
 }

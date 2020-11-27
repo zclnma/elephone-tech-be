@@ -3,7 +3,6 @@ package com.elephone.management.api.mapper;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.domain.Employee;
-import com.elephone.management.domain.Employee.EmployeeBuilder;
 import com.elephone.management.domain.Store;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-20T18:33:26+1100",
+    date = "2020-11-27T12:28:38+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
@@ -44,8 +43,6 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         String role = null;
         String contact = null;
         String email = null;
-        Boolean isActive = null;
-        Boolean isDeleted = null;
         String tfn = null;
 
         stores = storeListToStoreDTOList( employee.getStores() );
@@ -59,13 +56,11 @@ public class EmployeeMapperImpl implements EmployeeMapper {
         role = enumRoleMapper.toString( employee.getRole() );
         contact = employee.getContact();
         email = employee.getEmail();
-        isActive = employee.getIsActive();
-        isDeleted = employee.getIsDeleted();
         tfn = employee.getTfn();
 
         String password = null;
 
-        EmployeeDTO employeeDTO = new EmployeeDTO( id, password, cognitoId, username, firstName, lastName, gender, birthday, role, contact, email, isActive, isDeleted, tfn, stores );
+        EmployeeDTO employeeDTO = new EmployeeDTO( id, password, cognitoId, username, firstName, lastName, gender, birthday, role, contact, email, tfn, stores );
 
         return employeeDTO;
     }
@@ -76,25 +71,25 @@ public class EmployeeMapperImpl implements EmployeeMapper {
             return null;
         }
 
-        EmployeeBuilder employee = Employee.builder();
+        Employee employee = new Employee();
 
-        employee.id( employeeDTO.getId() );
-        employee.cognitoId( employeeDTO.getCognitoId() );
-        employee.username( employeeDTO.getUsername() );
-        employee.firstName( employeeDTO.getFirstName() );
-        employee.lastName( employeeDTO.getLastName() );
-        employee.gender( enumGenderMapper.toEnum( employeeDTO.getGender() ) );
-        employee.birthday( employeeDTO.getBirthday() );
-        employee.contact( employeeDTO.getContact() );
-        employee.email( employeeDTO.getEmail() );
-        employee.tfn( employeeDTO.getTfn() );
-        employee.role( enumRoleMapper.toEnum( employeeDTO.getRole() ) );
-        employee.stores( storeDTOListToStoreList( employeeDTO.getStores() ) );
+        employee.setId( employeeDTO.getId() );
+        employee.setCognitoId( employeeDTO.getCognitoId() );
+        employee.setUsername( employeeDTO.getUsername() );
+        employee.setFirstName( employeeDTO.getFirstName() );
+        employee.setLastName( employeeDTO.getLastName() );
+        employee.setGender( enumGenderMapper.toEnum( employeeDTO.getGender() ) );
+        employee.setBirthday( employeeDTO.getBirthday() );
+        employee.setContact( employeeDTO.getContact() );
+        employee.setEmail( employeeDTO.getEmail() );
+        employee.setTfn( employeeDTO.getTfn() );
+        employee.setRole( enumRoleMapper.toEnum( employeeDTO.getRole() ) );
+        employee.setStores( storeDTOListToStoreList( employeeDTO.getStores() ) );
 
-        employee.isActive( true );
-        employee.isDeleted( false );
+        employee.setIsActive( true );
+        employee.setIsDeleted( false );
 
-        return employee.build();
+        return employee;
     }
 
     protected List<StoreDTO> storeListToStoreDTOList(List<Store> list) {

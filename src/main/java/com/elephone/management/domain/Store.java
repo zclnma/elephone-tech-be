@@ -47,6 +47,10 @@ public class Store {
 
     @Column
     @Builder.Default
+    private Integer transactionNumber = 0;
+
+    @Column
+    @Builder.Default
     private Boolean isDeleted = false;
 
     @Column

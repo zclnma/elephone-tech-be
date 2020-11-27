@@ -1,22 +1,16 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.EnumGender;
-import com.elephone.management.domain.EnumRole;
 import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -59,12 +53,6 @@ public class EmployeeDTO {
     @NotNull
     @Email(message = "Email format is not valid")
     private String email;
-
-    @JsonIgnore
-    private Boolean isActive;
-
-    @JsonIgnore
-    private Boolean isDeleted;
 
     @NotNull
     @Pattern(regexp = "[\\d]{10}")

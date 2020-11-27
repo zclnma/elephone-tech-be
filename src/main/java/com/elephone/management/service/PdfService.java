@@ -5,14 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import lombok.Data;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class PdfService {

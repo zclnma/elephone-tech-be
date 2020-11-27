@@ -15,14 +15,6 @@ import java.util.List;
 @Mapper(config = MapstructConfig.class, uses = {StoreMapper.class, EnumGenderMapper.class, EnumRoleMapper.class})
 public interface EmployeeMapper {
 
-//    @Named("NoStore")
-//    @Mapping(target = "stores", ignore = true)
-//    EmployeeDTO toDTOIgnoreStore(Employee employees);
-//
-//    @Named("NoListStore")
-//    @Mapping(target = "stores", ignore = true)
-//    List<EmployeeDTO> toDTOIgnoreListStore(List<Employee> employees);
-
     EmployeeDTO toDTO(Employee employee);
 
     @Mappings({

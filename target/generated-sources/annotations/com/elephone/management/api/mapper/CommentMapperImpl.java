@@ -3,7 +3,6 @@ package com.elephone.management.api.mapper;
 import com.elephone.management.api.dto.CommentDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.domain.Comment;
-import com.elephone.management.domain.Comment.CommentBuilder;
 import java.util.Date;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-20T18:47:37+1100",
+    date = "2020-11-27T12:28:37+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
@@ -48,13 +47,13 @@ public class CommentMapperImpl implements CommentMapper {
             return null;
         }
 
-        CommentBuilder comment1 = Comment.builder();
+        Comment comment1 = new Comment();
 
-        comment1.id( comment.getId() );
-        comment1.content( comment.getContent() );
-        comment1.employee( employeeMapper.fromDTO( comment.getEmployee() ) );
-        comment1.lastModifiedDate( comment.getLastModifiedDate() );
+        comment1.setId( comment.getId() );
+        comment1.setContent( comment.getContent() );
+        comment1.setEmployee( employeeMapper.fromDTO( comment.getEmployee() ) );
+        comment1.setLastModifiedDate( comment.getLastModifiedDate() );
 
-        return comment1.build();
+        return comment1;
     }
 }

@@ -53,7 +53,7 @@ public class Transaction {
     @Column
     private String additionInfo;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "TEXT")
     private String issue;
 
     @Column(name = "product_condition")
@@ -69,7 +69,7 @@ public class Transaction {
     @ElementCollection
     private List<EnumInspection> inspections;
 
-    @Column(unique = true)
+    @Column(unique = true, updatable = false)
     private String transactionNumber;
 
     @Column
@@ -82,19 +82,20 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    private String finalisedTime;
-
-    @Column
     @OneToMany(mappedBy = "transaction")
     @JsonManagedReference
     private List<Comment> comments;
+
+    @ManyToOne
+    @JoinColumn(name = "init_store_id", updatable = false)
+    private Store initStore;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
     @ManyToOne
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", updatable = false)
     private Employee createdBy;
 
     @ManyToOne
@@ -105,15 +106,11 @@ public class Transaction {
     private List<TransactionProduct> products;
 
     @Column
-    private Date doneTime;
-
-    @Column
-    private Date sendTime;
+    private Date finalisedTime;
 
     @CreatedDate
     private Date createdDate;
 
     @LastModifiedDate
     private Date lastModifiedDate;
-
 }

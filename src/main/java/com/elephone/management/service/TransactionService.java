@@ -1,5 +1,7 @@
 package com.elephone.management.service;
 
+import com.elephone.management.api.dto.CreateTransactionDTO;
+import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.Employee;
@@ -33,50 +35,43 @@ import java.util.*;
 
 @Service
 public class TransactionService {
-    private final String ADMIN_INDEX = "00";
-    private int transactionNumber = 0;
 
     private TransactionRepository transactionRepository;
     private StoreService storeService;
     private EmployeeService employeeService;
+    private TransactionMapper transactionMapper;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
-    }
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void resetTransactionNumber() {
-        transactionNumber = 0;
+        this.transactionMapper = transactionMapper;
     }
 
     public Page<Transaction> list(int page, int perPage) {
         return transactionRepository.findAll(PageRequest.of(page, perPage));
     }
 
-    public Transaction create(Transaction transaction) {
-        String transactionNumber;
+    @Transactional
+    public Transaction create(CreateTransactionDTO createTransactionDTO) {
         int year = LocalDate.now().getYear();
         int month = LocalDate.now().getMonthValue();
         int date = LocalDate.now().getDayOfMonth();
-        Store store = transaction.getStore();
-        if (store == null) {
-            transactionNumber = ADMIN_INDEX + year + month + date + String.format("%04d", this.transactionNumber++);
-        } else {
-            Store dbStore = storeService.getStoreById(store.getId());
-            if (dbStore == null) {
-                transactionNumber = ADMIN_INDEX + year + month + date + String.format("%04d", this.transactionNumber++);
-            } else {
-                String storeSequence = store.getSequence();
-                transactionNumber = storeSequence + year + month + date + String.format("%04d", this.transactionNumber++);
-            }
-        }
+        Store transactionStore = storeService.getStoreById(createTransactionDTO.getStoreId());
+        Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
+        Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
+        Integer newStoreTransactionNumber = transactionStore.getTransactionNumber() + 1;
+        String transactionNumber = transactionStore.getSequence() + year + month + date + String.format("%08d", newStoreTransactionNumber);
         transaction.setTransactionNumber(transactionNumber);
-
-        return transactionRepository.save(transaction);
+        transaction.setStore(transactionStore);
+        transaction.setInitStore(transactionStore);
+        transaction.setCreatedBy(transactionCreatedBy);
+        transactionStore.setTransactionNumber(newStoreTransactionNumber);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        storeService.updateStore(transactionStore);
+        return savedTransaction;
     }
 
     public List<Transaction> createTransactionBatch(List<Transaction> transactions) {
@@ -128,6 +123,7 @@ public class TransactionService {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("lastModifiedDate").descending());
 
         return transactionRepository.findAll(specs, pageable);
+
     }
 
     public Transaction getTransactionById(UUID id) {
@@ -146,17 +142,17 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
 
-        if (status == EnumTransactionStatus.SENT) {
-            transaction.setSendTime(new Date());
-        } else if (status == EnumTransactionStatus.DONE) {
-            if (transaction.getStatus() == EnumTransactionStatus.WAIT) {
-                throw new TransactionException("Please update status to " + EnumTransactionStatus.WAIT.getDisplayName() + " first");
-            }
-            transaction.setDoneTime(new Date());
-        }
-
         transaction.setStatus(status);
 
+        return transactionRepository.save(transaction);
+    }
+
+    @Transactional
+    public Transaction moveTransaction(UUID id, UUID storeId) {
+        Store store = storeService.getStoreById(storeId);
+        Transaction transaction = getTransactionById(id);
+
+        transaction.setStore(store);
         return transactionRepository.save(transaction);
     }
 
@@ -164,16 +160,14 @@ public class TransactionService {
     public Transaction finaliseTransaction(@NotNull UUID transactionId, @NotNull UUID employeeId) {
 
         Employee employee = employeeService.getEmployeeById(employeeId);
-        Optional<Transaction> transaction = transactionRepository.findById(transactionId);
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new TransactionException("Transaction not exit"));
 
-        if (transaction.isPresent()) {
-            Transaction newTransaction = transaction.get();
-            newTransaction.setIsFinalised(true);
-            newTransaction.setFinalisedBy(employee);
-            return transactionRepository.save(newTransaction);
-        }
+        transaction.setIsFinalised(true);
+        transaction.setFinalisedBy(employee);
+        transaction.setFinalisedTime(new Date());
+        return transactionRepository.save(transaction);
 
-        throw new TransactionException("Can't find a valid transaction");
     }
 
     @Transactional

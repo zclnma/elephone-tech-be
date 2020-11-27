@@ -1,13 +1,12 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.EnumTransactionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotNull;
@@ -59,6 +58,7 @@ public class TransactionDTO {
 
     private EmployeeDTO finalisedBy;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String transactionNumber;
 
     private String status;
@@ -69,7 +69,7 @@ public class TransactionDTO {
     @JsonIgnore
     private Boolean isDeleted;
 
-    private List<UUID> productId;
+    private List<TransactionProductDTO> products;
 
     private List<CommentDTO> comments;
 }

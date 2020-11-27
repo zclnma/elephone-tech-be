@@ -2,14 +2,13 @@ package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.domain.Store;
-import com.elephone.management.domain.Store.StoreBuilder;
 import java.util.UUID;
 import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-20T18:33:26+1100",
+    date = "2020-11-27T12:28:37+1100",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 1.8.0_211 (Oracle Corporation)"
 )
 @Component
@@ -27,6 +26,8 @@ public class StoreMapperImpl implements StoreMapper {
         String abn = null;
         String sequence = null;
         Integer warranty = null;
+        String address = null;
+        String email = null;
 
         id = store.getId();
         contact = store.getContact();
@@ -34,8 +35,10 @@ public class StoreMapperImpl implements StoreMapper {
         abn = store.getAbn();
         sequence = store.getSequence();
         warranty = store.getWarranty();
+        address = store.getAddress();
+        email = store.getEmail();
 
-        StoreDTO storeDTO = new StoreDTO( id, contact, name, abn, sequence, warranty );
+        StoreDTO storeDTO = new StoreDTO( id, contact, name, abn, sequence, warranty, address, email );
 
         return storeDTO;
     }
@@ -46,17 +49,19 @@ public class StoreMapperImpl implements StoreMapper {
             return null;
         }
 
-        StoreBuilder store1 = Store.builder();
+        Store store1 = new Store();
 
-        store1.id( store.getId() );
-        store1.name( store.getName() );
-        store1.contact( store.getContact() );
-        store1.abn( store.getAbn() );
-        store1.sequence( store.getSequence() );
-        store1.warranty( store.getWarranty() );
+        store1.setId( store.getId() );
+        store1.setName( store.getName() );
+        store1.setContact( store.getContact() );
+        store1.setAbn( store.getAbn() );
+        store1.setEmail( store.getEmail() );
+        store1.setAddress( store.getAddress() );
+        store1.setSequence( store.getSequence() );
+        store1.setWarranty( store.getWarranty() );
 
-        store1.isDeleted( false );
+        store1.setIsDeleted( false );
 
-        return store1.build();
+        return store1;
     }
 }
