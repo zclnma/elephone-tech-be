@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public enum EnumTransactionStatus {
     WAIT("WAIT", "Waiting for parts"),
-    SENT("SENT", "Sent away"),
-    DONE("DONE", "Done");
+    DONE("DONE", "Done"),
+    FINALISED("FINALISED", "Finalised");
 
     private String key;
     private String displayName;

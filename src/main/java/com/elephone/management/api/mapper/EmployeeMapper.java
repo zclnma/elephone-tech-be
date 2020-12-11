@@ -1,6 +1,7 @@
 package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.CommentDTO;
+import com.elephone.management.api.dto.CreateEmployeeDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.config.MapstructConfig;
 import com.elephone.management.domain.Comment;
@@ -22,4 +23,10 @@ public interface EmployeeMapper {
             @Mapping(target = "isDeleted", constant = "false"),
     })
     Employee fromDTO(EmployeeDTO employeeDTO);
+
+    @Mappings({
+            @Mapping(target = "isActive", constant = "true"),
+            @Mapping(target = "isDeleted", constant = "false"),
+    })
+    Employee fromCreateDTO(CreateEmployeeDTO createEmployeeDTO);
 }

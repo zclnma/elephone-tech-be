@@ -1,5 +1,6 @@
 package com.elephone.management.api;
 
+import com.elephone.management.api.dto.CreateEmployeeDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.domain.Employee;
@@ -31,13 +32,11 @@ public class EmployeeResource {
 
     private EmployeeService employeeService;
     private EmployeeMapper employeeMapper;
-    private CognitoService cognitoService;
 
     @Autowired
-    public EmployeeResource (EmployeeService employeeService, EmployeeMapper employeeMapper, CognitoService cognitoService) {
+    public EmployeeResource (EmployeeService employeeService, EmployeeMapper employeeMapper) {
         this.employeeService = employeeService;
         this.employeeMapper = employeeMapper;
-        this.cognitoService = cognitoService;
     }
 
     @GetMapping
@@ -57,8 +56,8 @@ public class EmployeeResource {
 
     @PostMapping
     @ApiOperation(value = "Create employee", notes = "Create Employee")
-    public ResponseEntity<EmployeeDTO> create(@Valid @RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = employeeService.createEmployee(employeeDTO);
+    public ResponseEntity<EmployeeDTO> create(@Valid @RequestBody CreateEmployeeDTO createEmployeeDTO) {
+        Employee employee = employeeService.createEmployee(createEmployeeDTO);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.CREATED);
     }
 
@@ -91,8 +90,8 @@ public class EmployeeResource {
     @PutMapping
     @ApiOperation(value = "Update Employee", notes = "Update Employee")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<EmployeeDTO> update (@Valid @RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = employeeService.updateEmployee(employeeDTO);
+    public ResponseEntity<EmployeeDTO> update (@Valid @RequestBody CreateEmployeeDTO createEmployeeDTO) {
+        Employee employee = employeeService.updateEmployee(createEmployeeDTO);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
     }
 

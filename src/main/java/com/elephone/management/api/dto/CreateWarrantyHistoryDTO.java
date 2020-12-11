@@ -1,16 +1,12 @@
 package com.elephone.management.api.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -18,16 +14,18 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateCommentDTO {
+public class CreateWarrantyHistoryDTO {
 
     private UUID id;
 
-    private String content;
+    private String description;
+
+    @NotNull
+    private UUID storeId;
 
     @NotNull
     private UUID employeeId;
 
     @NotNull
     private UUID transactionId;
-
 }

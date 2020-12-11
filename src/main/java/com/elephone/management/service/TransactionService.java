@@ -68,6 +68,7 @@ public class TransactionService {
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
         transaction.setCreatedBy(transactionCreatedBy);
+        transaction.setStatus(EnumTransactionStatus.WAIT);
         transactionStore.setTransactionNumber(newStoreTransactionNumber);
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
@@ -78,7 +79,7 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, Boolean isFinalised, String transactionNumber, String customerName, String contact, String storeId) {
+    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String transactionNumber, String customerName, String contact, String storeId) {
 
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -110,8 +111,8 @@ public class TransactionService {
                 predicates.add(predicate);
             }
 
-            if (isFinalised != null) {
-                Predicate predicate = cb.equal(root.get("isFinalised"), isFinalised);
+            if (transactionStatus != null) {
+                Predicate predicate = cb.equal(root.get("status"), transactionStatus);
                 predicates.add(predicate);
             }
 
@@ -134,13 +135,23 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction updateTransactionStatus(UUID id, EnumTransactionStatus status) {
+    public Transaction updateTransactionStatus(UUID id, UUID updatedBy, EnumTransactionStatus status) {
         if (id == null) {
             throw new TransactionException("Transaction id is required");
         }
 
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
+
+        if (transaction.getStatus().equals(EnumTransactionStatus.DONE)) {
+            throw new TransactionException("Can't change status for a finalised transaction.");
+        }
+
+        if (status.equals(EnumTransactionStatus.DONE)) {
+            Employee employee = employeeService.getEmployeeById(updatedBy);
+            transaction.setFinalisedBy(employee);
+            transaction.setFinalisedTime(new Date());
+        }
 
         transaction.setStatus(status);
 
@@ -154,20 +165,6 @@ public class TransactionService {
 
         transaction.setStore(store);
         return transactionRepository.save(transaction);
-    }
-
-    @Transactional
-    public Transaction finaliseTransaction(@NotNull UUID transactionId, @NotNull UUID employeeId) {
-
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        Transaction transaction = transactionRepository.findById(transactionId)
-                .orElseThrow(() -> new TransactionException("Transaction not exit"));
-
-        transaction.setIsFinalised(true);
-        transaction.setFinalisedBy(employee);
-        transaction.setFinalisedTime(new Date());
-        return transactionRepository.save(transaction);
-
     }
 
     @Transactional

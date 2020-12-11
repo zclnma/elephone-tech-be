@@ -222,7 +222,6 @@ public class StoreResource {
 //                    .createdBy(Employee.builder().id(employeeId).build())
 //                    .finalisedBy(Employee.builder().id(employeeId).build())
 //                    .store(Store.builder().id(storeId).build())
-//                    .isFinalised(false)
 //                    .products(legacyTransaction
 //                            .getEstimate()
 //                            .stream()
@@ -283,7 +282,6 @@ public class StoreResource {
 //                    .createdBy(Employee.builder().id(employeeId).build())
 //                    .store(Store.builder().id(storeId).build())
 //                    .finalisedTime(legacyTransaction.getFinalisedTime())
-//                    .isFinalised(true)
 //                    .products(legacyTransaction
 //                            .getEstimate()
 //                            .stream()

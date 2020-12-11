@@ -1,5 +1,6 @@
 package com.elephone.management.service;
 
+import com.elephone.management.api.dto.CreateEmployeeDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.dispose.exception.EmployeeException;
@@ -29,14 +30,14 @@ public class EmployeeService {
 
     private EmployeeMapper employeeMapper;
     private EmployeeRepository employeeRepository;
-    private StoreRepository storeRepository;
+    private StoreService storeService;
     private CognitoService cognitoService;
 
     @Autowired
-    public EmployeeService(EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, StoreRepository storeRepository, CognitoService cognitoService) {
+    public EmployeeService(EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, StoreService storeService, CognitoService cognitoService) {
         this.employeeMapper = employeeMapper;
         this.employeeRepository = employeeRepository;
-        this.storeRepository = storeRepository;
+        this.storeService = storeService;
         this.cognitoService = cognitoService;
     }
 
@@ -45,11 +46,11 @@ public class EmployeeService {
             return employeeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
         }
         UUID uuid = UUID.fromString(storeId);
-        Store store = storeRepository.findById(uuid).orElse(null);
+        Store store = storeService.getStoreById(uuid);
         if (store == null) {
             throw new StoreException("Can't find store with id: " + storeId);
         }
-        return employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store,false);
+        return employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store, false);
     }
 
     public Employee getEmployeeByUniqueId(String type, UUID id) {
@@ -67,18 +68,18 @@ public class EmployeeService {
         return employeeRepository.findById(id).orElseThrow(() -> new NotFoundException("Employee Not Found."));
     }
 
-    public Employee createEmployee(EmployeeDTO employeeDTO) {
-        if (employeeDTO.getId() != null) {
+    public Employee createEmployee(CreateEmployeeDTO createEmployeeDTO) {
+        if (createEmployeeDTO.getId() != null) {
             throw new EmployeeException("Do not set Employee Id when creating employee.");
         }
         try {
-            UserType cognitoUser = cognitoService.createUser(employeeDTO.getUsername(), employeeDTO.getPassword(), EnumRole.fromKey(employeeDTO.getRole()).toString());
+            UserType cognitoUser = cognitoService.createUser(createEmployeeDTO.getUsername(), createEmployeeDTO.getPassword(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString());
             AttributeType attributeType = cognitoUser.attributes().stream()
                     .filter(attribute -> StringUtils.equals(attribute.name(), "sub"))
                     .findAny().orElseThrow(() -> new RuntimeException("Cognito error"));
             UUID cognitoID;
             cognitoID = UUID.fromString(attributeType.value());
-            Employee employee = employeeMapper.fromDTO(employeeDTO);
+            Employee employee = employeeMapper.fromCreateDTO(createEmployeeDTO);
             employee.setCognitoId(cognitoID);
             return employeeRepository.save(employee);
         } catch (Exception ex) {
@@ -92,31 +93,32 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee updateEmployee(EmployeeDTO employeedto) {
-        if (employeedto.getId() == null) {
+    public Employee updateEmployee(CreateEmployeeDTO createEmployeeDTO) {
+        if (createEmployeeDTO.getId() == null) {
             throw new EmployeeException("Employee Id is required.");
         }
 
-        Employee employee = employeeRepository.findById(employeedto.getId())
+        Employee employee = employeeRepository.findById(createEmployeeDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Exployee not found."));
 
         try {
-            if (employeedto.getPassword() != null) {
-                cognitoService.setPassword(employeedto.getUsername(), employeedto.getPassword());
+            if (createEmployeeDTO.getPassword() != null) {
+                cognitoService.setPassword(createEmployeeDTO.getUsername(), createEmployeeDTO.getPassword());
             }
 
-            if (StringUtils.equals(employee.getRole().toString(), employeedto.getRole())) {
-                cognitoService.removeUserFromGroup(employeedto.getUsername(), employee.getRole().toString());
-                cognitoService.addUserToGroup(employeedto.getUsername(), employeedto.getRole().toString());
-                employee.setRole(EnumRole.fromKey(employeedto.getRole()));
+            if (StringUtils.equals(employee.getRole().toString(), createEmployeeDTO.getRole())) {
+                cognitoService.removeUserFromGroup(createEmployeeDTO.getUsername(), employee.getRole().toString());
+                cognitoService.addUserToGroup(createEmployeeDTO.getUsername(), createEmployeeDTO.getRole());
+                employee.setRole(EnumRole.fromKey(createEmployeeDTO.getRole()));
             }
 
-            List<Store> newStores = employeeMapper.fromDTO(employeedto).getStores();
-            employee.setStores(newStores);
-            List<Store> stores = storeRepository.findAllById(newStores
+            List<Store> stores = createEmployeeDTO
+                    .getStoreIds()
                     .stream()
-                    .map(Store::getId)
-                    .collect(Collectors.toList()));
+                    .map(storeService::getStoreById)
+                    .collect(Collectors.toList());
+
+            employee.setStores(stores);
             Employee employeeToReturn = employeeRepository.saveAndFlush(employee);
 
             stores.forEach(store -> {
@@ -124,7 +126,7 @@ public class EmployeeService {
                     store.getEmployees().add(employee);
                 }
             });
-            storeRepository.saveAll(stores);
+            storeService.updateAllStore(stores);
 
             return employeeToReturn;
 

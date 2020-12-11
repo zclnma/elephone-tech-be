@@ -47,7 +47,6 @@ public class CommentService {
         Comment comment = Comment.builder()
                 .transaction(transaction)
                 .employee(employee)
-                .id(createCommentDTO.getId())
                 .content(createCommentDTO.getContent())
                 .build();
         return commentRepository.save(comment);

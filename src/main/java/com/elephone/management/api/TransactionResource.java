@@ -3,9 +3,11 @@ package com.elephone.management.api;
 import com.elephone.management.api.dto.*;
 import com.elephone.management.api.mapper.CommentMapper;
 import com.elephone.management.api.mapper.TransactionMapper;
+import com.elephone.management.api.mapper.WarrantyHistoryMapper;
 import com.elephone.management.domain.*;
 import com.elephone.management.service.CommentService;
 import com.elephone.management.service.TransactionService;
+import com.elephone.management.service.WarrantyHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,13 +36,17 @@ public class TransactionResource {
     private TransactionService transactionService;
     private CommentService commentService;
     private CommentMapper commentMapper;
+    private WarrantyHistoryMapper warrantyHistoryMapper;
+    private WarrantyHistoryService warrantyHistoryService;
 
     @Autowired
-    public TransactionResource(TransactionService transactionService, CommentService commentService, CommentMapper commentMapper, TransactionMapper transactionMapper) {
+    public TransactionResource(TransactionService transactionService, CommentService commentService, CommentMapper commentMapper, TransactionMapper transactionMapper, WarrantyHistoryMapper warrantyHistoryMapper, WarrantyHistoryService warrantyHistoryService) {
         this.transactionMapper = transactionMapper;
         this.transactionService = transactionService;
         this.commentMapper = commentMapper;
         this.commentService = commentService;
+        this.warrantyHistoryMapper = warrantyHistoryMapper;
+        this.warrantyHistoryService = warrantyHistoryService;
     }
 
     @PostMapping
@@ -57,12 +63,13 @@ public class TransactionResource {
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
             @ApiParam(name = "storeId") @RequestParam(name = "storeId", required = false) String storeId,
-            @ApiParam(name = "isFinalised", defaultValue = "false") @RequestParam(name = "isFinalised", defaultValue = "false") boolean isFinalised,
+            @ApiParam(name = "status", defaultValue = "false") @RequestParam(name = "status", defaultValue = "false") String status,
             @ApiParam(name = "transactionNumber") @RequestParam(name = "transactionNumber", required = false) String transactionNumber,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
             @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact
     ) {
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, isFinalised, transactionNumber, customerName, contact, storeId);
+        EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, transactionNumber, customerName, contact, storeId);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));
@@ -77,22 +84,22 @@ public class TransactionResource {
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/status/{status}")
+    @PutMapping("/{id}/status")
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @PathVariable String status) {
-        EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
-        Transaction transaction = transactionService.updateTransactionStatus(id, transactionStatus);
+    public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody UpdateTransactionStatusDTO updateTransactionStatusDTO) {
+        EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(updateTransactionStatusDTO.getStatus());
+        Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), transactionStatus);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/finalise")
-    @ApiOperation(value = "update transaction status", notes = "update transaction status")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @Valid @RequestBody TransactionFinaliseDTO transactionFinaliseDTO) {
-        Transaction transaction = transactionService.finaliseTransaction(id, transactionFinaliseDTO.getFinalisedBy());
-        return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
-    }
+//    @PutMapping("/{id}/finalise")
+//    @ApiOperation(value = "update transaction status", notes = "update transaction status")
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+//    public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @Valid @RequestBody TransactionFinaliseDTO transactionFinaliseDTO) {
+//        Transaction transaction = transactionService.finaliseTransaction(id, transactionFinaliseDTO.getFinalisedBy());
+//        return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
+//    }
 
     @PutMapping("/{id}/move/{storeId}")
     @ApiOperation(value = "move transaction store", notes = "move transaction store")
@@ -115,7 +122,7 @@ public class TransactionResource {
     @PostMapping("/comment")
     @ApiOperation(value = "Create comment", notes = "Create comment")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<CommentDTO> create(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
+    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.createComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.CREATED);
     }
@@ -123,7 +130,7 @@ public class TransactionResource {
     @PutMapping("/comment")
     @ApiOperation(value = "Update comment", notes = "Update comment")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<CommentDTO> update(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
+    public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.updateComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.OK);
     }
@@ -131,10 +138,18 @@ public class TransactionResource {
     @DeleteMapping("/comment/{id}")
     @ApiOperation(value = "Delete comment by id", notes = "Delete comment")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteComment(@PathVariable UUID id) {
         commentService.deleteCommentById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
             put("message", "Comment: " + id + " has been deleted");
         }}, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/warranty")
+    @ApiOperation(value = "Create Warranty History", notes = "Add Warranty History")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<WarrantyHistoryDTO> createWarrantyHistory(@Valid @RequestBody CreateWarrantyHistoryDTO createWarrantyHistoryDTO) {
+        WarrantyHistory warrantyHistory = warrantyHistoryService.create(createWarrantyHistoryDTO);
+        return new ResponseEntity<>(warrantyHistoryMapper.toDTO(warrantyHistory), HttpStatus.CREATED);
     }
 }

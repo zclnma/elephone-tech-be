@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.sesv2.model.AlreadyExistsException;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,6 +27,13 @@ public class StoreService {
     public StoreService(StoreRepository storeRepository, SesService sesService) {
         this.storeRepository = storeRepository;
         this.sesService = sesService;
+    }
+
+    public void updateEmailIdentity(String oldEmail, String newEmail) {
+        if (!StringUtils.equals(oldEmail, newEmail)) {
+            sesService.createEmailIdentity(newEmail);
+            sesService.deleteEmailIdentity(oldEmail);
+        }
     }
 
     public Page<Store> listStores(int page, int pageSize) {
@@ -70,12 +78,13 @@ public class StoreService {
 
         Store currentStore = storeRepository.findById(store.getId()).orElseThrow(() -> new StoreException("Store doesn't exist"));
 
-        if (!StringUtils.equals(store.getEmail(), currentStore.getEmail())) {
-            sesService.createEmailIdentity(store.getEmail());
-            sesService.deleteEmailIdentity(currentStore.getEmail());
-        }
+        updateEmailIdentity(currentStore.getEmail(), store.getEmail());
 
         return storeRepository.save(store);
+    }
+
+    public List<Store> updateAllStore(List<Store> stores) {
+        return storeRepository.saveAll(stores);
     }
 
     @Transactional

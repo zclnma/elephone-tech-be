@@ -76,15 +76,16 @@ public class Transaction {
     private EnumTransactionStatus status;
 
     @Column
-    private Boolean isFinalised;
-
-    @Column
     private Boolean isDeleted;
 
     @Column
     @OneToMany(mappedBy = "transaction")
     @JsonManagedReference
     private List<Comment> comments;
+
+    @Column
+    @OneToMany(mappedBy = "transaction")
+    private List<WarrantyHistory> warrantyHistories;
 
     @ManyToOne
     @JoinColumn(name = "init_store_id", updatable = false)

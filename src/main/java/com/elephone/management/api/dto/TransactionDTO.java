@@ -8,8 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,12 +66,11 @@ public class TransactionDTO {
     private String status;
 
     @JsonIgnore
-    private Boolean isFinalised;
-
-    @JsonIgnore
     private Boolean isDeleted;
 
     private List<TransactionProductDTO> products;
 
     private List<CommentDTO> comments;
+
+    private Date createdDate;
 }
