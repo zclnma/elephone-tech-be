@@ -24,7 +24,7 @@ public class TemplateResource {
 
     @GetMapping("/gender")
     @ApiOperation(value = "Get genders", notes = "Get genders")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<BaseEnumDTO>> getGenders() {
         List<BaseEnumDTO> baseEnumDTOS = new ArrayList<>();
         for (EnumGender inspection : EnumGender.values()) {
@@ -39,7 +39,7 @@ public class TemplateResource {
 
     @GetMapping("/role")
     @ApiOperation(value = "Get available roles", notes = "Get available roles")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<BaseEnumDTO>> getRoles() {
         List<BaseEnumDTO> baseEnumDTOs = new ArrayList<>();
         for (EnumRole enumRole : EnumRole.values()) {
@@ -54,7 +54,7 @@ public class TemplateResource {
 
     @GetMapping("/inspection")
     @ApiOperation(value = "Get available inspection", notes = "Get available inspection")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<BaseEnumDTO>> getInspections() {
         List<BaseEnumDTO> baseEnumDTOS = new ArrayList<>();
         for (EnumInspection inspection : EnumInspection.values()) {
@@ -69,7 +69,7 @@ public class TemplateResource {
 
     @GetMapping("/status")
     @ApiOperation(value = "Get available status", notes = "Get available status")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<BaseEnumDTO>> getTransactionStatus() {
         List<BaseEnumDTO> baseEnumDTOs = new ArrayList<>();
         for (EnumTransactionStatus transactionStatus : EnumTransactionStatus.values()) {

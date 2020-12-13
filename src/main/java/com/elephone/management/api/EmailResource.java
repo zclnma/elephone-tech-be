@@ -27,7 +27,7 @@ public class EmailResource {
 
     @PostMapping
     @ApiOperation(value = "Send email", notes = "Send email")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         emailService.sendEmail(emailDTO.getTransactionId());
         return new ResponseEntity<>(null, HttpStatus.CREATED);

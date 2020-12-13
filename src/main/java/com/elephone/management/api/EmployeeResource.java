@@ -41,7 +41,7 @@ public class EmployeeResource {
 
     @GetMapping
     @ApiOperation(value = "List employees", notes = "List a number of employees")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<EmployeeDTO>> list (
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
@@ -63,7 +63,7 @@ public class EmployeeResource {
 
     @GetMapping("/{uniqueId}")
     @ApiOperation(value = "Get store by store id or name", notes = "Get store by store id or name")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<EmployeeDTO> getById(@PathVariable String uniqueId, @CurrentSecurityContext SecurityContext context) {
         String[] split = uniqueId.split("_");
         String type = split[0];
@@ -73,7 +73,7 @@ public class EmployeeResource {
 
     @PutMapping("/{id}/activate")
     @ApiOperation(value = "Activate employee", notes = "Activate employee")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<EmployeeDTO> activateEmployee (@PathVariable UUID id) {
         Employee employee = employeeService.activateEmployeeById(id);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
@@ -81,7 +81,7 @@ public class EmployeeResource {
 
     @PutMapping("/{id}/deactivate")
     @ApiOperation(value = "Deactivate employee", notes = "Deactivate employee")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<EmployeeDTO> deActivateEmployee (@PathVariable UUID id) {
         Employee employee = employeeService.deActivateEmployeeById(id);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
@@ -89,7 +89,7 @@ public class EmployeeResource {
 
     @PutMapping
     @ApiOperation(value = "Update Employee", notes = "Update Employee")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<EmployeeDTO> update (@Valid @RequestBody CreateEmployeeDTO createEmployeeDTO) {
         Employee employee = employeeService.updateEmployee(createEmployeeDTO);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
@@ -97,7 +97,7 @@ public class EmployeeResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete Employee by id", notes = "Delete Employee by id")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> deleteById (@PathVariable UUID id) {
         employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

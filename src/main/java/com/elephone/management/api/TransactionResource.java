@@ -51,7 +51,7 @@ public class TransactionResource {
 
     @PostMapping
     @ApiOperation(value = "create transaction", notes = "create transaction")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> create(@Valid @RequestBody CreateTransactionDTO transactionDTO) {
         Transaction transaction = transactionService.create(transactionDTO);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -59,6 +59,7 @@ public class TransactionResource {
 
     @GetMapping
     @ApiOperation(value = "list transactions", notes = "list transactions")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<TransactionDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
@@ -78,7 +79,7 @@ public class TransactionResource {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "get transaction by id", notes = "get transaction by id")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> getById(@PathVariable UUID id) {
         Transaction transaction = transactionService.getTransactionById(id);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -86,24 +87,16 @@ public class TransactionResource {
 
     @PutMapping("/{id}/status")
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody UpdateTransactionStatusDTO updateTransactionStatusDTO) {
         EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(updateTransactionStatusDTO.getStatus());
         Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), transactionStatus);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
-//    @PutMapping("/{id}/finalise")
-//    @ApiOperation(value = "update transaction status", notes = "update transaction status")
-//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-//    public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @Valid @RequestBody TransactionFinaliseDTO transactionFinaliseDTO) {
-//        Transaction transaction = transactionService.finaliseTransaction(id, transactionFinaliseDTO.getFinalisedBy());
-//        return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
-//    }
-
     @PutMapping("/{id}/move/{storeId}")
     @ApiOperation(value = "move transaction store", notes = "move transaction store")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @PathVariable UUID storeId) {
         Transaction transaction = transactionService.moveTransaction(id, storeId);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -111,7 +104,7 @@ public class TransactionResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "delete transaction", notes = "delete transaction")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         transactionService.deleteTransactionById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
@@ -121,7 +114,7 @@ public class TransactionResource {
 
     @PostMapping("/comment")
     @ApiOperation(value = "Create comment", notes = "Create comment")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.createComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.CREATED);
@@ -129,7 +122,7 @@ public class TransactionResource {
 
     @PutMapping("/comment")
     @ApiOperation(value = "Update comment", notes = "Update comment")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.updateComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.OK);
@@ -137,7 +130,7 @@ public class TransactionResource {
 
     @DeleteMapping("/comment/{id}")
     @ApiOperation(value = "Delete comment by id", notes = "Delete comment")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> deleteComment(@PathVariable UUID id) {
         commentService.deleteCommentById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

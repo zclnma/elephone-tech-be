@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/income")
 @Api(tags = "Income management")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class IncomeResource {
 
     private IncomeService incomeService;

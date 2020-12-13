@@ -42,7 +42,7 @@ public class StoreResource {
 
     @GetMapping
     @ApiOperation(value = "List stores", notes = "List a number of tickets.")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<StoreDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(required = false, defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage
@@ -56,7 +56,7 @@ public class StoreResource {
 
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<StoreDTO> create(@Valid @RequestBody StoreDTO storeDTO) {
         Store store = storeService.createStore(storeMapper.fromDTO(storeDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.CREATED);
@@ -64,7 +64,7 @@ public class StoreResource {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Modify store", notes = "Modify store by store id")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody StoreDTO storeDTO) {
         Store store = storeService.updateStore(storeMapper.fromDTO(storeDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.OK);
@@ -72,7 +72,7 @@ public class StoreResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         storeService.deleteStoreById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
