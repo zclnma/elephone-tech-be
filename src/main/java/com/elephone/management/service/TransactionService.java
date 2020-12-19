@@ -143,11 +143,11 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
 
-        if (transaction.getStatus().equals(EnumTransactionStatus.DONE)) {
+        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
             throw new TransactionException("Can't change status for a finalised transaction.");
         }
 
-        if (status.equals(EnumTransactionStatus.DONE)) {
+        if (status.equals(EnumTransactionStatus.FINALISED)) {
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());

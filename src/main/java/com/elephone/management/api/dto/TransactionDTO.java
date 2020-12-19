@@ -72,5 +72,7 @@ public class TransactionDTO {
 
     private List<CommentDTO> comments;
 
+    private List<WarrantyHistoryDTO> warrantyHistories;
+
     private Date createdDate;
 }
