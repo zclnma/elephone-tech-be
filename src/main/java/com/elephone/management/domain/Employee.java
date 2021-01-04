@@ -1,13 +1,11 @@
 package com.elephone.management.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 
@@ -62,14 +60,7 @@ public class Employee {
     private Boolean isDeleted;
 
     @Column
-    @ManyToMany
-    @JoinTable(
-            name = "employee_store",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "store_id")
-    )
-    @Builder.Default
-    @JsonManagedReference
+    @OneToMany
     private List<Store> stores = new ArrayList<>();
 
     @LastModifiedDate

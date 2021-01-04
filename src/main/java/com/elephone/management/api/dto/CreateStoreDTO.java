@@ -7,7 +7,6 @@ import lombok.extern.jackson.Jacksonized;
 
 import javax.persistence.Column;
 import javax.validation.constraints.*;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Jacksonized
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StoreDTO {
+public class CreateStoreDTO {
 
     private UUID id;
 
@@ -46,8 +45,4 @@ public class StoreDTO {
     @Email(message = "Email not valid.")
     @NotNull(message = "Email can't be null.")
     private String email;
-
-    private Boolean isDeleted;
-
-    private Date deletedAt;
 }

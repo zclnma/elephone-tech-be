@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -18,10 +19,14 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateTransactionDTO {
 
+    private String additionInfo;
+
+    @NotNull
     private String customerName;
 
     private String pickupTime;
 
+    @NotNull
     private String contact;
 
     private String device;
@@ -42,8 +47,11 @@ public class CreateTransactionDTO {
 
     private List<String> inspections;
 
+    @NotNull
+    @Email(message = "Email format is not valid")
     private String email;
 
+    @NotNull
     private String signature;
 
     @NotNull
@@ -53,5 +61,7 @@ public class CreateTransactionDTO {
     private UUID createdById;
 
     private List<TransactionProductDTO> products;
+
+    private String deposit;
 
 }

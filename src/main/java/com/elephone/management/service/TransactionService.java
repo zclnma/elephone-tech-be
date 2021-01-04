@@ -40,13 +40,14 @@ public class TransactionService {
     private StoreService storeService;
     private EmployeeService employeeService;
     private TransactionMapper transactionMapper;
-
+    private S3Service s3Service;
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
         this.transactionMapper = transactionMapper;
+        this.s3Service = s3Service;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -62,14 +63,14 @@ public class TransactionService {
         Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
         Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
-        Integer newStoreTransactionNumber = transactionStore.getTransactionNumber() + 1;
-        String transactionNumber = transactionStore.getSequence() + year + month + date + String.format("%08d", newStoreTransactionNumber);
-        transaction.setTransactionNumber(transactionNumber);
+        Integer newStoreReference = transactionStore.getReference() + 1;
+        String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
+        transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
         transaction.setCreatedBy(transactionCreatedBy);
         transaction.setStatus(EnumTransactionStatus.WAIT);
-        transactionStore.setTransactionNumber(newStoreTransactionNumber);
+        transactionStore.setReference(newStoreReference);
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         return savedTransaction;
@@ -79,7 +80,7 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String transactionNumber, String customerName, String contact, String storeId) {
+    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId) {
 
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -95,8 +96,8 @@ public class TransactionService {
                 }
             }
 
-            if (!StringUtils.isEmpty(transactionNumber)) {
-                Predicate predicate = cb.like(cb.upper(root.get("transactionNumber")), "%" + transactionNumber.toUpperCase() + "%");
+            if (!StringUtils.isEmpty(reference)) {
+                Predicate predicate = cb.like(cb.upper(root.get("reference")), "%" + reference.toUpperCase() + "%");
                 predicates.add(predicate);
             }
 

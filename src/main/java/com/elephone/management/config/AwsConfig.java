@@ -53,6 +53,7 @@ public class AwsConfig {
                 .build();
     }
 
+    @Bean
     public S3Client s3Client() {
         return S3Client.builder()
                 .region(Region.AP_SOUTHEAST_2)

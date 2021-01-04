@@ -2,10 +2,12 @@ package com.elephone.management.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import org.hibernate.annotations.GenerationTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.Generated;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -39,7 +41,17 @@ public class Store {
     @Column
     private String address;
 
-    @Column(unique = true)
+    @Column
+    private String suburb;
+
+    @Column
+    private String state;
+
+    @Column
+    private String postcode;
+
+    @Column(columnDefinition = "serial")
+    @Generated(GenerationTime.ALWAYS)
     private String sequence;
 
     @Column
@@ -47,17 +59,14 @@ public class Store {
 
     @Column
     @Builder.Default
-    private Integer transactionNumber = 0;
+    private Integer reference = 0;
 
     @Column
     @Builder.Default
     private Boolean isDeleted = false;
 
     @Column
-    @ManyToMany(mappedBy = "stores")
-    @Builder.Default
-    @JsonBackReference
-    private List<Employee> employees = new ArrayList<>();
+    private Date deletedAt;
 
     @LastModifiedDate
     private Date lastModifiedDate;

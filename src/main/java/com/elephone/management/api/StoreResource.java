@@ -1,5 +1,6 @@
 package com.elephone.management.api;
 
+import com.elephone.management.api.dto.CreateStoreDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.api.mapper.StoreMapper;
 import com.elephone.management.data.*;
@@ -45,9 +46,10 @@ public class StoreResource {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<StoreDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(required = false, defaultValue = "0") int page,
-            @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage
+            @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage,
+            @ApiParam(name = "isDeleted") @RequestParam(required = false) Boolean isDeleted
     ) {
-        Page<Store> stores = storeService.listStores(page, perPage);
+        Page<Store> stores = storeService.listStores(page, perPage, isDeleted);
         List<StoreDTO> dtoStores = stores.stream().map(storeMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(stores.getTotalElements()));
@@ -57,16 +59,16 @@ public class StoreResource {
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<StoreDTO> create(@Valid @RequestBody StoreDTO storeDTO) {
-        Store store = storeService.createStore(storeMapper.fromDTO(storeDTO));
+    public ResponseEntity<StoreDTO> create(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
+        Store store = storeService.createStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Modify store", notes = "Modify store by store id")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody StoreDTO storeDTO) {
-        Store store = storeService.updateStore(storeMapper.fromDTO(storeDTO));
+    public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
+        Store store = storeService.updateStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.OK);
     }
 

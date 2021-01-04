@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Data
@@ -70,7 +71,7 @@ public class Transaction {
     private List<EnumInspection> inspections;
 
     @Column(unique = true, updatable = false)
-    private String transactionNumber;
+    private String reference;
 
     @Column
     private EnumTransactionStatus status;
@@ -85,6 +86,7 @@ public class Transaction {
 
     @Column
     @OneToMany(mappedBy = "transaction")
+    @JsonManagedReference
     private List<WarrantyHistory> warrantyHistories;
 
     @ManyToOne
@@ -105,6 +107,9 @@ public class Transaction {
 
     @ElementCollection
     private List<TransactionProduct> products;
+
+    @Column
+    private String deposit;
 
     @Column
     private Date finalisedTime;

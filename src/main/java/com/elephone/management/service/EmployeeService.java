@@ -119,16 +119,10 @@ public class EmployeeService {
                     .collect(Collectors.toList());
 
             employee.setStores(stores);
-            Employee employeeToReturn = employeeRepository.saveAndFlush(employee);
-
-            stores.forEach(store -> {
-                if (!store.getEmployees().remove(employee)) {
-                    store.getEmployees().add(employee);
-                }
-            });
-            storeService.updateAllStore(stores);
-
-            return employeeToReturn;
+            employee.setEmail(createEmployeeDTO.getEmail());
+            employee.setTfn(createEmployeeDTO.getTfn());
+            employee.setContact(createEmployeeDTO.getContact());
+            return employeeRepository.saveAndFlush(employee);
 
         } catch (Exception ex) {
             throw new EmployeeException(ex.getMessage());

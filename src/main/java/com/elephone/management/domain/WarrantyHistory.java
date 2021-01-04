@@ -1,5 +1,6 @@
 package com.elephone.management.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class WarrantyHistory {
 
     @ManyToOne
     @JoinColumn(name = "transaction_id", nullable = false, updatable = false)
+    @JsonBackReference
     private Transaction transaction;
 
     @CreatedDate

@@ -1,17 +1,28 @@
 package com.elephone.management.service;
 
 import com.elephone.management.dispose.exception.StoreException;
+import com.elephone.management.dispose.exception.TransactionException;
+import com.elephone.management.domain.Employee;
+import com.elephone.management.domain.EnumTransactionStatus;
 import com.elephone.management.domain.Store;
+import com.elephone.management.domain.Transaction;
+import com.elephone.management.repository.EmployeeRepository;
 import com.elephone.management.repository.StoreRepository;
+import com.elephone.management.repository.TransactionRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.sesv2.model.AlreadyExistsException;
 
 
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,12 +32,16 @@ import java.util.stream.Collectors;
 public class StoreService {
 
     private StoreRepository storeRepository;
+    private EmployeeRepository employeeRepository;
+    private TransactionRepository transactionRepository;
     private SesService sesService;
 
     @Autowired
-    public StoreService(StoreRepository storeRepository, SesService sesService) {
+    public StoreService(StoreRepository storeRepository, SesService sesService, EmployeeRepository employeeRepository, TransactionRepository transactionRepository) {
         this.storeRepository = storeRepository;
         this.sesService = sesService;
+        this.employeeRepository = employeeRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     public void updateEmailIdentity(String oldEmail, String newEmail) {
@@ -36,8 +51,11 @@ public class StoreService {
         }
     }
 
-    public Page<Store> listStores(int page, int pageSize) {
-        return storeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
+    public Page<Store> listStores(int page, int pageSize, Boolean isDeleted) {
+        if (isDeleted == null) {
+            return storeRepository.findAll(PageRequest.of(page, pageSize));
+        }
+        return storeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), isDeleted);
     }
 
     public Store createStore(Store store) {
@@ -77,7 +95,9 @@ public class StoreService {
         }
 
         Store currentStore = storeRepository.findById(store.getId()).orElseThrow(() -> new StoreException("Store doesn't exist"));
-
+        store.setIsDeleted(currentStore.getIsDeleted());
+        store.setReference(currentStore.getReference());
+        store.setCreatedDate(currentStore.getCreatedDate());
         updateEmailIdentity(currentStore.getEmail(), store.getEmail());
 
         return storeRepository.save(store);
@@ -92,6 +112,41 @@ public class StoreService {
         if (id == null) {
             throw new StoreException("Store ID is required.");
         }
+
+        Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            //Filter transactions which is wait or done.
+            CriteriaBuilder.In<EnumTransactionStatus> inClause = cb.in(root.get("status"));
+            inClause.value(EnumTransactionStatus.WAIT);
+            inClause.value(EnumTransactionStatus.DONE);
+            predicates.add(inClause);
+
+            //Filter current store
+            Join<Transaction, Store> storeJoin = root.join("store");
+            predicates.add(cb.equal(storeJoin.get("id"), id));
+
+            //Filter deleted
+            predicates.add(cb.equal(root.get("isDeleted"), false));
+
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+
+
+        List<Transaction> transactions = transactionRepository.findAll(specs);
+        if (transactions.size() > 0) {
+            throw new StoreException("Please finalise all transactions in this store before deleting it");
+        }
+
+        Store store = getStoreById(id);
+
+        employeeRepository.findAll().forEach(employee -> {
+            if (employee.getStores().remove(store)) {
+                employeeRepository.save(employee);
+            }
+        });
+
+        store.setDeletedAt(new Date());
         storeRepository.updateDeleteStatus(true, id);
     }
 

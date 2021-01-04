@@ -20,5 +20,5 @@ public interface StoreRepository extends JpaRepository<Store, UUID> {
 
     @Modifying
     @Query("update Store store set store.isDeleted = :isDeleted where store.id = :id")
-    Store updateDeleteStatus (@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
+    void updateDeleteStatus (@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
 }

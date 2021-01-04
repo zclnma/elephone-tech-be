@@ -61,14 +61,18 @@ public class TransactionDTO {
     private EmployeeDTO finalisedBy;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String transactionNumber;
+    private String reference;
 
     private String status;
+
+    private String additionInfo;
 
     @JsonIgnore
     private Boolean isDeleted;
 
     private List<TransactionProductDTO> products;
+
+    private String deposit;
 
     private List<CommentDTO> comments;
 
