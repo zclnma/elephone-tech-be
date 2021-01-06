@@ -57,6 +57,14 @@ public class TransactionResource {
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
+    @PutMapping
+    @ApiOperation(value = "update transaction", notes = "update transaction")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<TransactionDTO> update(@Valid @RequestBody CreateTransactionDTO createTransactionDTO) {
+        Transaction transaction = transactionService.update(createTransactionDTO);
+        return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
+    }
+
     @GetMapping
     @ApiOperation(value = "list transactions", notes = "list transactions")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")

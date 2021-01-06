@@ -4,10 +4,7 @@ import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.dispose.exception.TransactionException;
-import com.elephone.management.domain.Employee;
-import com.elephone.management.domain.EnumTransactionStatus;
-import com.elephone.management.domain.Store;
-import com.elephone.management.domain.Transaction;
+import com.elephone.management.domain.*;
 import com.elephone.management.repository.TransactionRepository;
 import com.elephone.management.repository.specification.TransactionSpecification;
 import com.elephone.management.repository.specification.TransactionSpecificationBuilder;
@@ -32,6 +29,7 @@ import javax.persistence.criteria.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -41,6 +39,7 @@ public class TransactionService {
     private EmployeeService employeeService;
     private TransactionMapper transactionMapper;
     private S3Service s3Service;
+
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service) {
         this.transactionRepository = transactionRepository;
@@ -56,6 +55,9 @@ public class TransactionService {
 
     @Transactional
     public Transaction create(CreateTransactionDTO createTransactionDTO) {
+        if (createTransactionDTO.getId() != null) {
+            throw new TransactionException("Transaction id should be empty");
+        }
         int year = LocalDate.now().getYear();
         int month = LocalDate.now().getMonthValue();
         int date = LocalDate.now().getDayOfMonth();
@@ -74,6 +76,27 @@ public class TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         return savedTransaction;
+    }
+
+    public Transaction update(CreateTransactionDTO createTransactionDTO) {
+        Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
+        Transaction transactionToUpdate = getTransactionById(createTransactionDTO.getId());
+        transactionToUpdate.setCustomerName(transaction.getCustomerName());
+        transactionToUpdate.setContact(transaction.getContact());
+        transactionToUpdate.setEmail(transaction.getEmail());
+        transactionToUpdate.setPickupTime(transaction.getPickupTime());
+        transactionToUpdate.setDevice(transaction.getDevice());
+        transactionToUpdate.setColor(transaction.getColor());
+        transactionToUpdate.setImei(transaction.getImei());
+        transactionToUpdate.setPasscode(transaction.getPasscode());
+        transactionToUpdate.setInspections(transaction.getInspections());
+        transactionToUpdate.setBattery(transaction.getBattery());
+        transactionToUpdate.setIssue(transaction.getIssue());
+        transactionToUpdate.setResolution(transaction.getResolution());
+        transactionToUpdate.setAdditionInfo(transaction.getAdditionInfo());
+        transactionToUpdate.setCondition(transaction.getCondition());
+        transactionToUpdate.setProducts(transaction.getProducts());
+        return transactionRepository.save(transactionToUpdate);
     }
 
     public List<Transaction> createTransactionBatch(List<Transaction> transactions) {

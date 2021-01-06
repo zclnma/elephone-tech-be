@@ -29,7 +29,7 @@ public class EmailResource {
     @ApiOperation(value = "Send email", notes = "Send email")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
-        emailService.sendEmail(emailDTO.getTransactionId());
+        emailService.sendEmail(emailDTO.getTransactionId(), emailDTO.getType());
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 }

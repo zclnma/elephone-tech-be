@@ -3,8 +3,8 @@ package com.elephone.management.api.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.Email;
@@ -12,21 +12,24 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
-@Jacksonized
+@Data
 @Builder
+@Jacksonized
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateTransactionDTO {
 
+    private UUID id;
+
     private String additionInfo;
 
-    @NotNull
+    @NotNull(message = "Customer name can't be empty.")
     private String customerName;
 
+    @NotNull(message = "Pickup time can't be empty.")
     private String pickupTime;
 
-    @NotNull
+    @NotNull(message = "Contact number can't be empty.")
     private String contact;
 
     private String device;
@@ -63,5 +66,4 @@ public class CreateTransactionDTO {
     private List<TransactionProductDTO> products;
 
     private String deposit;
-
 }

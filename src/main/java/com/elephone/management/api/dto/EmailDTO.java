@@ -16,4 +16,7 @@ public class EmailDTO {
 
     @NotNull
     UUID transactionId;
+
+    @NotNull
+    String type;
 }

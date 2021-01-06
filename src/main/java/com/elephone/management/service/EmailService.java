@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resources;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
@@ -36,10 +37,10 @@ public class EmailService {
         this.sesService = sesService;
     }
 
-    public MimeMessage generateEmail(Transaction transaction) throws Exception {
+    public MimeMessage generateEmail(Transaction transaction, String type) throws Exception {
         String from = transaction.getStore().getEmail();
         String to = transaction.getEmail();
-        Resource resource = new ClassPathResource("/templates/email.html");
+        Resource resource = new ClassPathResource(type.equalsIgnoreCase("authorisation") ? "/templates/authorisation.html" : "/templates/confirmation.html");
         InputStream inputStream = resource.getInputStream();
         Map<String, String> emailPlaceholder = new HashMap<>();
         emailPlaceholder.put("name", transaction.getCustomerName());
@@ -97,13 +98,13 @@ public class EmailService {
     }
 
     @Async
-    public void formAndSend(Transaction transaction) {
+    public void formAndSend(Transaction transaction, String type) {
 
         String from = transaction.getStore().getEmail();
         String to = transaction.getEmail();
 
         try {
-            MimeMessage mimeMessage = generateEmail(transaction);
+            MimeMessage mimeMessage = generateEmail(transaction, type);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             mimeMessage.writeTo(outputStream);
             sesService.sendEmail(from, to, outputStream);
@@ -112,7 +113,7 @@ public class EmailService {
         }
     }
 
-    public void sendEmail(UUID transactionId) {
+    public void sendEmail(UUID transactionId, String type) {
         Transaction transaction = transactionService.getTransactionById(transactionId);
 
         Boolean isVerified = sesService.getEmailIdentity(transaction.getStore().getEmail());
@@ -120,7 +121,6 @@ public class EmailService {
             throw new IllegalArgumentException("Please login in to the store email to verify address first.");
         }
 
-        formAndSend(transaction);
-        return;
+        formAndSend(transaction, type);
     }
 }
