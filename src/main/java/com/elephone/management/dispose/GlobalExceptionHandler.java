@@ -35,11 +35,6 @@ public class GlobalExceptionHandler {
         return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IncomeException.class)
-    public ResponseEntity<ErrorResponse> handleIncomeException(IncomeException ex) {
-        return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(TransactionException.class)
     public ResponseEntity<ErrorResponse> handleTransactionException (TransactionException ex) {
         return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);

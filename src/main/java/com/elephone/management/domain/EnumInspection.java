@@ -11,8 +11,8 @@ public enum EnumInspection {
     LCD("LCD", "LCD"),
     MICROPHONE("MICROPHONE", "Microphone"),
     HOME("HOME", "Home Button"),
-    ID("ID", "FACE ID / TOUCH ID"),
-    VOLUME("VOLUME", "VOLUME / POWER BUTTON");
+    ID("ID", "Face ID / Touch ID"),
+    VOLUME("VOLUME", "Volume / Power Button");
 
     private final String key;
     private final String displayName;

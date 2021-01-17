@@ -22,8 +22,11 @@ public class StoreDTO {
     @Pattern(regexp = "[\\d]{10}", message = "Invalid contact number.")
     private String contact;
 
-    @NotNull(message = "Name can't be null.")
+    @NotBlank(message = "Name can't be empty.")
     private String name;
+
+    @NotBlank(message = "Company Name can't be empty.")
+    private String companyName;
 
     @Pattern(regexp = "[\\d]{10}", message = "Invalid ABN.")
     private String abn;
@@ -31,20 +34,20 @@ public class StoreDTO {
     @Min(value = 0, message = "warranty time should be more than 0")
     private Integer warranty;
 
-    @NotNull(message = "Address can't be null.")
+    @NotBlank(message = "Address can't be empty.")
     private String address;
 
-    @NotNull(message = "Suburb can't be null.")
+    @NotBlank(message = "Suburb can't be empty.")
     private String suburb;
 
-    @NotNull(message = "State can't be null.")
+    @NotBlank(message = "State can't be empty.")
     private String state;
 
-    @NotNull(message = "Postcode can't be null.")
+    @NotBlank(message = "Postcode can't be empty.")
     private String postcode;
 
     @Email(message = "Email not valid.")
-    @NotNull(message = "Email can't be null.")
+    @NotBlank(message = "Email can't be empty.")
     private String email;
 
     private Boolean isDeleted;

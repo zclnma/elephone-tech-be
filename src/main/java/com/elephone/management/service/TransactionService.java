@@ -2,6 +2,7 @@ package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.mapper.TransactionMapper;
+import com.elephone.management.data.EnumEmailType;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.*;
@@ -38,15 +39,17 @@ public class TransactionService {
     private StoreService storeService;
     private EmployeeService employeeService;
     private TransactionMapper transactionMapper;
+    private EmailService emailService;
     private S3Service s3Service;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
         this.transactionMapper = transactionMapper;
         this.s3Service = s3Service;
+        this.emailService = emailService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -75,6 +78,7 @@ public class TransactionService {
         transactionStore.setReference(newStoreReference);
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
+//        emailService.sendEmail(savedTransaction, EnumEmailType.AUTHORISATION);
         return savedTransaction;
     }
 
@@ -175,6 +179,7 @@ public class TransactionService {
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());
+            emailService.sendEmail(transaction, EnumEmailType.CONFIRMATION);
         }
 
         transaction.setStatus(status);

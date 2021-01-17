@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.sesv2.model.AlreadyExistsException;
+import software.amazon.awssdk.services.sesv2.model.NotFoundException;
 
 
 import javax.persistence.criteria.*;
@@ -46,8 +47,15 @@ public class StoreService {
 
     public void updateEmailIdentity(String oldEmail, String newEmail) {
         if (!StringUtils.equals(oldEmail, newEmail)) {
-            sesService.createEmailIdentity(newEmail);
-            sesService.deleteEmailIdentity(oldEmail);
+            try {
+                sesService.createEmailIdentity(newEmail);
+            } catch (AlreadyExistsException ex) {
+            }
+            try {
+                sesService.deleteEmailIdentity(oldEmail);
+            } catch (NotFoundException ex) {
+
+            }
         }
     }
 

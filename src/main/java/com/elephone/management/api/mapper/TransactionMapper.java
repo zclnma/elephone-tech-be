@@ -12,7 +12,7 @@ public interface TransactionMapper {
     TransactionDTO toDTO(Transaction transaction);
 
     @Mappings({
-            @Mapping(target = "isDeleted", source = "isDeleted", defaultValue = "false"),
+            @Mapping(target = "isDeleted", constant = "false"),
     })
     Transaction fromDTO(TransactionDTO transaction);
 

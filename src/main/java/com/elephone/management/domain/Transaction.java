@@ -64,7 +64,13 @@ public class Transaction {
     private String resolution;
 
     @Column(columnDefinition = "TEXT")
-    private String signature;
+    private String authSignature;
+
+    @Column(columnDefinition = "TEXT")
+    private String confSignature;
+
+    @Column(updatable = false)
+    private String notificationType;
 
     @Column
     @ElementCollection

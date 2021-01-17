@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,32 +22,32 @@ public class CreateEmployeeDTO {
 
     private String password;
 
-    @NotNull
+    @NotBlank
     private String username;
 
-    @NotNull
+    @NotBlank
     private String firstName;
 
-    @NotNull
+    @NotBlank
     private String lastName;
 
-    @NotNull
+    @NotBlank
     private String gender;
 
-    @NotNull
+    @NotBlank
     private String birthday;
 
-    @NotNull
+    @NotBlank
     private String role;
 
-    @NotNull
+    @NotBlank
     private String contact;
 
-    @NotNull
+    @NotBlank
     @Email(message = "Email format is not valid")
     private String email;
 
-    @NotNull
+    @NotBlank
     @Pattern(regexp = "[\\d]{10}", message = "A valid TFN must be 10 digits.")
     private String tfn;
 

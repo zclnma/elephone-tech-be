@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -23,13 +24,13 @@ public class CreateTransactionDTO {
 
     private String additionInfo;
 
-    @NotNull(message = "Customer name can't be empty.")
+    @NotBlank(message = "Customer name can't be empty.")
     private String customerName;
 
-    @NotNull(message = "Pickup time can't be empty.")
+    @NotBlank(message = "Pickup time can't be empty.")
     private String pickupTime;
 
-    @NotNull(message = "Contact number can't be empty.")
+    @NotBlank(message = "Contact number can't be empty.")
     private String contact;
 
     private String device;
@@ -50,17 +51,15 @@ public class CreateTransactionDTO {
 
     private List<String> inspections;
 
-    @NotNull
+    @NotBlank
     @Email(message = "Email format is not valid")
     private String email;
 
-    @NotNull
-    private String signature;
+    @NotBlank
+    private String authSignature;
 
-    @NotNull
     private UUID storeId;
 
-    @NotNull
     private UUID createdById;
 
     private List<TransactionProductDTO> products;

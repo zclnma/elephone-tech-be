@@ -7,6 +7,7 @@ import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
+import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
@@ -56,6 +57,14 @@ public class AwsConfig {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
+                .region(Region.AP_SOUTHEAST_2)
+                .credentialsProvider(awsCredentialsProvider)
+                .build();
+    }
+
+    @Bean
+    public SnsClient snsClient() {
+        return SnsClient.builder()
                 .region(Region.AP_SOUTHEAST_2)
                 .credentialsProvider(awsCredentialsProvider)
                 .build();

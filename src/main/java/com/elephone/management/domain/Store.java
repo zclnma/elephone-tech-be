@@ -30,6 +30,9 @@ public class Store {
     private String name;
 
     @Column
+    private String companyName;
+
+    @Column
     private String contact;
 
     @Column

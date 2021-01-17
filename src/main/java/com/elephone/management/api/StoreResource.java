@@ -27,15 +27,13 @@ import java.util.stream.Collectors;
 public class StoreResource {
 
     private final TransactionService transactionService;
-    private final IncomeService incomeService;
     private final EmployeeService employeeService;
     private final StoreService storeService;
     private final StoreMapper storeMapper;
 
     @Autowired
-    public StoreResource(TransactionService transactionService, IncomeService incomeService, EmployeeService employeeService, StoreService storeService, StoreMapper storeMapper) {
+    public StoreResource(TransactionService transactionService, EmployeeService employeeService, StoreService storeService, StoreMapper storeMapper) {
         this.transactionService = transactionService;
-        this.incomeService = incomeService;
         this.employeeService = employeeService;
         this.storeService = storeService;
         this.storeMapper = storeMapper;

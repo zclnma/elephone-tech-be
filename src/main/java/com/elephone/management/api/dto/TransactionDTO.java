@@ -50,25 +50,19 @@ public class TransactionDTO {
 
     private String email;
 
-    private String signature;
+    private String confSignature;
 
-    @NotNull
     private StoreDTO store;
 
-    @NotNull
     private EmployeeDTO createdBy;
 
     private EmployeeDTO finalisedBy;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String reference;
 
     private String status;
 
     private String additionInfo;
-
-    @JsonIgnore
-    private Boolean isDeleted;
 
     private List<TransactionProductDTO> products;
 

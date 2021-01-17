@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -20,12 +19,9 @@ public class CreateWarrantyHistoryDTO {
 
     private String description;
 
-    @NotNull
     private UUID storeId;
 
-    @NotNull
     private UUID employeeId;
 
-    @NotNull
     private UUID transactionId;
 }

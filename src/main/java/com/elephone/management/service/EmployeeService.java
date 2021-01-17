@@ -1,26 +1,26 @@
 package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateEmployeeDTO;
-import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.dispose.exception.EmployeeException;
 import com.elephone.management.dispose.exception.NotFoundException;
 import com.elephone.management.dispose.exception.StoreException;
-import com.elephone.management.domain.Employee;
-import com.elephone.management.domain.EnumRole;
-import com.elephone.management.domain.Store;
+import com.elephone.management.domain.*;
 import com.elephone.management.repository.EmployeeRepository;
-import com.elephone.management.repository.StoreRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.UserType;
 
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,6 +42,27 @@ public class EmployeeService {
     }
 
     public Page<Employee> listEmployees(int page, int pageSize, String storeId) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        String cognitoId = context.getAuthentication().getName();
+        UUID id = UUID.fromString(cognitoId);
+//        Employee employee = getEmployeeByUniqueId("cognito", id);
+
+//        List<Store> stores = employee.getStores();
+//
+//        Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//
+//            //Filter current store
+//            Join<Employee, Store> storeJoin = root.join("store");
+//            CriteriaBuilder.In<UUID> inClause = cb.in(storeJoin.get("id"));
+//            for (Store store : stores) {
+//                inClause.value(store.getId());
+//            }
+//            predicates.add(inClause);
+//
+//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+//        };
+
         if (StringUtils.isEmpty(storeId)) {
             return employeeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
         }
