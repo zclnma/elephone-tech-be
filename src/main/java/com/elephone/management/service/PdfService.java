@@ -13,9 +13,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 public class PdfService {
 
     private File generatedPDF;
-    private String pdfName;
     private String TEMP_FOLDER = System.getProperty("java.io.tmpdir");
-    private String ATTACHMENT_TEMPLATE_URL = "/templates/attachment.html";
 
     public File getGeneratedPDF() {
         return generatedPDF;
@@ -25,31 +23,11 @@ public class PdfService {
         this.generatedPDF = generatedPDF;
     }
 
-    public String getPdfName() {
-        return pdfName;
-    }
-
-    public void setPdfName(String pdfName) {
-        this.pdfName = pdfName;
-    }
-
-    public PdfService(Map<String, String> placeholder, String fileName) throws IOException {
-        setPdfName(fileName);
-        Resource resource = new ClassPathResource(ATTACHMENT_TEMPLATE_URL);
-        InputStream inputStream = resource.getInputStream();
-        // Fetch HTML template
-        String html = new Scanner(inputStream, StandardCharsets.UTF_8.toString()).useDelimiter("\\A").next();
-        StringSubstitutor sub = new StringSubstitutor(
-                placeholder,
-                "${",
-                "}"
-        );
-        String resolvedString = sub.replace(html);
-
+    public PdfService(String htmlString, String fileName) throws IOException {
         // Make the PDF file
         FileOutputStream fos = new FileOutputStream(TEMP_FOLDER + fileName);
         ITextRenderer it = new ITextRenderer();
-        it.setDocumentFromString(resolvedString);
+        it.setDocumentFromString(htmlString);
         it.layout();
         it.createPDF(fos);
         fos.close();

@@ -61,6 +61,7 @@ public class Employee {
 
     @Column
     @OneToMany
+    @Builder.Default
     private List<Store> stores = new ArrayList<>();
 
     @LastModifiedDate

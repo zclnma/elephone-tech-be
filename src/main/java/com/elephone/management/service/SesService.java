@@ -6,6 +6,7 @@ import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
 import software.amazon.awssdk.services.sesv2.model.*;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 @Service
 public class SesService {
@@ -42,9 +43,9 @@ public class SesService {
         sesV2Client.deleteEmailIdentity(request);
     }
 
-    public void sendEmail(String from, String to, ByteArrayOutputStream outputStream) {
+    public void sendEmail(String from, String to, List<String> bcc, ByteArrayOutputStream outputStream) {
         SendEmailRequest sendEmailRequest = SendEmailRequest.builder()
-                .destination(Destination.builder().toAddresses(to).build())
+                .destination(Destination.builder().toAddresses(to).bccAddresses(bcc).build())
                 .fromEmailAddress(from)
                 .content(EmailContent
                         .builder()

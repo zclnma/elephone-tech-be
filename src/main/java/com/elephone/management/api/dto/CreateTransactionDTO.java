@@ -55,8 +55,9 @@ public class CreateTransactionDTO {
     @Email(message = "Email format is not valid")
     private String email;
 
-    @NotBlank
     private String authSignature;
+
+    private String notificationMethod;
 
     private UUID storeId;
 

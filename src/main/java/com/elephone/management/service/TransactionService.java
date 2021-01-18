@@ -69,14 +69,21 @@ public class TransactionService {
 
         Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
         Integer newStoreReference = transactionStore.getReference() + 1;
+        MovePath newPath = MovePath.builder()
+                .transaction(transaction)
+                .store(transactionStore)
+                .build();
+        List<MovePath> movePath = new ArrayList<>();
+        movePath.add(newPath);
         String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
         transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
+        transaction.setMovePath(movePath);
         transaction.setCreatedBy(transactionCreatedBy);
         transaction.setStatus(EnumTransactionStatus.WAIT);
         transactionStore.setReference(newStoreReference);
-        Transaction savedTransaction = transactionRepository.save(transaction);
+        Transaction savedTransaction = transactionRepository.saveAndFlush(transaction);
         storeService.updateStore(transactionStore);
 //        emailService.sendEmail(savedTransaction, EnumEmailType.AUTHORISATION);
         return savedTransaction;
@@ -107,7 +114,7 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId) {
+    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId, Boolean hasWarranty) {
 
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -129,7 +136,6 @@ public class TransactionService {
             }
 
             if (!StringUtils.isEmpty(customerName)) {
-
                 Predicate predicate = cb.like(cb.function("REPLACE", String.class, cb.upper(root.get("customerName")), cb.literal(" "), cb.literal("")), "%" + customerName.toUpperCase() + "%");
                 predicates.add(predicate);
             }
@@ -141,6 +147,16 @@ public class TransactionService {
 
             if (transactionStatus != null) {
                 Predicate predicate = cb.equal(root.get("status"), transactionStatus);
+                predicates.add(predicate);
+            }
+
+            if (hasWarranty != null) {
+                Predicate predicate;
+                if (hasWarranty) {
+                    predicate = cb.greaterThan(cb.size(root.get("warrantyHistories")), 0);
+                } else {
+                    predicate = cb.equal(cb.size(root.get("warrantyHistories")), 0);
+                }
                 predicates.add(predicate);
             }
 
@@ -191,7 +207,13 @@ public class TransactionService {
     public Transaction moveTransaction(UUID id, UUID storeId) {
         Store store = storeService.getStoreById(storeId);
         Transaction transaction = getTransactionById(id);
+        MovePath newPath = MovePath.builder()
+                .transaction(transaction)
+                .store(store)
+                .build();
 
+        List<MovePath> movePath = transaction.getMovePath();
+        movePath.add(newPath);
         transaction.setStore(store);
         return transactionRepository.save(transaction);
     }

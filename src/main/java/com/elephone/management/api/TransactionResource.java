@@ -75,10 +75,11 @@ public class TransactionResource {
             @ApiParam(name = "status", defaultValue = "false") @RequestParam(name = "status", defaultValue = "false") String status,
             @ApiParam(name = "reference") @RequestParam(name = "reference", required = false) String reference,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
-            @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact
+            @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact,
+            @ApiParam(name = "hasWarranty") @RequestParam(name = "hasWarranty", required = false) Boolean hasWarranty
     ) {
         EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId);
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId,hasWarranty);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));
