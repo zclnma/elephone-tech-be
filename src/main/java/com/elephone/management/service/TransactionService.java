@@ -2,13 +2,9 @@ package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.mapper.TransactionMapper;
-import com.elephone.management.data.EnumEmailType;
-import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.*;
 import com.elephone.management.repository.TransactionRepository;
-import com.elephone.management.repository.specification.TransactionSpecification;
-import com.elephone.management.repository.specification.TransactionSpecificationBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,18 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import software.amazon.awssdk.services.cognitoidentity.CognitoIdentityClient;
-import software.amazon.awssdk.services.cognitoidentity.model.ListIdentitiesRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.ListUserPoolsRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.ListUserPoolsResponse;
 
 import javax.persistence.criteria.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -85,7 +75,6 @@ public class TransactionService {
         transactionStore.setReference(newStoreReference);
         Transaction savedTransaction = transactionRepository.saveAndFlush(transaction);
         storeService.updateStore(transactionStore);
-//        emailService.sendEmail(savedTransaction, EnumEmailType.AUTHORISATION);
         return savedTransaction;
     }
 
@@ -187,15 +176,19 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
 
-        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
-            throw new TransactionException("Can't change status for a finalised transaction.");
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        boolean isAdmin = authorities.contains("ADMIN");
+
+        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED) && !isAdmin) {
+            throw new TransactionException("You don't have permission to modify status of a finalised transaction.");
         }
 
         if (status.equals(EnumTransactionStatus.FINALISED)) {
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());
-            emailService.sendEmail(transaction, EnumEmailType.CONFIRMATION);
+            emailService.sendEmail(transaction);
         }
 
         transaction.setStatus(status);

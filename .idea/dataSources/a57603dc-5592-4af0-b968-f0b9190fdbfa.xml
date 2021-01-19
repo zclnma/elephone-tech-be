@@ -791,7 +791,7 @@ false posixrules
       <ObjectId>13423</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>669</IntrospectionStateNumber>
+      <IntrospectionStateNumber>688</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|16796|16798|14
 </Relations>
@@ -864,7 +864,7 @@ UC/10
 </Acl>
       <StateNumber>276</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>670</IntrospectionStateNumber>
+      <IntrospectionStateNumber>689</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="17" parent="2" name="plpgsql">

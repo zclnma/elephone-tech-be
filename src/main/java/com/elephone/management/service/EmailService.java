@@ -1,10 +1,8 @@
 package com.elephone.management.service;
 
-import com.elephone.management.data.EnumEmailType;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Transaction;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -30,7 +28,6 @@ public class EmailService {
     private static final String EMAIL_TEMPLATE_PATH = "/templates/email/index.html";
     private static final String CONF_TEMPLATE_PATH = "/templates/attachment.html";
     private static final String CONF_FILE_NAME = "Confirmation.pdf";
-
 
     private SesService sesService;
 
@@ -138,7 +135,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmail(Transaction transaction, EnumEmailType type) {
+    public void sendEmail(Transaction transaction) {
 
         Boolean isVerified = sesService.getEmailIdentity(transaction.getStore().getEmail());
         if (!isVerified) {
@@ -151,13 +148,8 @@ public class EmailService {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MimeMessage mimeMessage;
-            if (type.equals(EnumEmailType.AUTHORISATION)) {
-//                mimeMessage = generateAuthEmail(transaction);
-//                mimeMessage.writeTo(outputStream);
-            } else if (type.equals(EnumEmailType.CONFIRMATION)) {
-                mimeMessage = generateConfEmail(transaction);
-                mimeMessage.writeTo(outputStream);
-            }
+            mimeMessage = generateConfEmail(transaction);
+            mimeMessage.writeTo(outputStream);
             sesService.sendEmail(from, to, bcc, outputStream);
         } catch (Exception ex) {
             throw new StoreException(ex.getMessage());

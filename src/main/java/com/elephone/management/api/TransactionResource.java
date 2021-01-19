@@ -51,7 +51,7 @@ public class TransactionResource {
 
     @PostMapping
     @ApiOperation(value = "create transaction", notes = "create transaction")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<TransactionDTO> create(@Valid @RequestBody CreateTransactionDTO transactionDTO) {
         Transaction transaction = transactionService.create(transactionDTO);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class TransactionResource {
 
     @PutMapping
     @ApiOperation(value = "update transaction", notes = "update transaction")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<TransactionDTO> update(@Valid @RequestBody CreateTransactionDTO createTransactionDTO) {
         Transaction transaction = transactionService.update(createTransactionDTO);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -67,7 +67,7 @@ public class TransactionResource {
 
     @GetMapping
     @ApiOperation(value = "list transactions", notes = "list transactions")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<List<TransactionDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
@@ -79,7 +79,7 @@ public class TransactionResource {
             @ApiParam(name = "hasWarranty") @RequestParam(name = "hasWarranty", required = false) Boolean hasWarranty
     ) {
         EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId,hasWarranty);
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId, hasWarranty);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));
@@ -88,7 +88,7 @@ public class TransactionResource {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "get transaction by id", notes = "get transaction by id")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<TransactionDTO> getById(@PathVariable UUID id) {
         Transaction transaction = transactionService.getTransactionById(id);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -96,7 +96,7 @@ public class TransactionResource {
 
     @PutMapping("/{id}/status")
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody UpdateTransactionStatusDTO updateTransactionStatusDTO) {
         EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(updateTransactionStatusDTO.getStatus());
         Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), transactionStatus);
@@ -105,7 +105,7 @@ public class TransactionResource {
 
     @PutMapping("/{id}/move/{storeId}")
     @ApiOperation(value = "move transaction store", notes = "move transaction store")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<TransactionDTO> finalise(@PathVariable UUID id, @PathVariable UUID storeId) {
         Transaction transaction = transactionService.moveTransaction(id, storeId);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
@@ -123,7 +123,7 @@ public class TransactionResource {
 
     @PostMapping("/comment")
     @ApiOperation(value = "Create comment", notes = "Create comment")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.createComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.CREATED);
@@ -149,7 +149,7 @@ public class TransactionResource {
 
     @PostMapping("/warranty")
     @ApiOperation(value = "Create Warranty History", notes = "Add Warranty History")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<WarrantyHistoryDTO> createWarrantyHistory(@Valid @RequestBody CreateWarrantyHistoryDTO createWarrantyHistoryDTO) {
         WarrantyHistory warrantyHistory = warrantyHistoryService.create(createWarrantyHistoryDTO);
         return new ResponseEntity<>(warrantyHistoryMapper.toDTO(warrantyHistory), HttpStatus.CREATED);

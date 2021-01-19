@@ -82,7 +82,7 @@ public class StoreResource {
 
 //    @GetMapping(value = "/migration/{token}")
 //    @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
-//    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
 //    public ResponseEntity<List<LegacyStore>> a(@PathVariable String token) {
 //
 //        String history = "https://elephone.tech/api/history/?page=0&perPage=10";

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,9 @@ public class EmployeeService {
     public Page<Employee> listEmployees(int page, int pageSize, String storeId) {
         SecurityContext context = SecurityContextHolder.getContext();
         String cognitoId = context.getAuthentication().getName();
-        UUID id = UUID.fromString(cognitoId);
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        boolean isOwner = authorities.contains("OWNER");
 //        Employee employee = getEmployeeByUniqueId("cognito", id);
 
 //        List<Store> stores = employee.getStores();
@@ -71,7 +74,16 @@ public class EmployeeService {
         if (store == null) {
             throw new StoreException("Can't find store with id: " + storeId);
         }
-        return employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store, false);
+        Page<Employee> employees = employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store, false);
+        if(!isOwner) {
+            return employees.map(employee -> {
+                employee.setGender(null);
+                employee.setTfn(null);
+                employee.setContact(null);
+                return employee;
+            });
+        }
+        return employees;
     }
 
     public Employee getEmployeeByUniqueId(String type, UUID id) {

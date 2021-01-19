@@ -28,10 +28,10 @@ public class EmailResource {
 
     @PostMapping
     @ApiOperation(value = "Send email", notes = "Send email")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         Transaction transaction = transactionService.getTransactionById(emailDTO.getTransactionId());
-        emailService.sendEmail(transaction, emailDTO.getType());
+        emailService.sendEmail(transaction);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 }
