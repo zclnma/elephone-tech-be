@@ -29,9 +29,6 @@ public class Transaction {
     private String customerName;
 
     @Column
-    private String pickupTime;
-
-    @Column
     private String contact;
 
     @Column
@@ -54,9 +51,6 @@ public class Transaction {
 
     @Column(columnDefinition = "TEXT")
     private String issue;
-
-    @Column(name = "product_condition")
-    private String condition;
 
     @Column
     private String resolution;

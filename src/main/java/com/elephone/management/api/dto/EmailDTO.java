@@ -12,8 +12,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EmailDTO {
-
-
     UUID transactionId;
-
 }

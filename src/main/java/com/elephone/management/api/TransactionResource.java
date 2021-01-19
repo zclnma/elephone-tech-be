@@ -113,7 +113,7 @@ public class TransactionResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "delete transaction", notes = "delete transaction")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         transactionService.deleteTransactionById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
@@ -131,7 +131,7 @@ public class TransactionResource {
 
     @PutMapping("/comment")
     @ApiOperation(value = "Update comment", notes = "Update comment")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) {
         Comment comment = commentService.updateComment(createCommentDTO);
         return new ResponseEntity<>(commentMapper.toDTO(comment), HttpStatus.OK);
@@ -139,7 +139,7 @@ public class TransactionResource {
 
     @DeleteMapping("/comment/{id}")
     @ApiOperation(value = "Delete comment by id", notes = "Delete comment")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<?> deleteComment(@PathVariable UUID id) {
         commentService.deleteCommentById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

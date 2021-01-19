@@ -11,16 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.UserType;
 
-import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,38 +30,19 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private StoreService storeService;
     private CognitoService cognitoService;
+    private AuthService authService;
 
     @Autowired
-    public EmployeeService(EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, StoreService storeService, CognitoService cognitoService) {
+    public EmployeeService(EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, StoreService storeService, CognitoService cognitoService, AuthService authService) {
         this.employeeMapper = employeeMapper;
         this.employeeRepository = employeeRepository;
         this.storeService = storeService;
         this.cognitoService = cognitoService;
+        this.authService = authService;
     }
 
     public Page<Employee> listEmployees(int page, int pageSize, String storeId) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String cognitoId = context.getAuthentication().getName();
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        boolean isOwner = authorities.contains("OWNER");
-//        Employee employee = getEmployeeByUniqueId("cognito", id);
-
-//        List<Store> stores = employee.getStores();
-//
-//        Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
-//            List<Predicate> predicates = new ArrayList<>();
-//
-//            //Filter current store
-//            Join<Employee, Store> storeJoin = root.join("store");
-//            CriteriaBuilder.In<UUID> inClause = cb.in(storeJoin.get("id"));
-//            for (Store store : stores) {
-//                inClause.value(store.getId());
-//            }
-//            predicates.add(inClause);
-//
-//            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-//        };
+        boolean isOwner = authService.getAuthorities().contains("OWNER");
 
         if (StringUtils.isEmpty(storeId)) {
             return employeeRepository.findAllByIsDeleted(PageRequest.of(page, pageSize), false);
@@ -75,9 +53,9 @@ public class EmployeeService {
             throw new StoreException("Can't find store with id: " + storeId);
         }
         Page<Employee> employees = employeeRepository.findAllByStoresAndIsDeleted(PageRequest.of(page, pageSize), store, false);
-        if(!isOwner) {
+        if (!isOwner) {
             return employees.map(employee -> {
-                employee.setGender(null);
+                employee.setBirthday(null);
                 employee.setTfn(null);
                 employee.setContact(null);
                 return employee;
@@ -105,6 +83,13 @@ public class EmployeeService {
         if (createEmployeeDTO.getId() != null) {
             throw new EmployeeException("Do not set Employee Id when creating employee.");
         }
+
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        if (!authorities.contains("OWNER") && !authorities.contains("ADMIN")) {
+            throw new EmployeeException("You don't have permission to create user.");
+        }
+
         try {
             UserType cognitoUser = cognitoService.createUser(createEmployeeDTO.getUsername(), createEmployeeDTO.getPassword(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString());
             AttributeType attributeType = cognitoUser.attributes().stream()
@@ -131,17 +116,19 @@ public class EmployeeService {
             throw new EmployeeException("Employee Id is required.");
         }
 
+        boolean isOwner = authService.getAuthorities().contains("OWNER");
+
         Employee employee = employeeRepository.findById(createEmployeeDTO.getId())
-                .orElseThrow(() -> new NotFoundException("Exployee not found."));
+                .orElseThrow(() -> new NotFoundException("Employee not found."));
 
         try {
-            if (createEmployeeDTO.getPassword() != null) {
+            if (isOwner && createEmployeeDTO.getPassword() != null) {
                 cognitoService.setPassword(createEmployeeDTO.getUsername(), createEmployeeDTO.getPassword());
             }
 
-            if (StringUtils.equals(employee.getRole().toString(), createEmployeeDTO.getRole())) {
+            if (isOwner && !StringUtils.equals(employee.getRole().toString(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString())) {
                 cognitoService.removeUserFromGroup(createEmployeeDTO.getUsername(), employee.getRole().toString());
-                cognitoService.addUserToGroup(createEmployeeDTO.getUsername(), createEmployeeDTO.getRole());
+                cognitoService.addUserToGroup(createEmployeeDTO.getUsername(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString());
                 employee.setRole(EnumRole.fromKey(createEmployeeDTO.getRole()));
             }
 
@@ -152,9 +139,13 @@ public class EmployeeService {
                     .collect(Collectors.toList());
 
             employee.setStores(stores);
-            employee.setEmail(createEmployeeDTO.getEmail());
-            employee.setTfn(createEmployeeDTO.getTfn());
-            employee.setContact(createEmployeeDTO.getContact());
+
+            if (isOwner) {
+                employee.setGender(EnumGender.fromKey(createEmployeeDTO.getGender()));
+                employee.setEmail(createEmployeeDTO.getEmail());
+                employee.setTfn(createEmployeeDTO.getTfn());
+                employee.setContact(createEmployeeDTO.getContact());
+            }
             return employeeRepository.saveAndFlush(employee);
 
         } catch (Exception ex) {

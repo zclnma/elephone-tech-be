@@ -41,7 +41,7 @@ public class StoreResource {
 
     @GetMapping
     @ApiOperation(value = "List stores", notes = "List a number of tickets.")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<List<StoreDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(required = false, defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(required = false, defaultValue = "10") int perPage,
@@ -56,7 +56,7 @@ public class StoreResource {
 
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<StoreDTO> create(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
         Store store = storeService.createStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.CREATED);
@@ -64,7 +64,7 @@ public class StoreResource {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Modify store", notes = "Modify store by store id")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
         Store store = storeService.updateStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.OK);
@@ -72,7 +72,7 @@ public class StoreResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         storeService.deleteStoreById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{
@@ -89,7 +89,6 @@ public class StoreResource {
 //        String job = "https://elephone.tech/api/job";
 //        String store = "https://elephone.tech/api/store";
 //        String staff = "https://elephone.tech/api/staff";
-//        String income = "https://elephone.tech/api/history/?page=0&perPage=100000";
 //
 //        HttpHeaders headers = new HttpHeaders();
 //        String realToken = "JWT " + token;
@@ -105,23 +104,12 @@ public class StoreResource {
 //        ResponseEntity<ApiHistory> histories = restTemplate.exchange(history, HttpMethod.GET, entity, ApiHistory.class);
 //
 //        List<Store> ss = stores.getBody().stream().map(legacyStore -> {
-//
 //            Store newStore = Store.builder()
-//                    .role("malvern".equals(legacyStore.getName()) ? EnumStoreRole.ADMIN : EnumStoreRole.STORE)
 //                    .abn(legacyStore.getAbn())
 //                    .name(legacyStore.getName())
 //                    .sequence(legacyStore.getNumber())
 //                    .warranty(legacyStore.getWarrenty() == null ? 90 : Integer.parseInt(legacyStore.getWarrenty()))
-//                    .employees(new HashSet<>())
-//                    .storeLocation(
-//                            StoreLocation.builder()
-//                                    .latStart((float) -999)
-//                                    .latEnd((float) 999)
-//                                    .lngStart((float) -999)
-//                                    .lngEnd((float) 999)
-//                                    .build()
-//                    ).build();
-//
+//                    .build();
 //            return newStore;
 //
 //        }).collect(Collectors.toList());
@@ -135,7 +123,7 @@ public class StoreResource {
 //                .gender("Female".equalsIgnoreCase(legacyEmployee.getGender()) ? EnumGender.FEMALE : EnumGender.MALE)
 //                .email(legacyEmployee.getEmail())
 //                .tfn(legacyEmployee.getTfn())
-//                .stores(new HashSet<>())
+//                .stores(new ArrayList<>())
 //                .build()).collect(Collectors.toList());
 //
 //        storeService.createStoreBatch(ss);
@@ -175,12 +163,12 @@ public class StoreResource {
 //            anotherEmployee.setStores(newEmployees);
 //            return anotherEmployee;
 //        }).collect(Collectors.toList());
-
-
+//
+//
 //        storeService.createStoreBatch(sssss);
 //        employeeService.createEmployeeBatch(eeeee);
-
-
+//
+//
 //        List<Transaction> tt = transaction.getBody().stream().map(legacyTransaction -> {
 //
 //            LegacyEmployee lE = employees.getBody().stream().filter(e -> e.get_id().equals(legacyTransaction.getCreatedBy())).findAny().orElse(null);
@@ -268,12 +256,12 @@ public class StoreResource {
 //                    .builder()
 //                    .id(UUID.randomUUID())
 //                    .color(legacyTransaction.getColor())
-//                    .transactionNumber(legacyTransaction.getSequentialNumber())
+//                    .reference(legacyTransaction.getSequentialNumber())
 //                    .contact(legacyTransaction.getNumber())
 //                    .device(legacyTransaction.getDevice())
 //                    .customerName(legacyTransaction.getName())
 //                    .imei(legacyTransaction.getImei())
-//                    .inspection("no".equals(legacyTransaction.getInspetion()) ? false : true)
+//                    .inspections(new ArrayList<>())
 //                    .pickupTime(legacyTransaction.getTime())
 //                    .status(EnumTransactionStatus.DONE)
 //                    .issue(legacyTransaction.getIssue())
@@ -299,50 +287,8 @@ public class StoreResource {
 //
 //        }).collect(Collectors.toList());
 //
-//        List<Income> newIncomes = new ArrayList<>();
-//
-//        stores.getBody().forEach(s -> {
-//            ResponseEntity<ApiLegacyIncome> i = restTemplate.exchange("https://elephone.tech/api/store/" + s.get_id() + "/income?page=0&perPage=10000", HttpMethod.GET, entity, ApiLegacyIncome.class);
-//            ApiLegacyIncome apilegacyIncome = i.getBody();
-//            apilegacyIncome.getIncome().stream().forEach(legacyIncome -> {
-//
-//                LegacyEmployee lE = employees.getBody().stream().filter(e -> e.get_id().equals(legacyIncome.getRecordedBy())).findAny().orElse(null);
-//                LegacyStore lS = stores.getBody().stream().filter(e -> e.get_id().equals(s.get_id())).findAny().orElse(null);
-//                UUID employeeId = savedEmployee.get(0).getId();
-//                ;
-//                UUID storeId = UUID.randomUUID();
-//                if (lE != null) {
-//                    Employee e = savedEmployee.stream().filter(eee -> eee.getFirstName().equals(lE.getFirstName())).findAny().orElse(null);
-//                    if (e != null) {
-//                        employeeId = e.getId();
-//                    }
-//                }
-//
-//                if (lS != null) {
-//                    Store ssss = savesStores.stream().filter(sss -> sss.getSequence().equals(lS.getNumber())).findAny().orElse(null);
-//                    if (ssss != null) {
-//                        storeId = ssss.getId();
-//                    }
-//                }
-//
-//                Income newIncome = Income
-//                        .builder()
-//                        .id(UUID.randomUUID())
-//                        .cash(legacyIncome.getCash())
-//                        .efpos(legacyIncome.getEfpos())
-//                        .employee(Employee.builder().id(employeeId).build())
-//                        .store(Store.builder().id(storeId).build())
-//                        .build();
-//
-//                newIncomes.add(newIncome);
-//
-//            });
-//        });
-//
-//
 //        transactionService.createTransactionBatch(tt);
 //        transactionService.createTransactionBatch(hh);
-//        incomeService.createIncomeBatch(newIncomes);
 //
 //        return new ResponseEntity<>(stores.getBody(), HttpStatus.OK);
 //    }

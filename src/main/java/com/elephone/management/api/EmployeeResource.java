@@ -89,7 +89,7 @@ public class EmployeeResource {
 
     @PutMapping
     @ApiOperation(value = "Update Employee", notes = "Update Employee")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody CreateEmployeeDTO createEmployeeDTO) {
         Employee employee = employeeService.updateEmployee(createEmployeeDTO);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
@@ -97,7 +97,7 @@ public class EmployeeResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete Employee by id", notes = "Delete Employee by id")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

@@ -26,8 +26,6 @@ public class TransactionDTO {
 
     private String customerName;
 
-    private String pickupTime;
-
     private String contact;
 
     private String device;
@@ -39,8 +37,6 @@ public class TransactionDTO {
     private String passcode;
 
     private String issue;
-
-    private String condition;
 
     private String resolution;
 

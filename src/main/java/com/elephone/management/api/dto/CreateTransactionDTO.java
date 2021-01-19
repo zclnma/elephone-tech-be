@@ -27,9 +27,6 @@ public class CreateTransactionDTO {
     @NotBlank(message = "Customer name can't be empty.")
     private String customerName;
 
-    @NotBlank(message = "Pickup time can't be empty.")
-    private String pickupTime;
-
     @NotBlank(message = "Contact number can't be empty.")
     private String contact;
 
@@ -42,8 +39,6 @@ public class CreateTransactionDTO {
     private String passcode;
 
     private String issue;
-
-    private String condition;
 
     private String resolution;
 

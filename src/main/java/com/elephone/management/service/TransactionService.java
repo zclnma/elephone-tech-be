@@ -31,15 +31,17 @@ public class TransactionService {
     private TransactionMapper transactionMapper;
     private EmailService emailService;
     private S3Service s3Service;
+    private AuthService authService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService, AuthService authService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
         this.transactionMapper = transactionMapper;
         this.s3Service = s3Service;
         this.emailService = emailService;
+        this.authService = authService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -84,7 +86,6 @@ public class TransactionService {
         transactionToUpdate.setCustomerName(transaction.getCustomerName());
         transactionToUpdate.setContact(transaction.getContact());
         transactionToUpdate.setEmail(transaction.getEmail());
-        transactionToUpdate.setPickupTime(transaction.getPickupTime());
         transactionToUpdate.setDevice(transaction.getDevice());
         transactionToUpdate.setColor(transaction.getColor());
         transactionToUpdate.setImei(transaction.getImei());
@@ -94,7 +95,6 @@ public class TransactionService {
         transactionToUpdate.setIssue(transaction.getIssue());
         transactionToUpdate.setResolution(transaction.getResolution());
         transactionToUpdate.setAdditionInfo(transaction.getAdditionInfo());
-        transactionToUpdate.setCondition(transaction.getCondition());
         transactionToUpdate.setProducts(transaction.getProducts());
         return transactionRepository.save(transactionToUpdate);
     }
@@ -176,9 +176,7 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
 
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        boolean isAdmin = authorities.contains("ADMIN");
+        boolean isAdmin = authService.getAuthorities().contains("ADMIN");
 
         if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED) && !isAdmin) {
             throw new TransactionException("You don't have permission to modify status of a finalised transaction.");

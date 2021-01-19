@@ -5,8 +5,10 @@ import com.elephone.management.domain.EnumGender;
 import com.elephone.management.domain.EnumInspection;
 import com.elephone.management.domain.EnumRole;
 import com.elephone.management.domain.EnumTransactionStatus;
+import com.elephone.management.service.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,13 @@ import java.util.List;
 @Api(tags = "Template management")
 public class TemplateResource {
 
+    private AuthService authService;
+
+    @Autowired
+    public TemplateResource(AuthService authService) {
+        this.authService = authService;
+    }
+
     @GetMapping("/gender")
     @ApiOperation(value = "Get genders", notes = "Get genders")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
@@ -35,21 +44,6 @@ public class TemplateResource {
             baseEnumDTOS.add(baseEnumDTO);
         }
         return new ResponseEntity<>(baseEnumDTOS, HttpStatus.OK);
-    }
-
-    @GetMapping("/role")
-    @ApiOperation(value = "Get available roles", notes = "Get available roles")
-    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<List<BaseEnumDTO>> getRoles() {
-        List<BaseEnumDTO> baseEnumDTOs = new ArrayList<>();
-        for (EnumRole enumRole : EnumRole.values()) {
-            BaseEnumDTO baseEnumDTO = BaseEnumDTO.builder()
-                    .key(enumRole.getKey())
-                    .displayName(enumRole.getDisplayName())
-                    .build();
-            baseEnumDTOs.add(baseEnumDTO);
-        }
-        return new ResponseEntity<>(baseEnumDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/inspection")
@@ -76,6 +70,25 @@ public class TemplateResource {
             BaseEnumDTO baseEnumDTO = BaseEnumDTO.builder()
                     .key(transactionStatus.getKey())
                     .displayName(transactionStatus.getDisplayName())
+                    .build();
+            baseEnumDTOs.add(baseEnumDTO);
+        }
+        return new ResponseEntity<>(baseEnumDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/role")
+    @ApiOperation(value = "Get available roles", notes = "Get available roles")
+    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN')")
+    public ResponseEntity<List<BaseEnumDTO>> getRoles() {
+        List<BaseEnumDTO> baseEnumDTOs = new ArrayList<>();
+        List<String> authorities = authService.getAuthorities();
+        for (EnumRole enumRole : EnumRole.values()) {
+            if (enumRole.equals(EnumRole.ADMIN) && !authorities.contains("OWNER")) {
+                continue;
+            }
+            BaseEnumDTO baseEnumDTO = BaseEnumDTO.builder()
+                    .key(enumRole.getKey())
+                    .displayName(enumRole.getDisplayName())
                     .build();
             baseEnumDTOs.add(baseEnumDTO);
         }

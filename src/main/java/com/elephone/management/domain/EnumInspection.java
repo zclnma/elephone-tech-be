@@ -12,7 +12,9 @@ public enum EnumInspection {
     MICROPHONE("MICROPHONE", "Microphone"),
     HOME("HOME", "Home Button"),
     ID("ID", "Face ID / Touch ID"),
-    VOLUME("VOLUME", "Volume / Power Button");
+    VOLUME("VOLUME", "Volume / Power Button"),
+    CHARGING("CHARGING", "Charging"),
+    LIQUID("LIQUID", "Liquid Damage");
 
     private final String key;
     private final String displayName;

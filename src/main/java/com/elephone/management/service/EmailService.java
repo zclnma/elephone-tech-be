@@ -54,6 +54,11 @@ public class EmailService {
 
         //Replace ${name} to customer name.
         emailPlaceholder.put("name", transaction.getCustomerName());
+        emailPlaceholder.put("storeName", transaction.getStore().getName());
+        emailPlaceholder.put("address", transaction.getStore().getAddress());
+        emailPlaceholder.put("suburb", transaction.getStore().getSuburb());
+        emailPlaceholder.put("state", transaction.getStore().getState());
+        emailPlaceholder.put("postcode", transaction.getStore().getPostcode());
 
         String emailContent = generateHTMLFromTemplate(EMAIL_TEMPLATE_PATH, emailPlaceholder);
 
@@ -99,17 +104,14 @@ public class EmailService {
         pdfPlaceholder.put("customerName", transaction.getCustomerName());
         pdfPlaceholder.put("customerContact", transaction.getContact());
         pdfPlaceholder.put("customerEmail", transaction.getEmail());
-        pdfPlaceholder.put("pickupTime", transaction.getPickupTime());
         pdfPlaceholder.put("device", transaction.getDevice());
         pdfPlaceholder.put("color", transaction.getColor());
         pdfPlaceholder.put("imei", transaction.getImei());
         pdfPlaceholder.put("passcode", transaction.getPasscode());
         pdfPlaceholder.put("issue", transaction.getIssue());
         pdfPlaceholder.put("resolution", transaction.getResolution());
-        pdfPlaceholder.put("condition", transaction.getCondition());
         pdfPlaceholder.put("battery", transaction.getBattery());
         pdfPlaceholder.put("additionalInfo", transaction.getAdditionInfo());
-//        placeholder.put("signature", transaction.getSignature());
         pdfPlaceholder.put("reference", transaction.getReference());
         pdfPlaceholder.put("date", transaction.getCreatedDate().toString());
 
