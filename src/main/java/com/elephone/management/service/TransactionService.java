@@ -187,7 +187,7 @@ public class TransactionService {
         }
 
         if (status.equals(EnumTransactionStatus.FINALISED)) {
-            if (StringUtils.isBlank(transaction.getConfSignature())) {
+            if(StringUtils.isBlank(transaction.getConfSignature())) {
                 throw new TransactionException("Please sign the confirmation form before finalising it.");
             }
             Employee employee = employeeService.getEmployeeById(updatedBy);
