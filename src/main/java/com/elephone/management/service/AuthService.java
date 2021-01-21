@@ -15,4 +15,9 @@ public class AuthService {
         List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         return authorities;
     }
+
+    public String getCognitoId() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateEmployeeDTO;
+import com.elephone.management.api.dto.UpdateEmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.dispose.exception.EmployeeException;
 import com.elephone.management.dispose.exception.NotFoundException;
@@ -26,11 +27,11 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeService {
 
-    private EmployeeMapper employeeMapper;
-    private EmployeeRepository employeeRepository;
-    private StoreService storeService;
-    private CognitoService cognitoService;
-    private AuthService authService;
+    private final EmployeeMapper employeeMapper;
+    private final EmployeeRepository employeeRepository;
+    private final StoreService storeService;
+    private final CognitoService cognitoService;
+    private final AuthService authService;
 
     @Autowired
     public EmployeeService(EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, StoreService storeService, CognitoService cognitoService, AuthService authService) {
@@ -49,6 +50,7 @@ public class EmployeeService {
         }
         UUID uuid = UUID.fromString(storeId);
         Store store = storeService.getStoreById(uuid);
+
         if (store == null) {
             throw new StoreException("Can't find store with id: " + storeId);
         }
@@ -58,6 +60,8 @@ public class EmployeeService {
                 employee.setBirthday(null);
                 employee.setTfn(null);
                 employee.setContact(null);
+                employee.setEmail(null);
+                employee.setCreatedDate(null);
                 return employee;
             });
         }
@@ -111,41 +115,50 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee updateEmployee(CreateEmployeeDTO createEmployeeDTO) {
-        if (createEmployeeDTO.getId() == null) {
+    public Employee updateEmployee(UpdateEmployeeDTO updateEmployeeDTO) {
+        if (updateEmployeeDTO.getId() == null) {
             throw new EmployeeException("Employee Id is required.");
         }
 
-        boolean isOwner = authService.getAuthorities().contains("OWNER");
+        boolean isAdmin = authService.getAuthorities().contains("ADMIN");
 
-        Employee employee = employeeRepository.findById(createEmployeeDTO.getId())
+        Employee employee = employeeRepository.findById(updateEmployeeDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Employee not found."));
 
+
+        if (isAdmin && employee.getRole().equals(EnumRole.ADMIN) && !employee.getCognitoId().toString().equals(authService.getCognitoId())) {
+            throw new EmployeeException("You can't update the information of another admin user");
+        }
+
+        List<Store> stores = updateEmployeeDTO
+                .getStoreIds()
+                .stream()
+                .map(storeService::getStoreById)
+                .collect(Collectors.toList());
+
+        employee.setStores(stores);
+
         try {
-            if (isOwner && createEmployeeDTO.getPassword() != null) {
-                cognitoService.setPassword(createEmployeeDTO.getUsername(), createEmployeeDTO.getPassword());
+            if (isAdmin) {
+                return employeeRepository.saveAndFlush(employee);
             }
 
-            if (isOwner && !StringUtils.equals(employee.getRole().toString(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString())) {
-                cognitoService.removeUserFromGroup(createEmployeeDTO.getUsername(), employee.getRole().toString());
-                cognitoService.addUserToGroup(createEmployeeDTO.getUsername(), EnumRole.fromKey(createEmployeeDTO.getRole()).toString());
-                employee.setRole(EnumRole.fromKey(createEmployeeDTO.getRole()));
+
+            if (updateEmployeeDTO.getPassword() != null) {
+                cognitoService.setPassword(updateEmployeeDTO.getUsername(), updateEmployeeDTO.getPassword());
             }
 
-            List<Store> stores = createEmployeeDTO
-                    .getStoreIds()
-                    .stream()
-                    .map(storeService::getStoreById)
-                    .collect(Collectors.toList());
-
-            employee.setStores(stores);
-
-            if (isOwner) {
-                employee.setGender(EnumGender.fromKey(createEmployeeDTO.getGender()));
-                employee.setEmail(createEmployeeDTO.getEmail());
-                employee.setTfn(createEmployeeDTO.getTfn());
-                employee.setContact(createEmployeeDTO.getContact());
+            if (!StringUtils.equals(employee.getRole().toString(), EnumRole.fromKey(updateEmployeeDTO.getRole()).toString())) {
+                cognitoService.removeUserFromGroup(updateEmployeeDTO.getUsername(), employee.getRole().toString());
+                cognitoService.addUserToGroup(updateEmployeeDTO.getUsername(), EnumRole.fromKey(updateEmployeeDTO.getRole()).toString());
+                employee.setRole(EnumRole.fromKey(updateEmployeeDTO.getRole()));
             }
+
+            employee.setGender(EnumGender.fromKey(updateEmployeeDTO.getGender()));
+            employee.setEmail(updateEmployeeDTO.getEmail());
+            employee.setTfn(updateEmployeeDTO.getTfn());
+            employee.setContact(updateEmployeeDTO.getContact());
+
             return employeeRepository.saveAndFlush(employee);
 
         } catch (Exception ex) {

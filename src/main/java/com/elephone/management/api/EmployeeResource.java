@@ -2,6 +2,7 @@ package com.elephone.management.api;
 
 import com.elephone.management.api.dto.CreateEmployeeDTO;
 import com.elephone.management.api.dto.EmployeeDTO;
+import com.elephone.management.api.dto.UpdateEmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.domain.Employee;
 import com.elephone.management.service.CognitoService;
@@ -90,14 +91,14 @@ public class EmployeeResource {
     @PutMapping
     @ApiOperation(value = "Update Employee", notes = "Update Employee")
     @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
-    public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody CreateEmployeeDTO createEmployeeDTO) {
-        Employee employee = employeeService.updateEmployee(createEmployeeDTO);
+    public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody UpdateEmployeeDTO updateEmployeeDTO) {
+        Employee employee = employeeService.updateEmployee(updateEmployeeDTO);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete Employee by id", notes = "Delete Employee by id")
-    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         employeeService.deleteEmployeeById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

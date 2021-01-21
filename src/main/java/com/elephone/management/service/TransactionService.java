@@ -1,6 +1,7 @@
 package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateTransactionDTO;
+import com.elephone.management.api.dto.UpdateTransactionDTO;
 import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.*;
@@ -80,9 +81,9 @@ public class TransactionService {
         return savedTransaction;
     }
 
-    public Transaction update(CreateTransactionDTO createTransactionDTO) {
-        Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
-        Transaction transactionToUpdate = getTransactionById(createTransactionDTO.getId());
+    public Transaction update(UpdateTransactionDTO updateTransactionDTO) {
+        Transaction transaction = transactionMapper.fromUpdateDTO(updateTransactionDTO);
+        Transaction transactionToUpdate = getTransactionById(updateTransactionDTO.getId());
         transactionToUpdate.setCustomerName(transaction.getCustomerName());
         transactionToUpdate.setContact(transaction.getContact());
         transactionToUpdate.setEmail(transaction.getEmail());
@@ -96,6 +97,7 @@ public class TransactionService {
         transactionToUpdate.setResolution(transaction.getResolution());
         transactionToUpdate.setAdditionInfo(transaction.getAdditionInfo());
         transactionToUpdate.setProducts(transaction.getProducts());
+        transactionToUpdate.setConfSignature(transactionToUpdate.getConfSignature());
         return transactionRepository.save(transactionToUpdate);
     }
 
@@ -178,11 +180,16 @@ public class TransactionService {
 
         boolean isAdmin = authService.getAuthorities().contains("ADMIN");
 
-        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED) && !isAdmin) {
-            throw new TransactionException("You don't have permission to modify status of a finalised transaction.");
+        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
+            if (!isAdmin) {
+                throw new TransactionException("You don't have permission to modify status of a finalised transaction.");
+            }
         }
 
         if (status.equals(EnumTransactionStatus.FINALISED)) {
+            if (StringUtils.isBlank(transaction.getConfSignature())) {
+                throw new TransactionException("Please sign the confirmation form before finalising it.");
+            }
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());

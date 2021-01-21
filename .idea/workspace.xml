@@ -5,26 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateEmployeeDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/StoreResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/StoreResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TemplateResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TemplateResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateTransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateTransactionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/EmailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/EmailDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/EnumNotificationType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/EnumInspection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/EnumInspection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,6 +164,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -186,13 +180,15 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -230,6 +226,7 @@
       </list>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -258,11 +255,12 @@
       <workItem from="1608525611759" duration="9541000" />
       <workItem from="1608594486061" duration="1169000" />
       <workItem from="1609067759566" duration="41696000" />
+      <workItem from="1611207007579" duration="5176000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -309,13 +307,18 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
-          <line>206</line>
+          <line>213</line>
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
-          <line>178</line>
+          <line>180</line>
           <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

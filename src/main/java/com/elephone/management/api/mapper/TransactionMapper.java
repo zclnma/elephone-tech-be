@@ -2,6 +2,7 @@ package com.elephone.management.api.mapper;
 
 import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.dto.TransactionDTO;
+import com.elephone.management.api.dto.UpdateTransactionDTO;
 import com.elephone.management.config.MapstructConfig;
 import com.elephone.management.domain.Transaction;
 import org.mapstruct.*;
@@ -20,4 +21,9 @@ public interface TransactionMapper {
             @Mapping(target = "isDeleted", constant = "false"),
     })
     Transaction fromCreateDTO(CreateTransactionDTO createTransactionDTO);
+
+    @Mappings({
+            @Mapping(target = "isDeleted", constant = "false"),
+    })
+    Transaction fromUpdateDTO(UpdateTransactionDTO updateTransactionDTO);
 }

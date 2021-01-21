@@ -1,1 +1,1 @@
-mvn package && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t elephone-management .
+mvn package && docker build -t elephone-management .
