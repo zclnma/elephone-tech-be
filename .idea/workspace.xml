@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateEmployeeDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/init.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -255,7 +246,7 @@
       <workItem from="1608525611759" duration="9541000" />
       <workItem from="1608594486061" duration="1169000" />
       <workItem from="1609067759566" duration="41696000" />
-      <workItem from="1611207007579" duration="5176000" />
+      <workItem from="1611207007579" duration="8561000" />
     </task>
     <servers />
   </component>
@@ -319,6 +310,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java</url>
           <line>128</line>
           <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

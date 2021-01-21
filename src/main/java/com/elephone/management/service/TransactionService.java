@@ -97,7 +97,7 @@ public class TransactionService {
         transactionToUpdate.setResolution(transaction.getResolution());
         transactionToUpdate.setAdditionInfo(transaction.getAdditionInfo());
         transactionToUpdate.setProducts(transaction.getProducts());
-        transactionToUpdate.setConfSignature(transactionToUpdate.getConfSignature());
+        transactionToUpdate.setConfSignature(transaction.getConfSignature());
         return transactionRepository.save(transactionToUpdate);
     }
 
