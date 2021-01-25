@@ -60,6 +60,9 @@ public class Store {
     @Column
     private Integer warranty;
 
+    @ManyToMany(mappedBy = "stores")
+    private Set<Employee> employees = new HashSet<>();
+
     @Column
     @Builder.Default
     private Integer reference = 0;
@@ -76,4 +79,17 @@ public class Store {
 
     @CreatedDate
     private Date createdDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return id.equals(store.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

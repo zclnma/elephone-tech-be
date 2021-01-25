@@ -74,7 +74,7 @@ public class EmployeeResource {
 
     @PutMapping("/{id}/activate")
     @ApiOperation(value = "Activate employee", notes = "Activate employee")
-    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<EmployeeDTO> activateEmployee(@PathVariable UUID id) {
         Employee employee = employeeService.activateEmployeeById(id);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);
@@ -82,7 +82,7 @@ public class EmployeeResource {
 
     @PutMapping("/{id}/deactivate")
     @ApiOperation(value = "Deactivate employee", notes = "Deactivate employee")
-    @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<EmployeeDTO> deActivateEmployee(@PathVariable UUID id) {
         Employee employee = employeeService.deActivateEmployeeById(id);
         return new ResponseEntity<>(employeeMapper.toDTO(employee), HttpStatus.OK);

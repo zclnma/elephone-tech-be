@@ -78,16 +78,16 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany(mappedBy = "transaction")
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Comment> comments;
 
     @Column
-    @OneToMany(mappedBy = "transaction")
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<WarrantyHistory> warrantyHistories;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "init_store_id", updatable = false)
     private Store initStore;
 
@@ -95,15 +95,15 @@ public class Transaction {
     @OrderColumn
     private List<MovePath> movePath;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
     private Employee createdBy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "finalised_by")
     private Employee finalisedBy;
 
@@ -121,4 +121,9 @@ public class Transaction {
 
     @LastModifiedDate
     private Date lastModifiedDate;
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setTransaction(this);
+    }
 }

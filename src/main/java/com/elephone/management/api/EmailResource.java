@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/email")
@@ -29,9 +30,11 @@ public class EmailResource {
     @PostMapping
     @ApiOperation(value = "Send email", notes = "Send email")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
+    public ResponseEntity<HashMap<String, String>> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         Transaction transaction = transactionService.getTransactionById(emailDTO.getTransactionId());
         emailService.sendEmail(transaction);
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(new HashMap<String, String>() {{
+            put("message", "Email sent.");
+        }}, HttpStatus.CREATED);
     }
 }

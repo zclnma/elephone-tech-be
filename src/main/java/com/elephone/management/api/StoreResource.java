@@ -56,7 +56,7 @@ public class StoreResource {
 
     @PostMapping
     @ApiOperation(value = "Create store", notes = "Create a store")
-    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<StoreDTO> create(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
         Store store = storeService.createStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.CREATED);
@@ -64,7 +64,7 @@ public class StoreResource {
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Modify store", notes = "Modify store by store id")
-    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<StoreDTO> updateById(@Valid @RequestBody CreateStoreDTO createStoreDTO) {
         Store store = storeService.updateStore(storeMapper.fromCreateDTO(createStoreDTO));
         return new ResponseEntity<>(storeMapper.toDTO(store), HttpStatus.OK);
@@ -72,7 +72,7 @@ public class StoreResource {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete store by store id", notes = "Modify store by store id")
-    @PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+    @PreAuthorize("hasAnyAuthority('OWNER')")
     public ResponseEntity<?> deleteById(@PathVariable UUID id) {
         storeService.deleteStoreById(id);
         return new ResponseEntity<>(new HashMap<String, String>() {{

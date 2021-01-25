@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -36,5 +37,5 @@ public class EmployeeDTO {
 
     private String tfn;
 
-    private List<StoreDTO> stores;
+    private Set<StoreDTO> stores;
 }

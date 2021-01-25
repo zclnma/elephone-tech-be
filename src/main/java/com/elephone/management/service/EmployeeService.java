@@ -21,6 +21,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -130,17 +131,17 @@ public class EmployeeService {
             throw new EmployeeException("You can't update the information of another admin user");
         }
 
-        List<Store> stores = updateEmployeeDTO
+        Set<Store> stores = updateEmployeeDTO
                 .getStoreIds()
                 .stream()
                 .map(storeService::getStoreById)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         employee.setStores(stores);
 
         try {
             if (isAdmin) {
-                return employeeRepository.saveAndFlush(employee);
+                return employeeRepository.save(employee);
             }
 
 
@@ -159,7 +160,7 @@ public class EmployeeService {
             employee.setTfn(updateEmployeeDTO.getTfn());
             employee.setContact(updateEmployeeDTO.getContact());
 
-            return employeeRepository.saveAndFlush(employee);
+            return employeeRepository.save(employee);
 
         } catch (Exception ex) {
             throw new EmployeeException(ex.getMessage());

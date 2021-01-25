@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -60,9 +60,16 @@ public class Employee {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany
+    @ManyToMany(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    })
+    @JoinTable(name = "employee_store",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "store_id")
+    )
     @Builder.Default
-    private List<Store> stores = new ArrayList<>();
+    private Set<Store> stores = new HashSet<>();
 
     @LastModifiedDate
     private Date lastModifiedDate;
@@ -70,4 +77,35 @@ public class Employee {
     @CreatedDate
     private Date createdDate;
 
+    public void addStore(Store store) {
+        stores.add(store);
+        store.getEmployees().add(this);
+    }
+
+    public void removeStore(Store store) {
+        stores.remove(store);
+        store.getEmployees().remove(this);
+    }
+
+    public void setStore(Set<Store> stores) {
+        Set<Store> storeSet = stores.stream().map(store -> {
+            store.getEmployees().add(this);
+            return store;
+        }).collect(Collectors.toSet());
+        setStores(storeSet);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id.equals(employee.id) && cognitoId.equals(employee.cognitoId) && username.equals(employee.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cognitoId, username);
+    }
 }
+
