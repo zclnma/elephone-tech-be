@@ -1,16 +1,15 @@
 package com.elephone.management.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Jacksonized
 @AllArgsConstructor

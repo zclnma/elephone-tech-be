@@ -12,7 +12,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -61,6 +62,7 @@ public class Store {
     private Integer warranty;
 
     @ManyToMany(mappedBy = "stores")
+    @Builder.Default
     private Set<Employee> employees = new HashSet<>();
 
     @Column

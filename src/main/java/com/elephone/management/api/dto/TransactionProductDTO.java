@@ -2,7 +2,8 @@ package com.elephone.management.api.dto;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class TransactionProductDTO {
     private String number;
 

@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,12 +55,6 @@ public class Employee {
     private EnumRole role;
 
     @Column
-    private Boolean isActive;
-
-    @Column
-    private Boolean isDeleted;
-
-    @Column
     @ManyToMany(cascade = {
             CascadeType.MERGE,
             CascadeType.PERSIST
@@ -70,6 +65,12 @@ public class Employee {
     )
     @Builder.Default
     private Set<Store> stores = new HashSet<>();
+
+    @Column
+    private Boolean isActive;
+
+    @Column
+    private Boolean isDeleted;
 
     @LastModifiedDate
     private Date lastModifiedDate;

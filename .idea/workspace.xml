@@ -5,22 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_openhtmltopdf_openhtmltopdf_core_1_0_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_openhtmltopdf_openhtmltopdf_java2d_1_0_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_openhtmltopdf_openhtmltopdf_pdfbox_1_0_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__de_rototor_pdfbox_graphics2d_0_30.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_pdfbox_fontbox_2_0_22.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_pdfbox_pdfbox_2_0_22.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_pdfbox_xmpbox_2_0_22.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jsoup_jsoup_1_13_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Device.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/images/elephoneLogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/repairEstimate.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmailResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmailResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/EmployeeResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/StoreResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/StoreResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/EmployeeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/EmployeeDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java-backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java-backend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/BaseEnumDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/BaseEnumDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateStoreDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateStoreDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateTransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/CreateTransactionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/StoreDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/StoreDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionFinaliseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionFinaliseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/TransactionProductDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateEmployeeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateEmployeeDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/TransactionMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiLegacyIncome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiLegacyIncome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiLegacyWH.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/ApiLegacyWH.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/Latitude.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/Latitude.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyBy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyBy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyEstimate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyEstimate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyIncome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyIncome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyWorkHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/LegacyWorkHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/Longitude.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/Longitude.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/StoreEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/StoreEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/TransactionStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/data/TransactionStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/ErrorResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Employee.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/MovePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/MovePath.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Store.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/StoreLocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/StoreLocation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/TransactionProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/TransactionProduct.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/WarrantyHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/WarrantyHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/specification/SearchCriteria.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/specification/SearchCriteria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/PdfService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/PdfService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +173,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -145,6 +188,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="ProblemsViewState">
+    <option name="showPreview" value="true" />
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
@@ -158,6 +204,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -178,6 +225,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/templates/pdf/images" />
       <recent name="$PROJECT_DIR$/src/main/resources/templates/email" />
       <recent name="$PROJECT_DIR$/src/main/resources/templates" />
     </key>
@@ -246,7 +294,7 @@
       <workItem from="1608594486061" duration="1169000" />
       <workItem from="1609067759566" duration="41696000" />
       <workItem from="1611207007579" duration="13208000" />
-      <workItem from="1611295643740" duration="10500000" />
+      <workItem from="1611295643740" duration="31150000" />
     </task>
     <servers />
   </component>
@@ -288,12 +336,12 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmailService.java</url>
-          <line>146</line>
+          <line>171</line>
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java</url>
-          <line>70</line>
+          <line>67</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -307,38 +355,32 @@
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
-          <line>84</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/EmployeeService.java</url>
-          <line>133</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/api/TransactionResource.java</url>
           <line>97</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-field">
-          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/domain/MovePath.java</url>
-          <line>29</line>
-          <properties field="store" class="com.elephone.management.domain.MovePath" />
-          <option name="timeStamp" value="65" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/TransactionService.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/PdfService.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="75" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.jsoup.nodes.Document" memberName="parser" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/management$Main.ic" NAME="Main Coverage Results" MODIFIED="1589455541936" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

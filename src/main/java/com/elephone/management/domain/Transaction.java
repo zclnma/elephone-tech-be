@@ -9,7 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,38 +23,29 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
-    private String email;
+    @OneToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }, mappedBy = "transaction")
+    private Customer customer;
 
-    @Column
-    private String customerName;
-
-    @Column
-    private String contact;
-
-    @Column
-    private String device;
-
-    @Column
-    private String color;
-
-    @Column
-    private String imei;
-
-    @Column
-    private String passcode;
+    @OneToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }, mappedBy = "transaction")
+    private Device device;
 
     @Column
     private String battery;
-
-    @Column
-    private String additionInfo;
 
     @Column(columnDefinition = "TEXT")
     private String issue;
 
     @Column
     private String resolution;
+
+    @Column
+    private String additionInfo;
 
     @Column(columnDefinition = "TEXT")
     private String authSignature;
@@ -64,9 +56,14 @@ public class Transaction {
     @Column(updatable = false)
     private EnumNotificationMethod notificationMethod;
 
-    @Column
     @ElementCollection
     private List<EnumInspection> inspections;
+
+    @ElementCollection
+    private List<TransactionProduct> products;
+
+    @Column
+    private String deposit;
 
     @Column(unique = true, updatable = false)
     private String reference;
@@ -106,12 +103,6 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "finalised_by")
     private Employee finalisedBy;
-
-    @ElementCollection
-    private List<TransactionProduct> products;
-
-    @Column
-    private String deposit;
 
     @Column
     private Date finalisedTime;

@@ -7,7 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Embeddable
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

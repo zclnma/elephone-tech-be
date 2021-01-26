@@ -1,13 +1,11 @@
 package com.elephone.management.service;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Scanner;
 
-import org.apache.commons.text.StringSubstitutor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ClassPathResource;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
+import org.jsoup.nodes.Document;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class PdfService {
@@ -24,15 +22,33 @@ public class PdfService {
     }
 
     public PdfService(String htmlString, String fileName) throws IOException {
+//        FileWriter myWriter = new FileWriter(tempHtmlPath, false);
+//        myWriter.write(htmlString);
+//        myWriter.close();
+//
+//        Document doc = Jsoup.parse(tempHtmlPath, String.valueOf(10000));
+//        PdfRendererBuilder builder = new PdfRendererBuilder();
+//        builder.useFastMode();
+//        builder.withW3cDocument(new W3CDom().fromJsoup(doc), tempHtmlPath);
+//        builder.toStream(fos);
+//        builder.run();
+//        fos.close();
+//
+
+        String tempPdfPath = TEMP_FOLDER + fileName;
+        FileOutputStream fos = new FileOutputStream(tempPdfPath);
         // Make the PDF file
-        FileOutputStream fos = new FileOutputStream(TEMP_FOLDER + fileName);
+
+        Document document = Jsoup.parse(htmlString);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+
         ITextRenderer it = new ITextRenderer();
-        it.setDocumentFromString(htmlString);
+        it.setDocumentFromString(document.html());
         it.layout();
         it.createPDF(fos);
         fos.close();
 
         // Set the PDF generated file to this PdfConverter instance
-        setGeneratedPDF(new File(TEMP_FOLDER + fileName));
+        setGeneratedPDF(new File(tempPdfPath));
     }
 }

@@ -1,0 +1,80 @@
+<div
+        class="MuiGrid-root MuiGrid-container MuiGrid-align-items-xs-center MuiGrid-justify-xs-space-between"
+        style="margin-top: 5px"
+>
+    <div style="flex: 1 1 0%; display: flex; justify-content: space-between">
+        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-1">
+            <div class="MuiFormControl-root MuiFormControl-fullWidth">
+                <label
+                        class="MuiFormLabel-root MuiInputLabel-root makeStyles-label-69 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink"
+                        data-shrink="true"
+                >No.</label
+                >
+                <div
+                        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-input-77 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedStart"
+                >
+                    <div class="MuiInputAdornment-root MuiInputAdornment-positionStart">
+                        ${index})
+                    </div>
+                    <input
+                            aria-invalid="false"
+                            id="item number"
+                            name="products[0].number"
+                            type="text"
+                            class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedStart"
+                            value="${number}"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8">
+            <div class="MuiFormControl-root MuiFormControl-fullWidth">
+                <label
+                        class="MuiFormLabel-root MuiInputLabel-root makeStyles-label-69 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                        data-shrink="true"
+                >Description</label
+                >
+                <div
+                        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-input-77 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+                >
+                    <input
+                            aria-invalid="false"
+                            id="description"
+                            name="products[0].description"
+                            type="text"
+                            class="MuiInputBase-input MuiInput-input"
+                            value="${description}"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2">
+            <div class="MuiFormControl-root MuiFormControl-fullWidth">
+                <label
+                        class="MuiFormLabel-root MuiInputLabel-root makeStyles-label-69 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                        data-shrink="true"
+                >Amount</label
+                >
+                <div
+                        class="MuiInputBase-root MuiInput-root MuiInput-underline makeStyles-input-77 MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-adornedStart"
+                >
+                    <div class="MuiInputAdornment-root MuiInputAdornment-positionStart">
+                        <p
+                                class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextSecondary"
+                        >
+                            $
+                        </p>
+                    </div>
+                    <input
+                            aria-invalid="false"
+                            id="price"
+                            name="products[0].price"
+                            type="text"
+                            class="MuiInputBase-input MuiInput-input MuiInputBase-inputAdornedStart"
+                            value="${price}"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

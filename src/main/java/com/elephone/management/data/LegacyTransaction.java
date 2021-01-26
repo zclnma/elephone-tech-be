@@ -1,10 +1,13 @@
 package com.elephone.management.data;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class LegacyTransaction {
     private String _id;
     private String color;

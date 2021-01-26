@@ -7,7 +7,8 @@ import lombok.extern.jackson.Jacksonized;
 import javax.validation.constraints.*;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Jacksonized
 @AllArgsConstructor

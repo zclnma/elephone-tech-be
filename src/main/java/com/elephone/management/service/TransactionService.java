@@ -13,26 +13,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
 
-    private TransactionRepository transactionRepository;
-    private StoreService storeService;
-    private EmployeeService employeeService;
-    private TransactionMapper transactionMapper;
-    private EmailService emailService;
-    private S3Service s3Service;
-    private AuthService authService;
+    private final TransactionRepository transactionRepository;
+    private final StoreService storeService;
+    private final EmployeeService employeeService;
+    private final TransactionMapper transactionMapper;
+    private final EmailService emailService;
+    private final S3Service s3Service;
+    private final AuthService authService;
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService, AuthService authService) {
@@ -75,8 +72,10 @@ public class TransactionService {
         transaction.setMovePath(movePath);
         transaction.setCreatedBy(transactionCreatedBy);
         transaction.setStatus(EnumTransactionStatus.WAIT);
+        transaction.getCustomer().setTransaction(transaction);
+        transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
-        Transaction savedTransaction = transactionRepository.saveAndFlush(transaction);
+        Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         return savedTransaction;
     }
@@ -84,13 +83,14 @@ public class TransactionService {
     public Transaction update(UpdateTransactionDTO updateTransactionDTO) {
         Transaction transaction = transactionMapper.fromUpdateDTO(updateTransactionDTO);
         Transaction transactionToUpdate = getTransactionById(updateTransactionDTO.getId());
-        transactionToUpdate.setCustomerName(transaction.getCustomerName());
-        transactionToUpdate.setContact(transaction.getContact());
-        transactionToUpdate.setEmail(transaction.getEmail());
-        transactionToUpdate.setDevice(transaction.getDevice());
-        transactionToUpdate.setColor(transaction.getColor());
-        transactionToUpdate.setImei(transaction.getImei());
-        transactionToUpdate.setPasscode(transaction.getPasscode());
+        transactionToUpdate.getCustomer().setName(transaction.getCustomer().getName());
+        transactionToUpdate.getCustomer().setContact(transaction.getCustomer().getContact());
+        transactionToUpdate.getCustomer().setEmail(transaction.getCustomer().getEmail());
+        transactionToUpdate.getDevice().setName(transaction.getDevice().getName());
+        transactionToUpdate.getDevice().setColor(transaction.getDevice().getColor());
+        transactionToUpdate.getDevice().setImei(transaction.getDevice().getImei());
+        transactionToUpdate.getDevice().setPasscode(transaction.getDevice().getPasscode());
+        transactionToUpdate.setDeposit(transaction.getDeposit());
         transactionToUpdate.setInspections(transaction.getInspections());
         transactionToUpdate.setBattery(transaction.getBattery());
         transactionToUpdate.setIssue(transaction.getIssue());
@@ -127,12 +127,12 @@ public class TransactionService {
             }
 
             if (!StringUtils.isEmpty(customerName)) {
-                Predicate predicate = cb.like(cb.function("REPLACE", String.class, cb.upper(root.get("customerName")), cb.literal(" "), cb.literal("")), "%" + customerName.toUpperCase() + "%");
+                Predicate predicate = cb.like(cb.function("REPLACE", String.class, cb.upper(root.get("customer").get("name")), cb.literal(" "), cb.literal("")), "%" + customerName.toUpperCase() + "%");
                 predicates.add(predicate);
             }
 
             if (!StringUtils.isEmpty(contact)) {
-                Predicate predicate = cb.like(cb.upper(root.get("contact")), "%" + contact.toUpperCase() + "%");
+                Predicate predicate = cb.like(cb.upper(root.get("customer").get("contact")), "%" + contact.toUpperCase() + "%");
                 predicates.add(predicate);
             }
 

@@ -1,8 +1,11 @@
 package com.elephone.management.data;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LegacyWorkHistory {
     private String _id;
     private String status;
