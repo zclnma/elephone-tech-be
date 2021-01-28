@@ -20,15 +20,14 @@ import java.util.UUID;
 public class MovePath {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
     @LastModifiedDate

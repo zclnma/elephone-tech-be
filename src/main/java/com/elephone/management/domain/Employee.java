@@ -21,7 +21,6 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
     private UUID id;
 
     @Column

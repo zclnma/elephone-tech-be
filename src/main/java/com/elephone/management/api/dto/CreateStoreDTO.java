@@ -26,7 +26,7 @@ public class CreateStoreDTO {
     @NotBlank(message = "Company Name can't be empty.")
     private String companyName;
 
-    @Pattern(regexp = "[\\d]{10}", message = "Invalid ABN.")
+    @NotBlank
     private String abn;
 
     @Min(value = 0, message = "warranty time should be more than 0")

@@ -59,27 +59,33 @@ public class TransactionService {
 
         Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
         Integer newStoreReference = transactionStore.getReference() + 1;
-        MovePath newPath = MovePath.builder()
+        String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
+
+        transaction.getProducts().forEach(transactionProduct -> {
+            transactionProduct.setTransaction(transaction);
+        });
+
+        MovePath movePath = MovePath.builder()
                 .transaction(transaction)
                 .store(transactionStore)
                 .build();
-        List<MovePath> movePath = new ArrayList<>();
-        movePath.add(newPath);
-        String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
+        transaction.addMovePath(movePath);
+
         transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
-        transaction.setMovePath(movePath);
         transaction.setCreatedBy(transactionCreatedBy);
         transaction.setStatus(EnumTransactionStatus.WAIT);
         transaction.getCustomer().setTransaction(transaction);
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
         Transaction savedTransaction = transactionRepository.save(transaction);
+
         storeService.updateStore(transactionStore);
         return savedTransaction;
     }
 
+    @Transactional
     public Transaction update(UpdateTransactionDTO updateTransactionDTO) {
         Transaction transaction = transactionMapper.fromUpdateDTO(updateTransactionDTO);
         Transaction transactionToUpdate = getTransactionById(updateTransactionDTO.getId());
@@ -91,7 +97,7 @@ public class TransactionService {
         transactionToUpdate.getDevice().setImei(transaction.getDevice().getImei());
         transactionToUpdate.getDevice().setPasscode(transaction.getDevice().getPasscode());
         transactionToUpdate.setDeposit(transaction.getDeposit());
-        transactionToUpdate.setInspections(transaction.getInspections());
+        transactionToUpdate.setFinalInspections(transaction.getFinalInspections());
         transactionToUpdate.setBattery(transaction.getBattery());
         transactionToUpdate.setIssue(transaction.getIssue());
         transactionToUpdate.setResolution(transaction.getResolution());
@@ -187,7 +193,7 @@ public class TransactionService {
         }
 
         if (status.equals(EnumTransactionStatus.FINALISED)) {
-            if(StringUtils.isBlank(transaction.getConfSignature())) {
+            if (StringUtils.isBlank(transaction.getConfSignature())) {
                 throw new TransactionException("Please sign the confirmation form before finalising it.");
             }
             Employee employee = employeeService.getEmployeeById(updatedBy);
@@ -210,9 +216,8 @@ public class TransactionService {
                 .store(store)
                 .build();
 
-        List<MovePath> movePath = transaction.getMovePath();
-        movePath.add(newPath);
         transaction.setStore(store);
+        transaction.addMovePath(newPath);
         return transactionRepository.save(transaction);
     }
 

@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -42,7 +43,7 @@ public class CreateTransactionDTO {
 
     private String battery;
 
-    private List<String> inspections;
+    private Set<String> initInspections;
 
     @NotBlank
     @Email(message = "Email format is not valid")

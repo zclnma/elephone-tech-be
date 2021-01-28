@@ -1,5 +1,6 @@
 package com.elephone.management.api.dto;
 
+import com.elephone.management.domain.MovePath;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -42,9 +44,13 @@ public class TransactionDTO {
 
     private String battery;
 
-    private List<String> inspections;
+    private Set<String> initInspections;
+
+    private Set<String> finalInspections;
 
     private String email;
+
+    private String authSignature;
 
     private String confSignature;
 
@@ -60,13 +66,15 @@ public class TransactionDTO {
 
     private String additionInfo;
 
-    private List<TransactionProductDTO> products;
+    private Set<TransactionProductDTO> products;
+
+    private Set<MovePathDTO> movePaths;
 
     private String deposit;
 
-    private List<CommentDTO> comments;
+    private Set<CommentDTO> comments;
 
-    private List<WarrantyHistoryDTO> warrantyHistories;
+    private Set<WarrantyHistoryDTO> warrantyHistories;
 
     private Date createdDate;
 }

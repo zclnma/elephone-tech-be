@@ -7,6 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -40,7 +41,7 @@ public class UpdateTransactionDTO {
 
     private String battery;
 
-    private List<String> inspections;
+    private Set<String> finalInspections;
 
     @NotBlank
     @Email(message = "Email format is not valid")

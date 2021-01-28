@@ -1,6 +1,5 @@
 package com.elephone.management.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -56,11 +55,11 @@ public class Transaction {
     @Column(updatable = false)
     private EnumNotificationMethod notificationMethod;
 
-    @ElementCollection
-    private List<EnumInspection> inspections;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<EnumInspection> initInspections;
 
-    @ElementCollection
-    private List<TransactionProduct> products;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<EnumInspection> finalInspections;
 
     @Column
     private String deposit;
@@ -75,29 +74,35 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<TransactionProduct> products = new HashSet<>();
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<WarrantyHistory> warrantyHistories;
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Comment> comments = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "init_store_id", updatable = false)
+    @Column
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<WarrantyHistory> warrantyHistories = new HashSet<>();
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn
+    @Builder.Default
+    private Set<MovePath> movePaths = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "init_store_id")
     private Store initStore;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @OrderColumn
-    private List<MovePath> movePath;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "created_by")
     private Employee createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -116,5 +121,15 @@ public class Transaction {
     public void addComment(Comment comment) {
         comments.add(comment);
         comment.setTransaction(this);
+    }
+
+    public void addMovePath(MovePath movePath) {
+        movePaths.add(movePath);
+        movePath.setTransaction(this);
+    }
+
+    public void addWarrantyHistory(WarrantyHistory warrantyHistory) {
+        warrantyHistories.add(warrantyHistory);
+        warrantyHistory.setTransaction(this);
     }
 }
