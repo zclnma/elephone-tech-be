@@ -18,6 +18,6 @@ import java.util.UUID;
 public class MovePathDTO {
 
     private UUID id;
-    private Store store;
+    private StoreDTO store;
     private Date createdDate;
 }
