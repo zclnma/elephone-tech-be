@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/a57603dc-5592-4af0-b968-f0b9190fdbfa/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/init.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/MovePathDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/MovePathDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/MovePathMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/MovePathMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +253,7 @@
       <workItem from="1609067759566" duration="41696000" />
       <workItem from="1611207007579" duration="13208000" />
       <workItem from="1611295643740" duration="33681000" />
-      <workItem from="1611652550546" duration="13410000" />
+      <workItem from="1611652550546" duration="14900000" />
     </task>
     <servers />
   </component>
