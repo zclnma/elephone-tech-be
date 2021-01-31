@@ -42,6 +42,7 @@ public interface TransactionMapper {
             @Mapping(source = "color", target = "device.color"),
             @Mapping(source = "imei", target = "device.imei"),
             @Mapping(source = "passcode", target = "device.passcode"),
+            @Mapping(source = "deposit", target = "deposit", defaultValue = "0")
     })
     Transaction fromCreateDTO(CreateTransactionDTO createTransactionDTO);
 
@@ -54,6 +55,7 @@ public interface TransactionMapper {
             @Mapping(source = "color", target = "device.color"),
             @Mapping(source = "imei", target = "device.imei"),
             @Mapping(source = "passcode", target = "device.passcode"),
+            @Mapping(source = "deposit", target = "deposit", defaultValue = "0")
     })
     Transaction fromUpdateDTO(UpdateTransactionDTO updateTransactionDTO);
 }

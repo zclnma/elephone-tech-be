@@ -6,6 +6,7 @@ import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.api.mapper.WarrantyHistoryMapper;
 import com.elephone.management.domain.*;
 import com.elephone.management.service.CommentService;
+import com.elephone.management.service.PdfService;
 import com.elephone.management.service.TransactionService;
 import com.elephone.management.service.WarrantyHistoryService;
 import io.swagger.annotations.Api;
@@ -13,18 +14,18 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -154,4 +155,5 @@ public class TransactionResource {
         WarrantyHistory warrantyHistory = warrantyHistoryService.create(createWarrantyHistoryDTO);
         return new ResponseEntity<>(warrantyHistoryMapper.toDTO(warrantyHistory), HttpStatus.CREATED);
     }
+
 }

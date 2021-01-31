@@ -8,6 +8,8 @@ import com.elephone.management.domain.*;
 import com.elephone.management.repository.TransactionRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,9 +35,10 @@ public class TransactionService {
     private final EmailService emailService;
     private final S3Service s3Service;
     private final AuthService authService;
+    private final PdfService pdfService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService, AuthService authService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService, AuthService authService, PdfService pdfService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
@@ -40,6 +46,7 @@ public class TransactionService {
         this.s3Service = s3Service;
         this.emailService = emailService;
         this.authService = authService;
+        this.pdfService = pdfService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -229,4 +236,13 @@ public class TransactionService {
         transactionRepository.updateDeleteStatus(id);
     }
 
+    public byte[] getTransactionPdfByte(UUID id) throws IOException {
+        Transaction transaction = getTransactionById(id);
+        if (!transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
+            throw new TransactionException("Please finalise the transaction before downloading it.");
+        }
+
+        String pdfHtml = TemplateService.generatePdfString(transaction);
+        return pdfService.generatePdfByte(pdfHtml);
+    }
 }
