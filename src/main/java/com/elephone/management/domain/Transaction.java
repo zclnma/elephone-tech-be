@@ -74,21 +74,21 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<TransactionProduct> products = new HashSet<>();
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<Comment> comments = new HashSet<>();
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<WarrantyHistory> warrantyHistories = new HashSet<>();
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @OrderColumn
     @Builder.Default
     private Set<MovePath> movePaths = new HashSet<>();

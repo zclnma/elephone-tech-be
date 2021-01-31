@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="" />
+    <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e51a59b0-2dbe-4f1a-99cd-b92c9ebf093a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e51a59b0-2dbe-4f1a-99cd-b92c9ebf093a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -183,19 +188,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ManagementApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="java-backend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.elephone.management.ManagementApplication" />
@@ -263,7 +255,8 @@
       <workItem from="1611652550546" duration="15513000" />
       <workItem from="1611967616471" duration="18262000" />
       <workItem from="1612052219325" duration="383000" />
-      <workItem from="1612053834552" duration="12492000" />
+      <workItem from="1612053834552" duration="13747000" />
+      <workItem from="1612069607399" duration="1000000" />
     </task>
     <servers />
   </component>
