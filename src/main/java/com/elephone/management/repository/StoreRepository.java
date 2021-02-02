@@ -16,9 +16,9 @@ import java.util.UUID;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, UUID> {
 
-    Page<Store> findAllByIsDeleted (Pageable pageable, Boolean isDeleted);
+    Page<Store> findAllByIsDeleted(Pageable pageable, Boolean isDeleted);
 
     @Modifying
     @Query("update Store store set store.isDeleted = :isDeleted where store.id = :id")
-    void updateDeleteStatus (@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
+    void updateDeleteStatus(@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
 }

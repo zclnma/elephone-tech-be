@@ -5,10 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="371b7b30-939e-4d01-9795-082d9c90a33e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e51a59b0-2dbe-4f1a-99cd-b92c9ebf093a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/e51a59b0-2dbe-4f1a-99cd-b92c9ebf093a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/create.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/dto/UpdateTransactionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/EnumTransactionStatusMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/api/mapper/EnumTransactionStatusMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/exception/CommentException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/exception/CommentException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/exception/EmployeeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/dispose/exception/EmployeeException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/TransactionProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/domain/TransactionProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/EmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/StoreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/repository/StoreRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/SesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/SesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TemplateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/elephone/management/service/TemplateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/email/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pdf/InspectionTick.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/InspectionTick.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pdf/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/pdf/inspectionNotTick.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/pdf/inspectionNotTick.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,7 +273,8 @@
       <workItem from="1611967616471" duration="18262000" />
       <workItem from="1612052219325" duration="383000" />
       <workItem from="1612053834552" duration="13747000" />
-      <workItem from="1612069607399" duration="1000000" />
+      <workItem from="1612069607399" duration="12758000" />
+      <workItem from="1612269401476" duration="325000" />
     </task>
     <servers />
   </component>
@@ -268,12 +286,12 @@
       <breakpoints>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/target/generated-sources/annotations/com/elephone/management/api/mapper/EmployeeMapperImpl.java</url>
-          <line>64</line>
+          <line>62</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/target/generated-sources/annotations/com/elephone/management/api/mapper/StoreMapperImpl.java</url>
-          <line>21</line>
+          <line>19</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -328,7 +346,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/elephone/management/service/SesService.java</url>
-          <line>57</line>
+          <line>58</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>

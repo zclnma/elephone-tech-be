@@ -54,7 +54,7 @@ public class TemplateService {
         for (EnumInspection item : EnumInspection.values()) {
             Map<String, String> inspectionPlaceholder = new HashMap<>();
             inspectionPlaceholder.put("name", item.getDisplayName());
-            if(transaction.getFinalInspections().contains(item)) {
+            if (transaction.getFinalInspections().contains(item)) {
                 inspectionHtml += generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder);
             } else {
                 inspectionHtml += generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder);

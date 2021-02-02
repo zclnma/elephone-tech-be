@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TransactionException.class)
-    public ResponseEntity<ErrorResponse> handleTransactionException (TransactionException ex) {
+    public ResponseEntity<ErrorResponse> handleTransactionException(TransactionException ex) {
         return responseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

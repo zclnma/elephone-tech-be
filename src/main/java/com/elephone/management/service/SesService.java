@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.sesv2.SesV2Client;
 import software.amazon.awssdk.services.sesv2.model.*;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class SesService {
         this.sesV2Client = sesV2Client;
     }
 
-    public boolean getEmailIdentity(String emailIdentity){
+    public boolean getEmailIdentity(String emailIdentity) {
         GetEmailIdentityRequest request = GetEmailIdentityRequest.builder()
                 .emailIdentity(emailIdentity)
                 .build();

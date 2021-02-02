@@ -41,6 +41,8 @@ public class UpdateTransactionDTO {
 
     private String battery;
 
+    private Set<String> initInspections;
+
     private Set<String> finalInspections;
 
     @NotBlank

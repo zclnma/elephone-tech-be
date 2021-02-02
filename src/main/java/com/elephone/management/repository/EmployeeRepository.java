@@ -25,9 +25,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     @Modifying
     @Query("update Employee e set e.isDeleted = :isDeleted where e.id = :id")
-    Employee updateDeleteStatus (@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
+    Employee updateDeleteStatus(@Param("isDeleted") boolean isDeleted, @Param("id") UUID id);
 
     @Modifying
     @Query("update Employee e set e.isActive = :isActive where e.id = :id")
-    Employee updateActiveStatus (@Param("isActive") boolean isActive, @Param("id") UUID id);
+    Employee updateActiveStatus(@Param("isActive") boolean isActive, @Param("id") UUID id);
 }

@@ -32,7 +32,7 @@ public class TransactionProduct {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_id", updatable = false)
     private Transaction transaction;
 
