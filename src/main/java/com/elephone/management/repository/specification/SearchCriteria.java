@@ -1,7 +1,6 @@
 package com.elephone.management.repository.specification;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

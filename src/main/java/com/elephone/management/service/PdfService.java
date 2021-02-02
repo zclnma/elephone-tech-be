@@ -1,16 +1,9 @@
 package com.elephone.management.service;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Scanner;
-
-import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import org.apache.commons.text.StringSubstitutor;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayOutputStream;
 
 @Service
 public class PdfService {

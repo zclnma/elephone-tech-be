@@ -1,14 +1,12 @@
 package com.elephone.management.api.mapper;
 
-import com.elephone.management.api.dto.CreateEmployeeDTO;
 import com.elephone.management.api.dto.CreateStoreDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.config.MapstructConfig;
-import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.Store;
-import org.mapstruct.*;
-
-import java.util.List;
+import org.mapstruct.Builder;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(config = MapstructConfig.class, uses = EmployeeMapper.class, builder = @Builder)
 public interface StoreMapper {

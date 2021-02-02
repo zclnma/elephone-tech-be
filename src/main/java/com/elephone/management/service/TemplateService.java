@@ -80,8 +80,8 @@ public class TemplateService {
         pdfPlaceholder.put("resolution", StringUtils.isEmpty(transaction.getResolution()) ? "N/A" : transaction.getResolution());
         pdfPlaceholder.put("comment", StringUtils.isEmpty(transaction.getAdditionInfo()) ? "N/A" : transaction.getAdditionInfo());
         pdfPlaceholder.put("issue", StringUtils.isEmpty(transaction.getIssue()) ? "N/A" : transaction.getIssue());
-        pdfPlaceholder.put("deposit", transaction.getDeposit());
-        pdfPlaceholder.put("balance", Integer.toString(total - Integer.parseInt(transaction.getDeposit())));
+        pdfPlaceholder.put("deposit", StringUtils.isEmpty(transaction.getDeposit()) ? "N/A" : transaction.getDeposit());
+        pdfPlaceholder.put("balance", Integer.toString(total - Integer.parseInt(StringUtils.isEmpty(transaction.getDeposit()) ? "0" : transaction.getDeposit())));
         pdfPlaceholder.put("total", Integer.toString(total));
         pdfPlaceholder.put("confSignature", transaction.getConfSignature());
         pdfPlaceholder.put("receivedBy", createdBy);

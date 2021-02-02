@@ -5,7 +5,6 @@ import com.elephone.management.api.dto.EmployeeDTO;
 import com.elephone.management.api.dto.UpdateEmployeeDTO;
 import com.elephone.management.api.mapper.EmployeeMapper;
 import com.elephone.management.domain.Employee;
-import com.elephone.management.service.CognitoService;
 import com.elephone.management.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -5,7 +5,9 @@ import com.elephone.management.api.dto.TransactionDTO;
 import com.elephone.management.api.dto.UpdateTransactionDTO;
 import com.elephone.management.config.MapstructConfig;
 import com.elephone.management.domain.Transaction;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(config = MapstructConfig.class, uses = {CommentMapper.class, StoreMapper.class, EmployeeMapper.class, EnumTransactionStatusMapper.class, EnumInspectionMapper.class, EnumRoleMapper.class, EnumNotificationMethodMapper.class, TransactionProductMapper.class, WarrantyHistoryMapper.class, MovePathMapper.class})
 public interface TransactionMapper {

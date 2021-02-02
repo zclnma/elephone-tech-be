@@ -1,6 +1,5 @@
 package com.elephone.management.api.dto;
 
-import com.elephone.management.domain.Store;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,11 +1,11 @@
 package com.elephone.management.domain;
 
+import lombok.*;
+import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.hibernate.annotations.Generated;
-import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;

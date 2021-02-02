@@ -1,8 +1,6 @@
 package com.elephone.management.service;
 
 import com.elephone.management.dispose.exception.StoreException;
-import com.elephone.management.dispose.exception.TransactionException;
-import com.elephone.management.domain.Employee;
 import com.elephone.management.domain.EnumTransactionStatus;
 import com.elephone.management.domain.Store;
 import com.elephone.management.domain.Transaction;
@@ -15,18 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.sesv2.model.AlreadyExistsException;
 import software.amazon.awssdk.services.sesv2.model.NotFoundException;
-
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service

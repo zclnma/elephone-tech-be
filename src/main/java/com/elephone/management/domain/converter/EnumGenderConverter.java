@@ -1,7 +1,6 @@
 package com.elephone.management.domain.converter;
 
 import com.elephone.management.domain.EnumGender;
-import com.elephone.management.domain.EnumRole;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

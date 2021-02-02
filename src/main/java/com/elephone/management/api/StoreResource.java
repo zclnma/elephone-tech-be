@@ -3,22 +3,25 @@ package com.elephone.management.api;
 import com.elephone.management.api.dto.CreateStoreDTO;
 import com.elephone.management.api.dto.StoreDTO;
 import com.elephone.management.api.mapper.StoreMapper;
-import com.elephone.management.data.*;
-import com.elephone.management.domain.*;
-import com.elephone.management.service.*;
+import com.elephone.management.domain.Store;
+import com.elephone.management.service.EmployeeService;
+import com.elephone.management.service.StoreService;
+import com.elephone.management.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController

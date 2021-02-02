@@ -6,7 +6,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -121,6 +125,19 @@ public class Transaction {
     public void addComment(Comment comment) {
         comments.add(comment);
         comment.setTransaction(this);
+    }
+
+    public void setProducts(Set<TransactionProduct> transactionProducts) {
+
+        this.products = transactionProducts.stream().map(transactionProduct -> {
+            transactionProduct.setTransaction(this);
+            return transactionProduct;
+        }).collect(Collectors.toSet());
+    }
+
+    public void addProduct(TransactionProduct transactionProduct) {
+        products.add(transactionProduct);
+        transactionProduct.setTransaction(this);
     }
 
     public void addMovePath(MovePath movePath) {

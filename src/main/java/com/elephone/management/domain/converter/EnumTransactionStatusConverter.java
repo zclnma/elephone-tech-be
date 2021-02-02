@@ -1,6 +1,5 @@
 package com.elephone.management.domain.converter;
 
-import com.elephone.management.domain.EnumRole;
 import com.elephone.management.domain.EnumTransactionStatus;
 
 import javax.persistence.AttributeConverter;

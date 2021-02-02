@@ -1,1 +1,1 @@
-mvn package && docker build -t elephone-management .
+./gradlew bootjar && docker build -t elephone-management .

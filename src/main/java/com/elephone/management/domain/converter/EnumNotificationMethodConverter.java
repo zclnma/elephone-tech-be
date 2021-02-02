@@ -1,6 +1,5 @@
 package com.elephone.management.domain.converter;
 
-import com.elephone.management.domain.EnumInspection;
 import com.elephone.management.domain.EnumNotificationMethod;
 
 import javax.persistence.AttributeConverter;

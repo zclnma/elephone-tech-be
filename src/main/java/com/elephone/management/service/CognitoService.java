@@ -1,15 +1,10 @@
 package com.elephone.management.service;
 
-import com.elephone.management.api.dto.EmployeeDTO;
-import com.elephone.management.domain.Employee;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
-
-import java.util.List;
 
 @Service
 public class CognitoService {

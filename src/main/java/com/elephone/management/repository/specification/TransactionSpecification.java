@@ -1,11 +1,13 @@
 package com.elephone.management.repository.specification;
 
-import com.elephone.management.domain.Store;
 import com.elephone.management.domain.Transaction;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.UUID;
 
 @AllArgsConstructor
