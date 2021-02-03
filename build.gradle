@@ -18,11 +18,6 @@ repositories {
     mavenCentral()
 }
 
-//bootJar {
-//    destinationDirectory = file(project.buildDir)
-//    archiveFileName = "elephone-managament.jar"
-//}
-
 dependencies {
     implementation(
 

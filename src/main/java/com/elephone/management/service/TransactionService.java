@@ -196,6 +196,7 @@ public class TransactionService {
             if (!isAdmin) {
                 throw new TransactionException("You don't have permission to modify status of a finalised transaction.");
             }
+            transaction.setConfSignature(null);
         }
 
         if (status.equals(EnumTransactionStatus.FINALISED)) {

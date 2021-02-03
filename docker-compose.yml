@@ -9,7 +9,6 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: AKIAY2SZAZO3CMM25PLT
       AWS_SECRET_ACCESS_KEY: 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
-      SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres

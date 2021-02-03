@@ -2,6 +2,7 @@ package com.elephone.management.service;
 
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Transaction;
+import org.apache.commons.codec.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,46 +38,20 @@ public class EmailService {
 
     public MimeMessage generateConfEmail(Transaction transaction) throws Exception {
 
-        String emailContent = TemplateService.generateEmailString(transaction);
-
         Session session = Session.getDefaultInstance(new Properties());
         MimeMessage mimeMessage = new MimeMessage(session);
-
-        // Add subject, from and to lines.
-        mimeMessage.setSubject(EMAIL_SUBJECT, "UTF-8");
-        mimeMessage.setFrom(new InternetAddress(transaction.getStore().getEmail()));
-        mimeMessage.addRecipients(Message.RecipientType.TO, InternetAddress.parse(transaction.getCustomer().getEmail()));
-        mimeMessage.addRecipients(Message.RecipientType.BCC, InternetAddress.parse("info@elephone.com"));
-
-        // Create a multipart/alternative child container.
-        MimeMultipart messageBody = new MimeMultipart("alternative");
-
-        // Define the HTML part.
-        MimeBodyPart htmlPart = new MimeBodyPart();
-        htmlPart.setContent(emailContent, "text/html; charset=UTF-8");
-
-        // Add the text and HTML parts to the child container.
-        messageBody.addBodyPart(htmlPart);
-
-        // Create a wrapper for the HTML and text parts.
-        MimeBodyPart wrap = new MimeBodyPart();
-
-        // Add the child container to the wrapper object.
-        wrap.setContent(messageBody);
-
-        // Create a multipart/mixed parent container.
-        MimeMultipart message = new MimeMultipart("mixed");
-
-        // Add the multipart/alternative part to the message.
-        message.addBodyPart(wrap);
-
-        // Add the parent container to the message.
-        mimeMessage.setContent(message);
+        String emailContent = TemplateService.generateEmailString(transaction);
 
         String pdfHtml = TemplateService.generatePdfString(transaction);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-        helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes));
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, CharEncoding.UTF_8);
+        helper.setSubject(EMAIL_SUBJECT);
+        helper.setFrom(new InternetAddress(transaction.getStore().getEmail()));
+        helper.addTo(transaction.getCustomer().getEmail());
+        helper.addBcc("info@elephone.com");
+        helper.setText(emailContent, true);
+        helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes),"application/pdf");
+
         return mimeMessage;
     }
 
