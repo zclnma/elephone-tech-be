@@ -56,6 +56,6 @@ public class SesService {
                                 .build())
                         .build())
                 .build();
-        sesV2Client.sendEmail(sendEmailRequest);
+        SendEmailResponse response = sesV2Client.sendEmail(sendEmailRequest);
     }
 }

@@ -9,12 +9,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +45,7 @@ public class EmailService {
         helper.setSubject(EMAIL_SUBJECT);
         helper.setFrom(new InternetAddress(transaction.getStore().getEmail()));
         helper.addTo(transaction.getCustomer().getEmail());
-        helper.addBcc("info@elephone.com");
+        helper.addBcc("info@elephone.com.au");
         helper.setText(emailContent, true);
         helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes),"application/pdf");
 
