@@ -47,7 +47,8 @@
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
+            line-height: 14px;
             font-weight: 600;
             color: #888888;
         }
@@ -145,7 +146,7 @@
             box-sizing: border-box;
             width: 49%;
             height: 20px;
-            margin-top: 12px;
+            margin-top: 10px;
             position: relative;
         }
     </style>
@@ -204,7 +205,7 @@
                 <div class="section-title-wrapper">
                     <div class="section-title">INSPECTION</div>
                 </div>
-                <div style="width: 100%; height: 206px; box-sizing: border-box; overflow: hidden;">
+                <div style="width: 100%; height: 194px; box-sizing: border-box; overflow: hidden;">
                     ${inspection}
                 </div>
 
@@ -240,20 +241,18 @@
                     <div class="section-title">REPAIR DETAILS</div>
                 </div>
                 <div class="label">Device Issue</div>
-                <div style="height: 60px; width: 100%; font-size: 10px; ">${issue}</div>
+                <div style="height: 56px; width: 100%; font-size: 10px; ">${issue}</div>
                 <div class="divider-not-full"></div>
                 <div class="label">Proposed Resolution</div>
-                <div style="height: 60px; width: 100%; font-size: 10px;">${resolution}</div>
+                <div style="height: 56px; width: 100%; font-size: 10px;">${resolution}</div>
                 <div class="divider-not-full"></div>
                 <div class="label">Comments</div>
-                <div style="height: 60px; width: 100%; font-size: 10px;">${comment}</div>
+                <div style="height: 56px; width: 100%; font-size: 10px;">${comment}</div>
                 <div class="divider-not-full"></div>
             </div>
         </div>
-        <div class="section-wrapper" style="margin-top: 16px;">
-            <div class="section-title-wrapper">
-                <div class="section-title">REPAIR ESTIMATE</div>
-            </div>
+        <div class="section-wrapper">
+            <div class="section-title">REPAIR ESTIMATE</div>
             <div class="width: 100%">
                 <div class="label" style="display: inline-block; width: 10%;">
                     No.
@@ -309,7 +308,7 @@
         </div>
         <div class="section-title-wrapper">
             <div class="label">Customer Signature</div>
-            <div style="border: 1px solid black; width: 400px; height: 140px">
+            <div style="border: 1px solid black; width: 320px; height: 100px">
                 <img style="width: 100%; height: auto;" src="${confSignature}" alt="signature"></img>
             </div>
         </div>
