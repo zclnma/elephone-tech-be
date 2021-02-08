@@ -24,6 +24,9 @@ public class AwsConfig {
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretAccessKey;
 
+    @Value("${cloud.aws.credentials.secretKey}")
+    private String region;
+
     private AwsCredentialsProvider awsCredentialsProvider;
 
     @PostConstruct
@@ -34,7 +37,7 @@ public class AwsConfig {
     @Bean
     public SesV2Client sesV2Client() {
         return SesV2Client.builder()
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.of(region))
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
     }
@@ -43,7 +46,7 @@ public class AwsConfig {
     public CognitoIdentityProviderClient cognitoIdentityClient() {
         return CognitoIdentityProviderClient
                 .builder()
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.of(region))
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
     }
@@ -51,7 +54,7 @@ public class AwsConfig {
     @Bean
     public SqsClient sqsClient() {
         return SqsClient.builder()
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.of(region))
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
     }
@@ -59,7 +62,7 @@ public class AwsConfig {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.of(region))
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
     }
@@ -67,7 +70,7 @@ public class AwsConfig {
     @Bean
     public SnsClient snsClient() {
         return SnsClient.builder()
-                .region(Region.AP_SOUTHEAST_2)
+                .region(Region.of(region))
                 .credentialsProvider(awsCredentialsProvider)
                 .build();
     }

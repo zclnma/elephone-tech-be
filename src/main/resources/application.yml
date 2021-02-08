@@ -8,7 +8,7 @@ spring:
     name: management
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${AWS_DB_URL:}
     username: postgres
     password: postgres
     continue-on-error: true
@@ -17,31 +17,32 @@ spring:
       connection-timeout: 20000
   jpa:
     database: postgresql
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: create
-    properties:
-      javax:
-        persistence:
-          schema-generation:
-            create-source: metadata
-            scripts:
-              action: create
-              create-target: create.sql
+#    show-sql: true
+#    generate-ddl: true
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: create.sql
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/${AWS_USERPOOL_ID:ap-southeast-2_8ovxzl36v}
 
 cloud:
   aws:
     cognito:
-      userpoolId: ap-southeast-2_8ovxzl36v
+      userpoolId: ${AWS_USERPOOL_ID:ap-southeast-2_8ovxzl36v}
     credentials:
-      accessKey: AKIAY2SZAZO3EOIDMVT5
-      secretKey: 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
+      accessKey: ${AWS_ACCESS_KEY_ID:}
+      secretKey: ${AWS_SECRET_ACCESS_KEY:}
+      region: ${AWS_REGION:}
 
 
 
