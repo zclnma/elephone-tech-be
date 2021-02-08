@@ -8,7 +8,7 @@ spring:
     name: management
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://elephone-management.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
     username: postgres
     password: postgres
     continue-on-error: true
@@ -33,12 +33,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_DXhjoJV7e
 
 cloud:
   aws:
     cognito:
-      userpoolId: ap-southeast-2_8ovxzl36v
+      userpoolId: ap-southeast-2_DXhjoJV7e
     credentials:
       accessKey: AKIAY2SZAZO3EOIDMVT5
       secretKey: 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
