@@ -21,11 +21,13 @@ repositories {
 dependencies {
     implementation(
 
-            "org.apache.commons:commons-lang3:3.8.1",
+            "com.itextpdf:html2pdf:$itextpdf",
             "org.apache.commons:commons-text:1.8",
+            "org.apache.commons:commons-lang3:3.8.1",
             "commons-validator:commons-validator:1.7",
             "io.springfox:springfox-swagger2:$swagger",
             "io.springfox:springfox-swagger-ui:$swagger",
+            "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.5",
             "org.springframework.boot:spring-boot-starter-web:$springboot",
             "org.springframework.boot:spring-boot-starter-mail:$springboot",
             "org.springframework.boot:spring-boot-starter-data-jpa:$springboot",
@@ -34,7 +36,6 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-validation:$springboot",
             "org.springframework.boot:spring-boot-starter-oauth2-resource-server:$springboot",
             "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:$springSecutiry",
-            "com.itextpdf:html2pdf:$itextpdf",
 
             platform("software.amazon.awssdk:bom:$awsJavaSdk"),
             "software.amazon.awssdk:sesv2",

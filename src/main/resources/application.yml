@@ -8,9 +8,9 @@ spring:
     name: management
   datasource:
     platform: postgres
-    url: jdbc:postgresql://elephone-management.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
+    url: jdbc-secretsmanager:postgresql://elephone-management.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
     username: elephone
-    password: elephone
     continue-on-error: true
     hikari:
       maximum-pool-size: 5
