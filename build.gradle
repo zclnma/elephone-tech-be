@@ -1,7 +1,9 @@
 plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.google.cloud.tools.jib' version '2.7.1'
     id 'java'
+    id 'idea'
 }
 
 group = 'com.elephone'
@@ -74,9 +76,28 @@ dependencies {
     )
 }
 
-task print {
-    doFirst {
-        println System.getenv()
+tasks {
+    build {
+        dependsOn {
+            tasks.jib
+        }
+    }
+}
+
+jib {
+    from {
+        image = "azul/zulu-openjdk-alpine:11.0.7"
+    }
+    to {
+        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management"
+        credHelper = "secretservice"
+        tags = ["lastest", project.version]
+    }
+
+    container {
+        mainClass = "com.elephone.manageme.ManagementApplication"
+        ports = ["8080"]
+        environment = [AWS_REGION: "$AWS_REGION"]
     }
 }
 
