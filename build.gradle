@@ -33,6 +33,7 @@ dependencies {
             "commons-validator:commons-validator:1.7",
             "io.springfox:springfox-swagger2:$swagger",
             "io.springfox:springfox-swagger-ui:$swagger",
+            "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.5",
             "org.springframework.boot:spring-boot-starter-web:$springboot",
             "org.springframework.boot:spring-boot-starter-mail:$springboot",
             "org.springframework.boot:spring-boot-starter-data-jpa:$springboot",
@@ -86,18 +87,19 @@ tasks {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:11.0.7"
+        image = "azul/zulu-openjdk:11.0.7"
     }
     to {
         image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management"
-        credHelper = "secretservice"
+        credHelper = "ecr-login"
         tags = ["lastest", project.version]
     }
 
     container {
-        mainClass = "com.elephone.manageme.ManagementApplication"
+        creationTime = "USE_CURRENT_TIMESTAMP"
+        jvmFlags = ['-XX:MaxRAMPercentage=85.0']
         ports = ["8080"]
-        environment = [AWS_REGION: "$AWS_REGION"]
+        environment = [AWS_REGION: "ap-southeast-2"]
     }
 }
 

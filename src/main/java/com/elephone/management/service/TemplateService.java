@@ -41,9 +41,9 @@ public class TemplateService {
         for (TransactionProduct product : transaction.getProducts()) {
             Map<String, String> repairPlaceholder = new HashMap<>();
             repairPlaceholder.put("i", Integer.toString(index));
-            repairPlaceholder.put("number", product.getNumber());
-            repairPlaceholder.put("description", product.getDescription());
-            repairPlaceholder.put("price", product.getPrice());
+            repairPlaceholder.put("number", StringUtils.isEmpty(product.getNumber()) ? "1" : product.getNumber());
+            repairPlaceholder.put("description", StringUtils.isEmpty(product.getDescription()) ? "N/A" : product.getDescription());
+            repairPlaceholder.put("price", StringUtils.isEmpty(product.getPrice()) ? "0" : product.getPrice());
             String repairItem = generateHTMLFromTemplate(REPAIR_ESTIMATE_TEMPLATE_PATH, repairPlaceholder);
             total += Integer.parseInt(product.getPrice());
             repairEstimateHtml += repairItem;

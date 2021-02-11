@@ -48,8 +48,5 @@ public class CreateEmployeeDTO {
     private String email;
 
     @NotBlank
-    @Pattern(regexp = "[\\d]{10}", message = "A valid TFN must be 10 digits.")
     private String tfn;
-
-    private List<UUID> storeIds;
 }
