@@ -10,11 +10,6 @@ group = 'com.elephone'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '11'
 
-bootRun {
-    systemProperties = System.properties
-    environment["AWS_ACCESS_KEY"] = "AKIAY2SZAZO3EOIDMVT5"
-}
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -77,6 +72,10 @@ dependencies {
     )
 }
 
+ext {
+    jibCredHelpers = "ecr-login"
+}
+
 tasks {
     build {
         dependsOn {
@@ -91,7 +90,7 @@ jib {
     }
     to {
         image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management"
-        credHelper = "ecr-login"
+        credHelper = project.ext.jibCredHelpers
         tags = ["lastest", project.version]
     }
 
