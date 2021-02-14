@@ -23,12 +23,12 @@ repositories {
 dependencies {
     implementation(
             "com.itextpdf:html2pdf:$itextpdf",
-            "org.apache.commons:commons-text:1.8",
-            "org.apache.commons:commons-lang3:3.8.1",
-            "commons-validator:commons-validator:1.7",
+            "org.apache.commons:commons-text:$commonsText",
+            "org.apache.commons:commons-lang3:$commonsLang3",
+            "commons-validator:commons-validator:$validator",
             "io.springfox:springfox-swagger2:$swagger",
             "io.springfox:springfox-swagger-ui:$swagger",
-            "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.5",
+            "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:$secretManagerJdbc",
             "org.springframework.boot:spring-boot-starter-web:$springboot",
             "org.springframework.boot:spring-boot-starter-mail:$springboot",
             "org.springframework.boot:spring-boot-starter-data-jpa:$springboot",
@@ -86,19 +86,27 @@ tasks {
 
 jib {
     from {
-        image = "azul/zulu-openjdk:11.0.7"
+        image = "azul/zulu-openjdk-alpine:11.0.7-jre"
+        platforms {
+            platform {
+                architecture = 'amd64'
+                os = 'linux'
+            }
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
     }
     to {
-        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management"
+        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:${version}"
         credHelper = project.ext.jibCredHelpers
-        tags = ["lastest", project.version]
     }
 
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
         jvmFlags = ['-XX:MaxRAMPercentage=85.0']
         ports = ["8080"]
-        environment = [AWS_REGION: "ap-southeast-2"]
     }
 }
 

@@ -1,4 +1,6 @@
-FROM azul/zulu-openjdk-alpine:11.0.7
+FROM azul/zulu-openjdk-alpine:11.0.7-jre
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 ARG JAR_FILE=build/libs/management-1.0.0-SNAPSHOT.jar
 
 ARG AWS_REGION
