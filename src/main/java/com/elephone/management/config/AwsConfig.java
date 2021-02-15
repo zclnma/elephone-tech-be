@@ -24,7 +24,7 @@ public class AwsConfig {
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretAccessKey;
 
-    @Value("${cloud.aws.credentials.secretKey}")
+    @Value("${cloud.aws.credentials.region}")
     private String region;
 
     private AwsCredentialsProvider awsCredentialsProvider;

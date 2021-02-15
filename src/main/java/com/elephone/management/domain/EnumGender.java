@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public enum EnumGender {
 
-    MALE("male", "Male"),
-    FEMALE("female", "Female"),
-    UNSPECIFIED("unspecified", "Unspecified");
+    MALE("MALE", "Male"),
+    FEMALE("FEMALE", "Female"),
+    UNSPECIFIED("UNSPECIFIED", "Unspecified");
 
     private String key;
     private String displayName;

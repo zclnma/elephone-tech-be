@@ -10,9 +10,9 @@ spring:
     banner-mode: off
   datasource:
     platform: postgres
-    url: jdbc-secretsmanager:postgresql://${AWS_DB_URL}
+    url: jdbc-secretsmanager:postgresql://elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
     driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
-    username: ${AWS_SECRET}
+    username: elephone-management-test
     continue-on-error: true
     hikari:
       maximum-pool-size: 5
@@ -25,16 +25,16 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/${AWS_USERPOOL_ID}
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v
 
 cloud:
   aws:
     cognito:
-      userpoolId: ${AWS_USERPOOL_ID}
+      userpoolId: ap-southeast-2_8ovxzl36v
     credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
-      region: ${AWS_REGION}
+      accessKey: AKIAY2SZAZO3GDBERL6D
+      secretKey: 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
+      region: ap-southest-2
 
 
 

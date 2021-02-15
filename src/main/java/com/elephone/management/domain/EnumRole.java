@@ -3,8 +3,8 @@ package com.elephone.management.domain;
 import org.apache.commons.lang3.StringUtils;
 
 public enum EnumRole {
-    USER("user", "User"),
-    ADMIN("admin", "Admin");
+    USER("USER", "User"),
+    ADMIN("ADMIN", "Admin");
 
     private String key;
     private String displayName;

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '2.7.1'
+    id "org.flywaydb.flyway" version "7.5.3"
     id 'java'
     id 'idea'
 }
@@ -9,6 +10,10 @@ plugins {
 group = 'com.elephone'
 version = '1.0.0-SNAPSHOT'
 sourceCompatibility = '11'
+
+ext {
+    jibCredHelpers = "ecr-login"
+}
 
 configurations {
     compileOnly {
@@ -22,12 +27,13 @@ repositories {
 
 dependencies {
     implementation(
+            "org.flywaydb:flyway-core:$flyway",
             "com.itextpdf:html2pdf:$itextpdf",
+            "io.springfox:springfox-swagger2:$swagger",
+            "io.springfox:springfox-swagger-ui:$swagger",
             "org.apache.commons:commons-text:$commonsText",
             "org.apache.commons:commons-lang3:$commonsLang3",
             "commons-validator:commons-validator:$validator",
-            "io.springfox:springfox-swagger2:$swagger",
-            "io.springfox:springfox-swagger-ui:$swagger",
             "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:$secretManagerJdbc",
             "org.springframework.boot:spring-boot-starter-web:$springboot",
             "org.springframework.boot:spring-boot-starter-mail:$springboot",
@@ -72,16 +78,20 @@ dependencies {
     )
 }
 
-ext {
-    jibCredHelpers = "ecr-login"
-}
-
 tasks {
     build {
         dependsOn {
             tasks.jib
         }
     }
+}
+
+//Community version doesn't support secret manager
+flyway {
+    url = "jdbc:postgresql://elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone"
+    user = "elephone"
+    password = "Dh8d6bbnPm2BRJFK"
+    locations = ['classpath:db/migration']
 }
 
 jib {
@@ -99,13 +109,19 @@ jib {
         }
     }
     to {
-        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:${version}"
+        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:develop"
         credHelper = project.ext.jibCredHelpers
     }
 
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
         jvmFlags = ['-XX:MaxRAMPercentage=85.0']
+        environment = [AWS_REGION           : "ap-southeast-2",
+                       AWS_ACCESS_KEY_ID    : "AKIAY2SZAZO3EOIDMVT5",
+                       AWS_SECRET           : "elephone-management-test",
+                       AWS_DB_URL           : "elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone",
+                       AWS_USERPOOL_ID      : "ap-southeast-2_8ovxzl36v",
+                       AWS_SECRET_ACCESS_KEY: "NrUZg+MGQWsBnFujLuDkPsTIxYNrRyua5VlvPWfN"]
         ports = ["8080"]
     }
 }

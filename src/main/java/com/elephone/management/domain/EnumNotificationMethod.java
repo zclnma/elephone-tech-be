@@ -3,8 +3,8 @@ package com.elephone.management.domain;
 import org.apache.commons.lang3.StringUtils;
 
 public enum EnumNotificationMethod {
-    SMS("sms", "Notify By SMS."),
-    EMAIL("email", "Notify by email.");
+    SMS("SMS", "Notify By SMS."),
+    EMAIL("EMAIL", "Notify by email.");
 
     private String key;
     private String displayName;
