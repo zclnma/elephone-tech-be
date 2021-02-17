@@ -19,7 +19,7 @@ spring:
       connection-timeout: 20000
   jpa:
     database: postgresql
-    show-sql: true
+    show-sql: false
 
   security:
     oauth2:
