@@ -2,6 +2,7 @@ package com.elephone.management.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
+@Profile("default")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final String COGNITO_PERMISSION_KEY = "cognito:groups";
