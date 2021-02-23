@@ -19,7 +19,6 @@ public class CognitoService {
         this.cognitoClient = cognitoClient;
     }
 
-
     public void removeUserFromGroup(String username, String group) {
         AdminRemoveUserFromGroupRequest request = AdminRemoveUserFromGroupRequest.builder()
                 .userPoolId(userpoolId)

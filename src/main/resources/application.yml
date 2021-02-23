@@ -11,8 +11,8 @@ spring:
   datasource:
     platform: postgres
     url: jdbc-secretsmanager:postgresql://${AWS_DB_URL}
-    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
     username: ${AWS_SECRET}
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
     continue-on-error: true
     hikari:
       maximum-pool-size: 5

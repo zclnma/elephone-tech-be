@@ -67,16 +67,14 @@ public class TransactionService {
         Integer newStoreReference = transactionStore.getReference() + 1;
         String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
 
-        transaction.getProducts().forEach(transactionProduct -> {
-            transactionProduct.setTransaction(transaction);
-        });
+        transaction.getProducts().forEach(transactionProduct -> transactionProduct.setTransaction(transaction));
 
         MovePath movePath = MovePath.builder()
                 .transaction(transaction)
                 .store(transactionStore)
                 .build();
-        transaction.addMovePath(movePath);
 
+        transaction.addMovePath(movePath);
         transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);

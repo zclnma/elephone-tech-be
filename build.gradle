@@ -88,14 +88,14 @@ tasks {
 
 //Community version doesn't support secret manager
 flyway {
-    url = "jdbc:postgresql://localhost:5432/elephone"
-    user = "elephone"
-    password = "elephone"
-    locations = ['classpath:db/migration']
-//    url = "jdbc:postgresql://elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone"
+//    url = "jdbc:postgresql://localhost:5432/elephone"
 //    user = "elephone"
-//    password = "Dh8d6bbnPm2BRJFK"
+//    password = "elephone"
 //    locations = ['classpath:db/migration']
+    url = "jdbc:postgresql://elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone"
+    user = "elephone"
+    password = "Dh8d6bbnPm2BRJFK"
+    locations = ['classpath:db/migration']
 }
 
 jib {
