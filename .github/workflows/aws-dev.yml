@@ -25,9 +25,26 @@
 
 on:
   push:
-    branches: [master]
+    branches: [develop]
 
 name: Deploy to Amazon ECS
+
+env:
+  IMAGE_TAG: develop
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_SECRET: elephone-management-test 
+  AWS_DB_URL: elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
+  AWS_USERPOOL_ID: ap-southeast-2_8ovxzl36v
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}   
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_REPOSITORY: elephone-management          
+  ECS_SERVICE: elephone-test                 
+  ECS_CLUSTER: elephone-test                 
+  ECS_TASK_DEFINITION: task-definition.json 
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   deploy:
@@ -49,9 +66,9 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -61,28 +78,27 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: elephone-management
-        IMAGE_TAG: ${{ github.sha }}
+        ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+        IMAGE_TAG: develop
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }} --build-arg AWS_SECRET_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --build-arg AWS_REGION=${{ secrets.AWS_SECRET_ACCESS_KEY }} .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        ./gradlew jib
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: task-definition.json
-        container-name: elephone-management
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.ECR_REPOSITORY }}
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: elephone-test
-        cluster: elephone-test
+        service: ${{ env.ECS_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true

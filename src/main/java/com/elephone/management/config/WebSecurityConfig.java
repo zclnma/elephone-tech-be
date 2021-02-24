@@ -3,6 +3,7 @@ package com.elephone.management.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-@Profile("default")
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final String COGNITO_PERMISSION_KEY = "cognito:groups";
@@ -28,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
             List<String> list = (List<String>) jwt.getClaims().get(COGNITO_PERMISSION_KEY);
-            return list.stream()
+                return list.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
         });

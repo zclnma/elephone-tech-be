@@ -13,6 +13,9 @@ sourceCompatibility = '11'
 
 ext {
     jibCredHelpers = "ecr-login"
+    registry = System.getenv().containsKey("DOCKER_REGISTRY") ? System.getenv().containsKey("DOCKER_REGISTRY") : "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com"
+    repo = System.getenv().containsKey("DOCKER_REPOSITORY") ? System.getenv().containsKey("DOCKER_REPOSITORY") : "elephone-management"
+    imageTag = System.getenv().containsKey("IMAGE_TAG") ? System.getenv().containsKey("IMAGE_TAG") : "develop"
 }
 
 configurations {
@@ -88,14 +91,12 @@ tasks {
 
 //Community version doesn't support secret manager
 flyway {
-//    url = "jdbc:postgresql://localhost:5432/elephone"
-//    user = "elephone"
-//    password = "elephone"
-//    locations = ['classpath:db/migration']
-    url = "jdbc:postgresql://elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone"
-    user = "elephone"
-    password = "Dh8d6bbnPm2BRJFK"
+    url = "jdbc:postgresql://${System.getenv("AWS_DB_URL") ?: "localhost:5432/elephone"}"
+    user = "${System.getenv("AWS_SECRET") ?: "elephone"}"
     locations = ['classpath:db/migration']
+    if (!System.getenv().containsKey("AWS_SECRET")) {
+        password = "Dh8d6bbnPm2BRJFK"
+    }
 }
 
 jib {
@@ -113,19 +114,21 @@ jib {
         }
     }
     to {
-        image = "606850829238.dkr.ecr.ap-southeast-2.amazonaws.com/elephone-management:develop"
+        image = "$project.ext.registry/$project.ext.repo:$project.ext.imageTag"
         credHelper = project.ext.jibCredHelpers
     }
 
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
         jvmFlags = ['-XX:MaxRAMPercentage=85.0']
-        environment = [AWS_REGION           : "ap-southeast-2",
-                       AWS_ACCESS_KEY_ID    : "AKIAY2SZAZO3EOIDMVT5",
-                       AWS_SECRET           : "elephone-management-test",
-                       AWS_DB_URL           : "elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone",
-                       AWS_USERPOOL_ID      : "ap-southeast-2_8ovxzl36v",
-                       AWS_SECRET_ACCESS_KEY: "NrUZg+MGQWsBnFujLuDkPsTIxYNrRyua5VlvPWfN"]
+        environment = [
+                AWS_REGION           : "ap-southeast-2",
+                AWS_SECRET           : "elephone-management-test",
+                AWS_DB_URL           : "elephone-management-test.cluster-cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone",
+                AWS_USERPOOL_ID      : "ap-southeast-2_8ovxzl36v",
+                AWS_ACCESS_KEY_ID    : "AKIAY2SZAZO3JDOXVHGW",
+                AWS_SECRET_ACCESS_KEY: "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"
+        ]
         ports = ["8080"]
     }
 }

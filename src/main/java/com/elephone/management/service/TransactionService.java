@@ -86,6 +86,7 @@ public class TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         storeService.updateStore(transactionStore);
+
         return savedTransaction;
     }
 
@@ -106,7 +107,8 @@ public class TransactionService {
         transactionToUpdate.setIssue(transaction.getIssue());
         transactionToUpdate.setResolution(transaction.getResolution());
         transactionToUpdate.setAdditionInfo(transaction.getAdditionInfo());
-        transactionToUpdate.setProducts(transaction.getProducts());
+        transactionToUpdate.getProducts().clear();
+        transactionToUpdate.getProducts().addAll(transaction.getProducts());
         transactionToUpdate.setConfSignature(transaction.getConfSignature());
         return transactionRepository.save(transactionToUpdate);
     }
@@ -204,7 +206,7 @@ public class TransactionService {
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());
-            emailService.sendEmail(transaction);
+            emailService.sendEmail(transaction, "confirmation");
         }
 
         transaction.setStatus(status);
@@ -240,7 +242,7 @@ public class TransactionService {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
 
-        String pdfHtml = TemplateService.generatePdfString(transaction);
+        String pdfHtml = TemplateService.generatePdfString(transaction, "confirmation");
         return pdfService.generatePdfByte(pdfHtml);
     }
 }

@@ -22,6 +22,18 @@ public class TemplateService {
     private static final String INSPECTION_NOT_TICK_TEMPLATE_PATH = "/templates/pdf/inspectionNotTick.html";
     private static final String EMAIL_TEMPLATE_PATH = "/templates/email/index.html";
 
+    private static String generateAgreement(String type) {
+        return type == "confirmation" ? "I accept that Elephone is not responsible for any loss, corruption or breach of\n" +
+                "                    the data on my product during service. I assume the risk that the data on my product may be lost,\n" +
+                "                    corrupted or compromised during service. By signing below, I agree that the repair Terms and\n" +
+                "                    Conditions on the reverse side of this page will apply to the service of the product identified\n" +
+                "                    above; Elephone is not responsible for any loss, corruption or breach of the data on my product\n" +
+                "                    during service as loss of data may occur as a result of the service, it is my responsibility to make\n" +
+                "                    backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any\n" +
+                "                    parts used for repair. Does not cover any physical or water damage. I hereby authorise Elephone to\n" +
+                "                    proceed with the service." : "";
+    }
+
     private static String generateHTMLFromTemplate(String templatePath, Map<String, String> placeHolder) throws IOException {
         Resource resource = new ClassPathResource(templatePath);
         InputStream inputStream = resource.getInputStream();
@@ -34,7 +46,7 @@ public class TemplateService {
         return templateSub.replace(template);
     }
 
-    public static String generatePdfString(Transaction transaction) throws IOException {
+    public static String generatePdfString(Transaction transaction, String type) throws IOException {
         String repairEstimateHtml = "";
         int index = 1;
         int total = 0;
@@ -99,6 +111,10 @@ public class TemplateService {
         pdfPlaceholder.put("storeWarranty", transaction.getStore().getWarranty().toString());
         pdfPlaceholder.put("storeAbn", transaction.getStore().getAbn());
         pdfPlaceholder.put("storeCompanyName", transaction.getStore().getCompanyName());
+
+        //Agreement
+        pdfPlaceholder.put("agreement", generateAgreement(type));
+
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 

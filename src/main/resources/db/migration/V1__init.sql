@@ -1,3 +1,9 @@
+CREATE TYPE gender AS ENUM ('MALE','FEMALE');
+CREATE TYPE emp_role AS ENUM ('USER','ADMIN');
+CREATE TYPE notification_method AS ENUM ('MALE','FEMALE');
+CREATE TYPE transaction_status AS ENUM ('WAIT','DONE','FINALISED');
+CREATE TYPE inspection AS ENUM ('SENSOR','CAMERA','EAR_SPEAKER','LOUD_SPEAKER','WIFI','LCD','MICROPHONE','HOME','ID','VOLUME','CHARGING','LIQUID');
+
 CREATE TABLE comment
 (
     id                 UUID NOT NULL,
@@ -40,12 +46,12 @@ CREATE TABLE employee
     created_date       TIMESTAMP,
     email              VARCHAR(255),
     first_name         VARCHAR(255),
-    gender             VARCHAR(255),
+    gender             gender,
     is_active          BOOLEAN,
     is_deleted         BOOLEAN,
     last_modified_date TIMESTAMP,
     last_name          VARCHAR(255),
-    role               VARCHAR(255),
+    role               emp_role,
     tfn                VARCHAR(255),
     username           VARCHAR(255),
     PRIMARY KEY (id)
@@ -103,10 +109,10 @@ CREATE TABLE transaction
     is_deleted          BOOLEAN,
     issue               TEXT,
     last_modified_date  TIMESTAMP,
-    notification_method VARCHAR(255),
+    notification_method notification_method,
     reference           VARCHAR(255),
     resolution          VARCHAR(255),
-    status              VARCHAR(255),
+    status              transaction_status,
     created_by          UUID NOT NULL,
     finalised_by        UUID,
     init_store_id       UUID NOT NULL,
@@ -117,13 +123,13 @@ CREATE TABLE transaction
 CREATE TABLE transaction_final_inspections
 (
     transaction_id    UUID NOT NULL,
-    final_inspections VARCHAR(255)
+    final_inspections inspection
 );
 
 CREATE TABLE transaction_init_inspections
 (
     transaction_id   UUID NOT NULL,
-    init_inspections VARCHAR(255)
+    init_inspections inspection
 );
 
 CREATE TABLE transaction_product

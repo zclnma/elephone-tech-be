@@ -33,13 +33,13 @@ public class EmailService {
         this.pdfService = pdfService;
     }
 
-    public MimeMessage generateConfEmail(Transaction transaction) throws Exception {
+    public MimeMessage generateEmail(Transaction transaction, String type) throws Exception {
 
         Session session = Session.getDefaultInstance(new Properties());
         MimeMessage mimeMessage = new MimeMessage(session);
         String emailContent = TemplateService.generateEmailString(transaction);
 
-        String pdfHtml = TemplateService.generatePdfString(transaction);
+        String pdfHtml = TemplateService.generatePdfString(transaction, type);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, CharEncoding.UTF_8);
         helper.setSubject(EMAIL_SUBJECT);
@@ -53,7 +53,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendEmail(Transaction transaction) {
+    public void sendEmail(Transaction transaction, String type) {
 
         boolean isVerified = sesService.getEmailIdentity(transaction.getStore().getEmail());
         if (!isVerified) {
@@ -66,7 +66,7 @@ public class EmailService {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MimeMessage mimeMessage;
-            mimeMessage = generateConfEmail(transaction);
+            mimeMessage = generateEmail(transaction, type);
             mimeMessage.writeTo(outputStream);
             sesService.sendEmail(from, to, bcc, outputStream);
         } catch (Exception ex) {

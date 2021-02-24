@@ -10,7 +10,7 @@ spring:
     banner-mode: off
   datasource:
     platform: postgres
-    url: jdbc-secretsmanager:postgresql://${AWS_DB_URL}
+    url: jdbc-secretsmanager:postgresql://${AWS_DB_URL}?stringtype=unspecified
     username: ${AWS_SECRET}
     driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
     continue-on-error: true

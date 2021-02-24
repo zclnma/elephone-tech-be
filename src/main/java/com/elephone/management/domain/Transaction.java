@@ -78,7 +78,7 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<TransactionProduct> products = new HashSet<>();
 

@@ -35,8 +35,8 @@ public class EmailResource {
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<HashMap<String, String>> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         Transaction transaction = transactionService.getTransactionById(emailDTO.getTransactionId());
-        emailService.sendEmail(transaction);
-        return new ResponseEntity<>(new HashMap<String, String>() {{
+        emailService.sendEmail(transaction, emailDTO.getType());
+        return new ResponseEntity<>(new HashMap() {{
             put("message", "Email sent.");
         }}, HttpStatus.CREATED);
     }

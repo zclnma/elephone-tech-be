@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -15,4 +16,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EmailDTO {
     UUID transactionId;
+
+    @NotNull
+    String type;
 }
