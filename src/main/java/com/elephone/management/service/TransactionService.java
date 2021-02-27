@@ -84,9 +84,10 @@ public class TransactionService {
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
         Transaction savedTransaction = transactionRepository.save(transaction);
-
         storeService.updateStore(transactionStore);
-
+        if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
+            emailService.sendEmail(savedTransaction, "authorisation");
+        }
         return savedTransaction;
     }
 
@@ -206,7 +207,9 @@ public class TransactionService {
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(new Date());
-            emailService.sendEmail(transaction, "confirmation");
+            if (!StringUtils.isEmpty(transaction.getCustomer().getEmail())) {
+                emailService.sendEmail(transaction, "confirmation");
+            }
         }
 
         transaction.setStatus(status);

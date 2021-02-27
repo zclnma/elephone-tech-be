@@ -3,6 +3,7 @@ package com.elephone.management.service;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Transaction;
 import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -41,20 +42,19 @@ public class EmailService {
 
         String pdfHtml = TemplateService.generatePdfString(transaction, type);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true, CharEncoding.UTF_8);
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
         helper.setSubject(EMAIL_SUBJECT);
         helper.setFrom(new InternetAddress(transaction.getStore().getEmail()));
         helper.addTo(transaction.getCustomer().getEmail());
         helper.addBcc("info@elephone.com.au");
         helper.setText(emailContent, true);
-        helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes),"application/pdf");
+        helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes), "application/pdf");
 
         return mimeMessage;
     }
 
     @Async
     public void sendEmail(Transaction transaction, String type) {
-
         boolean isVerified = sesService.getEmailIdentity(transaction.getStore().getEmail());
         if (!isVerified) {
             throw new IllegalArgumentException("Please login in to the store email to verify address first.");

@@ -31,7 +31,8 @@ public class TemplateService {
                 "                    during service as loss of data may occur as a result of the service, it is my responsibility to make\n" +
                 "                    backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any\n" +
                 "                    parts used for repair. Does not cover any physical or water damage. I hereby authorise Elephone to\n" +
-                "                    proceed with the service." : "";
+                "                    proceed with the service." : "I accept that Elephone is not responsible for any loss, corruption or breach of the data on my product during service. I assume the risk that the data on my product may be lost, corrupted or compromised during service. By signing below, I agree that the repair Terms and Conditions on the reverse side of this page will apply to the service of the product identified above; Elephone is not responsible for any loss, corruption or\n" +
+                "breach of the data on my product during service as loss of data may occur as a result of the service, it is my responsibility to make backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any parts used for repair. Does not cover any physical or water damage. I hereby authorise Elephone to proceed with the service.";
     }
 
     private static String generateHTMLFromTemplate(String templatePath, Map<String, String> placeHolder) throws IOException {
