@@ -70,14 +70,20 @@ public class TemplateService {
         for (EnumInspection item : EnumInspection.values()) {
             Map<String, String> inspectionPlaceholder = new HashMap<>();
             inspectionPlaceholder.put("name", item.getDisplayName());
-            if (transaction.getFinalInspections().contains(item)) {
-                inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
+            if ("authorisation".equalsIgnoreCase(type)) {
+                if (transaction.getInitInspections().contains(item)) {
+                    inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
+                } else {
+                    inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
+                }
             } else {
-                inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
+                if (transaction.getFinalInspections().contains(item)) {
+                    inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
+                } else {
+                    inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
+                }
             }
         }
-
-        String createdBy = transaction.getCreatedBy().getFirstName() + " " + transaction.getCreatedBy().getLastName();
 
         Map<String, String> pdfPlaceholder = new HashMap<>();
 
@@ -100,8 +106,7 @@ public class TemplateService {
         pdfPlaceholder.put("deposit", StringUtils.isEmpty(transaction.getDeposit()) ? "N/A" : transaction.getDeposit());
         pdfPlaceholder.put("balance", Integer.toString(total - Integer.parseInt(StringUtils.isEmpty(transaction.getDeposit()) ? "0" : transaction.getDeposit())));
         pdfPlaceholder.put("total", Integer.toString(total));
-        pdfPlaceholder.put("confSignature", transaction.getConfSignature());
-        pdfPlaceholder.put("receivedBy", createdBy);
+        pdfPlaceholder.put("signature", "authorisation".equalsIgnoreCase(type) ? transaction.getAuthSignature() : transaction.getConfSignature());
         pdfPlaceholder.put("inspection", inspectionHtml.toString());
         pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
 

@@ -4,6 +4,7 @@ import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Transaction;
 import org.apache.commons.codec.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -21,8 +22,8 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    private static final String EMAIL_SUBJECT = "Elephone Repair Confirmation";
-    private static final String CONF_FILE_NAME = "Confirmation.pdf";
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     private final SesService sesService;
     private final PdfService pdfService;
@@ -42,12 +43,14 @@ public class EmailService {
         String pdfHtml = TemplateService.generatePdfString(transaction, type);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
-        helper.setSubject(EMAIL_SUBJECT);
+        helper.setSubject("authorisation".equalsIgnoreCase(type) ? "Elephone Repair Authorisation" : "Elephone Repair Confirmation");
         helper.setFrom(new InternetAddress(transaction.getStore().getEmail()));
         helper.addTo(transaction.getCustomer().getEmail());
-        helper.addBcc("info@elephone.com.au");
+        if (!"local".equalsIgnoreCase(profile)) {
+            helper.addBcc("info@elephone.com.au");
+        }
         helper.setText(emailContent, true);
-        helper.addAttachment(CONF_FILE_NAME, new ByteArrayResource(pdfBytes), "application/pdf");
+        helper.addAttachment("authorisation".equalsIgnoreCase(type) ? "Authorisation.pdf" : "Confirmation.pdf", new ByteArrayResource(pdfBytes), "application/pdf");
 
         return mimeMessage;
     }
