@@ -6,7 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -31,8 +31,9 @@ public class MovePath {
     private Transaction transaction;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @CreatedDate
-    private Date createdDate;
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 }

@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,9 +57,9 @@ public class TransactionService {
             throw new TransactionException("Transaction id should be empty");
         }
         ZoneId zoneId = ZoneId.of("Australia/Sydney");
-        int year = LocalDate.now(zoneId).getYear();
-        int month = LocalDate.now(zoneId).getMonthValue();
-        int date = LocalDate.now(zoneId).getDayOfMonth();
+        String year = String.format("%04d", LocalDate.now(zoneId).getYear());
+        String month = String.format("%02d", LocalDate.now(zoneId).getMonthValue());
+        String date = String.format("%02d", LocalDate.now(zoneId).getDayOfMonth());
         Store transactionStore = storeService.getStoreById(createTransactionDTO.getStoreId());
         Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
@@ -122,10 +122,17 @@ public class TransactionService {
             if (!StringUtils.isEmpty(storeId)) {
                 try {
                     UUID uuidStoreId = UUID.fromString(storeId);
-                    Join<Transaction, Store> storeJoin = root.join(showCreatedAt == null ? "store" : "initStore");
-                    Predicate predicate = cb.equal(storeJoin.get("id"), uuidStoreId);
-                    predicates.add(predicate);
-
+                    Join<Transaction, Store> storeJoin = root.join("store");
+                    Join<Transaction, Store> initStoreJoin = root.join("initStore");
+                    if (showCreatedAt == null) {
+                        Predicate predicate = cb.equal(storeJoin.get("id"), uuidStoreId);
+                        predicates.add(predicate);
+                    } else {
+                        Predicate predicate1 = cb.equal(initStoreJoin.get("id"), uuidStoreId);
+                        Predicate predicate2 = cb.notEqual(storeJoin.get("id"), uuidStoreId);
+                        predicates.add(predicate1);
+                        predicates.add(predicate2);
+                    }
                 } catch (Exception ex) {
                     throw new TransactionException("Not a valid storeId");
                 }
@@ -203,7 +210,7 @@ public class TransactionService {
             }
             Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
-            transaction.setFinalisedTime(new Date());
+            transaction.setFinalisedTime(LocalDateTime.now());
             if (!StringUtils.isEmpty(transaction.getCustomer().getEmail())) {
                 emailService.sendEmail(transaction, "confirmation");
             }

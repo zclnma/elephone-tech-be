@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -69,5 +69,5 @@ public class TransactionDTO {
 
     private Set<WarrantyHistoryDTO> warrantyHistories;
 
-    private Date createdDate;
+    private LocalDateTime createdDate;
 }

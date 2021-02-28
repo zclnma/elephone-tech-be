@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -71,13 +72,14 @@ public class Store {
     private Boolean isDeleted = false;
 
     @Column
-    private Date deletedAt;
+    private LocalDateTime deletedAt;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @CreatedDate
-    private Date createdDate;
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
     @Override
     public boolean equals(Object o) {

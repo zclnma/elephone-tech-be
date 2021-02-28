@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -22,5 +22,5 @@ public class CommentDTO {
 
     private EmployeeDTO employee;
 
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 }

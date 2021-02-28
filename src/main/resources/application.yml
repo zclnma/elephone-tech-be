@@ -3,6 +3,7 @@ info:
     name: Elephone Management
     version: 1.0.0
 
+
 spring:
   application:
     name: management
@@ -26,6 +27,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/${AWS_USERPOOL_ID}
+  jackson:
+    time-zone: "Australia/Sydney"
 
 cloud:
   aws:

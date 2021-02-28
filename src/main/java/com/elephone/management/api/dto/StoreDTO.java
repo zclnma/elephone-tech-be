@@ -11,7 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -57,5 +57,5 @@ public class StoreDTO {
 
     private Boolean isDeleted;
 
-    private Date deletedAt;
+    private LocalDateTime deletedAt;
 }

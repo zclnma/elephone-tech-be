@@ -20,8 +20,8 @@ import software.amazon.awssdk.services.sesv2.model.AlreadyExistsException;
 import software.amazon.awssdk.services.sesv2.model.NotFoundException;
 
 import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,7 +145,7 @@ public class StoreService {
             }
         });
 
-        store.setDeletedAt(new Date());
+        store.setDeletedAt(LocalDateTime.now());
         storeRepository.updateDeleteStatus(true, id);
     }
 

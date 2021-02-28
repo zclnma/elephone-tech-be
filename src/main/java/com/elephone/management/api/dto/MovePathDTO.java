@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -18,5 +18,5 @@ public class MovePathDTO {
 
     private UUID id;
     private StoreDTO store;
-    private Date createdDate;
+    private LocalDateTime createdDate;
 }

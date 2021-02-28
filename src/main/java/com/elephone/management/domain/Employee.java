@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,10 +73,11 @@ public class Employee {
     private Boolean isDeleted;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @CreatedDate
-    private Date createdDate;
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
     public void addStore(Store store) {
         stores.add(store);

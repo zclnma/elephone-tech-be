@@ -6,7 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -114,13 +114,14 @@ public class Transaction {
     private Employee finalisedBy;
 
     @Column
-    private Date finalisedTime;
+    private LocalDateTime finalisedTime;
 
     @CreatedDate
-    private Date createdDate;
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     public void addComment(Comment comment) {
         comments.add(comment);

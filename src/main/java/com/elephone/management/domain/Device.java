@@ -5,7 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -38,5 +38,6 @@ public class Device {
     private Transaction transaction;
 
     @CreatedDate
-    private Date createdDate;
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
 }
