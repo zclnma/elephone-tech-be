@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 @Api(tags = "Employee Management")
 public class EmployeeResource {
 
-    private EmployeeService employeeService;
-    private EmployeeMapper employeeMapper;
+    private final EmployeeService employeeService;
+    private final EmployeeMapper employeeMapper;
 
     @Autowired
     public EmployeeResource(EmployeeService employeeService, EmployeeMapper employeeMapper) {
@@ -45,7 +45,7 @@ public class EmployeeResource {
     public ResponseEntity<List<EmployeeDTO>> list(
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
-            @ApiParam(name = "storeId", required = false) @RequestParam(name = "storeId", required = false) String storeId
+            @ApiParam(name = "storeId") @RequestParam(name = "storeId", required = false) String storeId
     ) {
         Page<Employee> employees = employeeService.listEmployees(page, perPage, storeId);
         List<EmployeeDTO> dtoEmployees = employees.stream().map(employeeMapper::toDTO).collect(Collectors.toList());
@@ -64,7 +64,7 @@ public class EmployeeResource {
     @GetMapping("/{uniqueId}")
     @ApiOperation(value = "Get store by store id or name", notes = "Get store by store id or name")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<EmployeeDTO> getById(@PathVariable String uniqueId, @CurrentSecurityContext SecurityContext context) {
+    public ResponseEntity<EmployeeDTO> getById(@PathVariable String uniqueId) {
         String[] split = uniqueId.split("_");
         String type = split[0];
         UUID uuid = UUID.fromString(split[1]);

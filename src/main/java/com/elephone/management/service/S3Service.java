@@ -7,7 +7,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Service
 public class S3Service {
 
-    private S3Client s3Client;
+    private final S3Client s3Client;
 
     @Autowired
     public S3Service(S3Client s3Client) {

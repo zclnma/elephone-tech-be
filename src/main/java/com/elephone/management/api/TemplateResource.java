@@ -24,7 +24,7 @@ import java.util.List;
 @Api(tags = "Template management")
 public class TemplateResource {
 
-    private AuthService authService;
+    private final AuthService authService;
 
     @Autowired
     public TemplateResource(AuthService authService) {

@@ -114,10 +114,6 @@ public class EmployeeService {
 
     }
 
-    public List<Employee> createEmployeeBatch(List<Employee> employees) {
-        return employeeRepository.saveAll(employees);
-    }
-
     @Transactional
     public Employee updateEmployee(UpdateEmployeeDTO updateEmployeeDTO) {
         if (updateEmployeeDTO.getId() == null) {

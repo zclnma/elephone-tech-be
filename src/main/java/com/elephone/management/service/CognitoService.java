@@ -12,7 +12,7 @@ public class CognitoService {
     @Value("${cloud.aws.cognito.userpoolId}")
     private String userpoolId;
 
-    private CognitoIdentityProviderClient cognitoClient;
+    private final CognitoIdentityProviderClient cognitoClient;
 
     @Autowired
     public CognitoService(CognitoIdentityProviderClient cognitoClient) {

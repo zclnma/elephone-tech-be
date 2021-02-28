@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,17 +33,15 @@ public class TransactionService {
     private final EmployeeService employeeService;
     private final TransactionMapper transactionMapper;
     private final EmailService emailService;
-    private final S3Service s3Service;
     private final AuthService authService;
     private final PdfService pdfService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, S3Service s3Service, EmailService emailService, AuthService authService, PdfService pdfService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
         this.transactionMapper = transactionMapper;
-        this.s3Service = s3Service;
         this.emailService = emailService;
         this.authService = authService;
         this.pdfService = pdfService;
@@ -57,9 +56,10 @@ public class TransactionService {
         if (createTransactionDTO.getId() != null) {
             throw new TransactionException("Transaction id should be empty");
         }
-        int year = LocalDate.now().getYear();
-        int month = LocalDate.now().getMonthValue();
-        int date = LocalDate.now().getDayOfMonth();
+        ZoneId zoneId = ZoneId.of("Australia/Sydney");
+        int year = LocalDate.now(zoneId).getYear();
+        int month = LocalDate.now(zoneId).getMonthValue();
+        int date = LocalDate.now(zoneId).getDayOfMonth();
         Store transactionStore = storeService.getStoreById(createTransactionDTO.getStoreId());
         Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
@@ -114,11 +114,7 @@ public class TransactionService {
         return transactionRepository.save(transactionToUpdate);
     }
 
-    public List<Transaction> createTransactionBatch(List<Transaction> transactions) {
-        return transactionRepository.saveAll(transactions);
-    }
-
-    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId, Boolean hasWarranty) {
+    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId, Boolean hasWarranty, Boolean showCreatedAt) {
 
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -126,9 +122,10 @@ public class TransactionService {
             if (!StringUtils.isEmpty(storeId)) {
                 try {
                     UUID uuidStoreId = UUID.fromString(storeId);
-                    Join<Transaction, Store> storeJoin = root.join("store");
+                    Join<Transaction, Store> storeJoin = root.join(showCreatedAt == null ? "store" : "initStore");
                     Predicate predicate = cb.equal(storeJoin.get("id"), uuidStoreId);
                     predicates.add(predicate);
+
                 } catch (Exception ex) {
                     throw new TransactionException("Not a valid storeId");
                 }

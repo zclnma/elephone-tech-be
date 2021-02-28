@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class SnsService {
 
-    private SnsClient snsClient;
+    private final SnsClient snsClient;
 
     @Autowired
     public SnsService(SnsClient snsClient) {

@@ -3,7 +3,6 @@ package com.elephone.management.service;
 import com.elephone.management.dispose.exception.StoreException;
 import com.elephone.management.domain.Transaction;
 import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -38,7 +37,7 @@ public class EmailService {
 
         Session session = Session.getDefaultInstance(new Properties());
         MimeMessage mimeMessage = new MimeMessage(session);
-        String emailContent = TemplateService.generateEmailString(transaction);
+        String emailContent = TemplateService.generateEmailString(transaction, type);
 
         String pdfHtml = TemplateService.generatePdfString(transaction, type);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);

@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class SesService {
 
-    private SesV2Client sesV2Client;
+    private final SesV2Client sesV2Client;
 
     @Autowired
     public SesService(SesV2Client sesV2Client) {
@@ -56,6 +56,6 @@ public class SesService {
                                 .build())
                         .build())
                 .build();
-        SendEmailResponse response = sesV2Client.sendEmail(sendEmailRequest);
+        sesV2Client.sendEmail(sendEmailRequest);
     }
 }

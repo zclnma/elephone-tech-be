@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 public class AuthService {
     public List<String> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        List<String> authorities = grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        return authorities;
+        return grantedAuthorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
     }
 
     public String getCognitoId() {

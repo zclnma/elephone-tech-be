@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WarrantyHistoryService {
-    private WarrantyHistoryRepository warrantyHistoryRepository;
-    private EmployeeService employeeService;
-    private StoreService storeService;
-    private TransactionService transactionService;
+    private final WarrantyHistoryRepository warrantyHistoryRepository;
+    private final EmployeeService employeeService;
+    private final StoreService storeService;
+    private final TransactionService transactionService;
 
     @Autowired
     public WarrantyHistoryService(WarrantyHistoryRepository warrantyHistoryRepository, EmployeeService employeeService, StoreService storeService, TransactionService transactionService) {

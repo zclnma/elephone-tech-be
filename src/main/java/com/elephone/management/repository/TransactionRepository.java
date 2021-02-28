@@ -18,7 +18,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID>,
     @Modifying
     @Query("update Transaction t set t.isDeleted = true where t.id = :id")
     void updateDeleteStatus(@Param("id") UUID id);
-
-    List<Transaction> findAllByStore_Id(UUID storeId);
 }
 

@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/email")
 public class EmailResource {
 
-    private TransactionService transactionService;
-    private EmailService emailService;
+    private final TransactionService transactionService;
+    private final EmailService emailService;
 
     @Autowired
     public EmailResource(EmailService emailService, TransactionService transactionService) {
@@ -33,11 +34,11 @@ public class EmailResource {
     @PostMapping
     @ApiOperation(value = "Send email", notes = "Send email")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<HashMap<String, String>> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
+    public ResponseEntity<Map<String,String>> sendEmail(@Valid @RequestBody EmailDTO emailDTO) {
         Transaction transaction = transactionService.getTransactionById(emailDTO.getTransactionId());
         emailService.sendEmail(transaction, emailDTO.getType());
-        return new ResponseEntity<>(new HashMap() {{
-            put("message", "Email sent.");
-        }}, HttpStatus.CREATED);
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("message", "Email sent.");
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }
 }

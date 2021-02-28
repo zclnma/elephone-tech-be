@@ -27,7 +27,7 @@ public class SwaggerConfig {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
-    private final Logger log = LoggerFactory.getLogger(SwaggerConfig.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private ApiKey apiKey() {
         return new ApiKey("Access Token", AUTHORIZATION_HEADER, "header");

@@ -33,12 +33,12 @@ import java.util.stream.Collectors;
 @Api(tags = "Transaction management")
 public class TransactionResource {
 
-    private TransactionMapper transactionMapper;
-    private TransactionService transactionService;
-    private CommentService commentService;
-    private CommentMapper commentMapper;
-    private WarrantyHistoryMapper warrantyHistoryMapper;
-    private WarrantyHistoryService warrantyHistoryService;
+    private final TransactionMapper transactionMapper;
+    private final TransactionService transactionService;
+    private final CommentService commentService;
+    private final CommentMapper commentMapper;
+    private final WarrantyHistoryMapper warrantyHistoryMapper;
+    private final WarrantyHistoryService warrantyHistoryService;
 
     @Autowired
     public TransactionResource(TransactionService transactionService, CommentService commentService, CommentMapper commentMapper, TransactionMapper transactionMapper, WarrantyHistoryMapper warrantyHistoryMapper, WarrantyHistoryService warrantyHistoryService) {
@@ -77,10 +77,11 @@ public class TransactionResource {
             @ApiParam(name = "reference") @RequestParam(name = "reference", required = false) String reference,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
             @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact,
-            @ApiParam(name = "hasWarranty") @RequestParam(name = "hasWarranty", required = false) Boolean hasWarranty
+            @ApiParam(name = "hasWarranty") @RequestParam(name = "hasWarranty", required = false) Boolean hasWarranty,
+            @ApiParam(name = "showCreatedAt") @RequestParam(name = "showCreatedAt", required = false) Boolean showCreatedAt
     ) {
         EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId, hasWarranty);
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId, hasWarranty, showCreatedAt);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));

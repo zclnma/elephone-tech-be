@@ -22,8 +22,8 @@ public class TemplateService {
     private static final String INSPECTION_NOT_TICK_TEMPLATE_PATH = "/templates/pdf/inspectionNotTick.html";
     private static final String EMAIL_TEMPLATE_PATH = "/templates/email/index.html";
 
-    private static String generateAgreement(String type) {
-        return type == "confirmation" ? "I accept that Elephone is not responsible for any loss, corruption or breach of\n" +
+    private static String generateAgreement(String type, Integer warranty) {
+        return "authorisation".equalsIgnoreCase(type) ? "I accept that Elephone is not responsible for any loss, corruption or breach of\n" +
                 "                    the data on my product during service. I assume the risk that the data on my product may be lost,\n" +
                 "                    corrupted or compromised during service. By signing below, I agree that the repair Terms and\n" +
                 "                    Conditions on the reverse side of this page will apply to the service of the product identified\n" +
@@ -31,8 +31,11 @@ public class TemplateService {
                 "                    during service as loss of data may occur as a result of the service, it is my responsibility to make\n" +
                 "                    backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any\n" +
                 "                    parts used for repair. Does not cover any physical or water damage. I hereby authorise Elephone to\n" +
-                "                    proceed with the service." : "I accept that Elephone is not responsible for any loss, corruption or breach of the data on my product during service. I assume the risk that the data on my product may be lost, corrupted or compromised during service. By signing below, I agree that the repair Terms and Conditions on the reverse side of this page will apply to the service of the product identified above; Elephone is not responsible for any loss, corruption or\n" +
-                "breach of the data on my product during service as loss of data may occur as a result of the service, it is my responsibility to make backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any parts used for repair. Does not cover any physical or water damage. I hereby authorise Elephone to proceed with the service.";
+                "                    proceed with the service." : "Thank you for choosing Elephone for the repair of your product.<br /> " +
+                "                    To ensure the highest level of quality and reliability, all work is performed by Elephone technicians using compatible / equivalent / original parts. <br />" +
+                "                    Note: The items identified above have been exchanged by Elephone for new or refurbished parts or products. Any applicable cost is indicated adjacent to the part(s) or product description. Warranty Period: " + warranty.toString() + " calendar days. <br />" +
+                "                    I confirm the product has been repaired. I am satisfied with the service conducted on the device.<br />" +
+                "                    I understood and agreed with the warranty Terms and Conditions stated for this service, will accept and follow the Elephone warranty procedure.";
     }
 
     private static String generateHTMLFromTemplate(String templatePath, Map<String, String> placeHolder) throws IOException {
@@ -48,7 +51,7 @@ public class TemplateService {
     }
 
     public static String generatePdfString(Transaction transaction, String type) throws IOException {
-        String repairEstimateHtml = "";
+        StringBuilder repairEstimateHtml = new StringBuilder();
         int index = 1;
         int total = 0;
         for (TransactionProduct product : transaction.getProducts()) {
@@ -58,19 +61,19 @@ public class TemplateService {
             repairPlaceholder.put("description", StringUtils.isEmpty(product.getDescription()) ? "N/A" : product.getDescription());
             repairPlaceholder.put("price", StringUtils.isEmpty(product.getPrice()) ? "0" : product.getPrice());
             String repairItem = generateHTMLFromTemplate(REPAIR_ESTIMATE_TEMPLATE_PATH, repairPlaceholder);
-            total += Integer.parseInt(product.getPrice());
-            repairEstimateHtml += repairItem;
+            total += Integer.parseInt(StringUtils.isEmpty(product.getPrice()) ? "0" : product.getPrice());
+            repairEstimateHtml.append(repairItem);
             index += 1;
         }
 
-        String inspectionHtml = "";
+        StringBuilder inspectionHtml = new StringBuilder();
         for (EnumInspection item : EnumInspection.values()) {
             Map<String, String> inspectionPlaceholder = new HashMap<>();
             inspectionPlaceholder.put("name", item.getDisplayName());
             if (transaction.getFinalInspections().contains(item)) {
-                inspectionHtml += generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder);
+                inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
             } else {
-                inspectionHtml += generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder);
+                inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
             }
         }
 
@@ -80,6 +83,7 @@ public class TemplateService {
 
         //Transaction form
         pdfPlaceholder.put("website", "www.elephone.com.au");
+        pdfPlaceholder.put("type", "authorisation".equalsIgnoreCase(type) ? "Authorisation" : "Confirmation");
         pdfPlaceholder.put("customerName", transaction.getCustomer().getName());
         pdfPlaceholder.put("customerContact", transaction.getCustomer().getContact());
         pdfPlaceholder.put("customerEmail", transaction.getCustomer().getEmail());
@@ -98,8 +102,8 @@ public class TemplateService {
         pdfPlaceholder.put("total", Integer.toString(total));
         pdfPlaceholder.put("confSignature", transaction.getConfSignature());
         pdfPlaceholder.put("receivedBy", createdBy);
-        pdfPlaceholder.put("inspection", inspectionHtml);
-        pdfPlaceholder.put("repairEstimate", repairEstimateHtml);
+        pdfPlaceholder.put("inspection", inspectionHtml.toString());
+        pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
 
         //Store info
         pdfPlaceholder.put("storeContact", transaction.getStore().getContact());
@@ -114,15 +118,16 @@ public class TemplateService {
         pdfPlaceholder.put("storeCompanyName", transaction.getStore().getCompanyName());
 
         //Agreement
-        pdfPlaceholder.put("agreement", generateAgreement(type));
+        pdfPlaceholder.put("agreement", generateAgreement(type, transaction.getStore().getWarranty()));
 
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 
-    public static String generateEmailString(Transaction transaction) throws IOException {
+    public static String generateEmailString(Transaction transaction, String type) throws IOException {
         Map<String, String> emailPlaceholder = new HashMap<>();
 
         //Replace ${name} to customer name.
+
         emailPlaceholder.put("name", transaction.getCustomer().getName());
         emailPlaceholder.put("storeName", transaction.getStore().getName());
         emailPlaceholder.put("address", transaction.getStore().getAddress());
@@ -130,6 +135,7 @@ public class TemplateService {
         emailPlaceholder.put("state", transaction.getStore().getState());
         emailPlaceholder.put("postcode", transaction.getStore().getPostcode());
         emailPlaceholder.put("contact", transaction.getStore().getContact());
+        emailPlaceholder.put("type", "authorisation".equalsIgnoreCase(type) ? "Authorisation" : "Confirmation");
 
         return generateHTMLFromTemplate(EMAIL_TEMPLATE_PATH, emailPlaceholder);
     }

@@ -6,7 +6,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Service
 public class SqsService {
-    private SqsClient sqsClient;
+    private final SqsClient sqsClient;
 
     @Autowired
     public SqsService(SqsClient sqsClient) {

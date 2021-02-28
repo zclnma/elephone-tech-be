@@ -15,9 +15,9 @@ import java.util.UUID;
 @Service
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private TransactionService transactionService;
-    private EmployeeService employeeService;
+    private final CommentRepository commentRepository;
+    private final TransactionService transactionService;
+    private final EmployeeService employeeService;
 
 
     @Autowired
