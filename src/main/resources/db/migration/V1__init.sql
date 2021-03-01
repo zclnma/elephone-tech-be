@@ -1,7 +1,3 @@
-CREATE TYPE emp_role AS ENUM ('USER','ADMIN');
-CREATE TYPE gender AS ENUM ('MALE','FEMALE','UNSPECIFIED');
-CREATE TYPE transaction_status AS ENUM ('WAIT','DONE','FINALISED');
-
 CREATE TABLE comment
 (
     id                 UUID NOT NULL,
@@ -44,12 +40,12 @@ CREATE TABLE employee
     created_date       TIMESTAMP,
     email              VARCHAR(255),
     first_name         VARCHAR(255),
-    gender             gender,
+    gender             VARCHAR(255),
     is_active          BOOLEAN,
     is_deleted         BOOLEAN,
     last_modified_date TIMESTAMP,
     last_name          VARCHAR(255),
-    role               emp_role,
+    role               VARCHAR(255),
     tfn                VARCHAR(255),
     username           VARCHAR(255),
     PRIMARY KEY (id)
@@ -110,7 +106,7 @@ CREATE TABLE transaction
     notification_method VARCHAR(255),
     reference           VARCHAR(255),
     resolution          VARCHAR(255),
-    status              transaction_status,
+    status              VARCHAR(255),
     created_by          UUID NOT NULL,
     finalised_by        UUID,
     init_store_id       UUID NOT NULL,
