@@ -22,7 +22,7 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:default}")
     private String profile;
 
     private final SesService sesService;
