@@ -96,7 +96,7 @@ flyway {
     user = "${System.getenv("AWS_SECRET") ?: "elephone"}"
     locations = ['classpath:db/migration']
     if (!System.getenv().containsKey("AWS_SECRET")) {
-        password = "Dh8d6bbnPm2BRJFK"
+        password = "elephone"
     }
 }
 

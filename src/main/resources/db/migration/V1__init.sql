@@ -1,8 +1,6 @@
 CREATE TYPE gender AS ENUM ('MALE','FEMALE');
-CREATE TYPE emp_role AS ENUM ('USER','ADMIN');
-CREATE TYPE notification_method AS ENUM ('MALE','FEMALE');
+CREATE TYPE emp_role AS ENUM ('USER','ADMIN','UNSPECIFIED');
 CREATE TYPE transaction_status AS ENUM ('WAIT','DONE','FINALISED');
-CREATE TYPE inspection AS ENUM ('SENSOR','CAMERA','EAR_SPEAKER','LOUD_SPEAKER','WIFI','LCD','MICROPHONE','HOME','ID','VOLUME','CHARGING','LIQUID');
 
 CREATE TABLE comment
 (
@@ -109,7 +107,7 @@ CREATE TABLE transaction
     is_deleted          BOOLEAN,
     issue               TEXT,
     last_modified_date  TIMESTAMP,
-    notification_method notification_method,
+    notification_method VARCHAR(255),
     reference           VARCHAR(255),
     resolution          VARCHAR(255),
     status              transaction_status,
@@ -123,13 +121,13 @@ CREATE TABLE transaction
 CREATE TABLE transaction_final_inspections
 (
     transaction_id    UUID NOT NULL,
-    final_inspections inspection
+    final_inspections VARCHAR(255)
 );
 
 CREATE TABLE transaction_init_inspections
 (
     transaction_id   UUID NOT NULL,
-    init_inspections inspection
+    init_inspections VARCHAR(255)
 );
 
 CREATE TABLE transaction_product
