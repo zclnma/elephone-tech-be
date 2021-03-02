@@ -33,7 +33,6 @@ public class StoreDTO {
     @NotBlank(message = "Company Name can't be empty.")
     private String companyName;
 
-    @Pattern(regexp = "[\\d]{10}", message = "Invalid ABN.")
     private String abn;
 
     @Min(value = 0, message = "warranty time should be more than 0")

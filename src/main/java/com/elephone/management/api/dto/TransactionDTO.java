@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class TransactionDTO {
 
     private String customerName;
 
+    @Pattern(regexp = "[\\d]{10}", message = "Invalid contact number.")
     private String contact;
 
     private String device;
