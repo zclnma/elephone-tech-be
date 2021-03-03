@@ -24,7 +24,7 @@ public class WarrantyHistory {
     @Column
     private UUID id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -44,10 +44,10 @@ public class Transaction {
     @Column(columnDefinition = "TEXT")
     private String issue;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String resolution;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String additionInfo;
 
     @Column(columnDefinition = "TEXT")

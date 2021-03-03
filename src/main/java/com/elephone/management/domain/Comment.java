@@ -23,7 +23,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column
