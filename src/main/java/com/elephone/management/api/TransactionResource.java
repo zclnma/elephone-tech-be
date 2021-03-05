@@ -4,10 +4,7 @@ import com.elephone.management.api.dto.*;
 import com.elephone.management.api.mapper.CommentMapper;
 import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.api.mapper.WarrantyHistoryMapper;
-import com.elephone.management.domain.Comment;
-import com.elephone.management.domain.EnumTransactionStatus;
-import com.elephone.management.domain.Transaction;
-import com.elephone.management.domain.WarrantyHistory;
+import com.elephone.management.domain.*;
 import com.elephone.management.service.CommentService;
 import com.elephone.management.service.TransactionService;
 import com.elephone.management.service.WarrantyHistoryService;
@@ -73,15 +70,17 @@ public class TransactionResource {
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
             @ApiParam(name = "storeId") @RequestParam(name = "storeId", required = false) String storeId,
-            @ApiParam(name = "status", defaultValue = "false") @RequestParam(name = "status", defaultValue = "false") String status,
+            @ApiParam(name = "status") @RequestParam(name = "status", required = false) EnumTransactionStatus status,
+            //Ignore status if statusOrder is passedIn
+            @ApiParam(name = "statusOrder") @RequestParam(name = "statusOrder", required = false) EnumTransactionStatusGroup statusOrder,
             @ApiParam(name = "reference") @RequestParam(name = "reference", required = false) String reference,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
             @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact,
             @ApiParam(name = "hasWarranty") @RequestParam(name = "hasWarranty", required = false) Boolean hasWarranty,
             @ApiParam(name = "showCreatedAt") @RequestParam(name = "showCreatedAt", required = false) Boolean showCreatedAt
     ) {
-        EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(status);
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, transactionStatus, reference, customerName, contact, storeId, hasWarranty, showCreatedAt);
+
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, reference, customerName, contact, storeId, hasWarranty, showCreatedAt, status, statusOrder);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));

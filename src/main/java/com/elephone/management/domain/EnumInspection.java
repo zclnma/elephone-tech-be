@@ -1,7 +1,11 @@
 package com.elephone.management.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
+@AllArgsConstructor
 public enum EnumInspection {
     SENSOR("SENSOR", "Proximity Sensor"),
     CAMERA("CAMERA", "Front / Back Camera"),
@@ -18,19 +22,6 @@ public enum EnumInspection {
 
     private final String key;
     private final String displayName;
-
-    EnumInspection(String key, String displayName) {
-        this.key = key;
-        this.displayName = displayName;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
 
     public static EnumInspection fromKey(String key) {
         for (EnumInspection item : EnumInspection.values()) {

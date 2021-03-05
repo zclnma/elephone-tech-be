@@ -79,7 +79,7 @@ public class TransactionService {
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
         transaction.setCreatedBy(transactionCreatedBy);
-        transaction.setStatus(EnumTransactionStatus.WAIT);
+        transaction.setStatus(EnumTransactionStatus.RECEIVED);
         transaction.getCustomer().setTransaction(transaction);
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
@@ -114,8 +114,7 @@ public class TransactionService {
         return transactionRepository.save(transactionToUpdate);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, EnumTransactionStatus transactionStatus, String reference, String customerName, String contact, String storeId, Boolean hasWarranty, Boolean showCreatedAt) {
-
+    public Page<Transaction> listTransactions(int page, int pageSize, String reference, String customerName, String contact, String storeId, Boolean hasWarranty, Boolean showCreatedAt, EnumTransactionStatus status, EnumTransactionStatusGroup statusGroup) {
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -153,8 +152,13 @@ public class TransactionService {
                 predicates.add(predicate);
             }
 
-            if (transactionStatus != null) {
-                Predicate predicate = cb.equal(root.get("status"), transactionStatus);
+            if (statusGroup != null) {
+                CriteriaBuilder.In<EnumTransactionStatus> inClause = cb.in(root.get("status"));
+                List<EnumTransactionStatus> enumTransactionStatuses = EnumTransactionStatus.fromStatusOrder(statusGroup);
+                enumTransactionStatuses.forEach(enumTransactionStatus -> inClause.value(EnumTransactionStatus.RECEIVED));
+                predicates.add(inClause);
+            } else if (status != null) {
+                Predicate predicate = cb.equal(root.get("status"), status);
                 predicates.add(predicate);
             }
 
@@ -243,13 +247,14 @@ public class TransactionService {
         transactionRepository.updateDeleteStatus(id);
     }
 
-    public byte[] getTransactionPdfByte(UUID id) throws IOException {
+    public byte[] getTransactionPdfByte(UUID id, String type) throws IOException {
         Transaction transaction = getTransactionById(id);
-        if (!transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
+        //If type != authorisation && transaction is not finalised, throw error
+        if ("confirmation".equalsIgnoreCase(type) && !transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
 
-        String pdfHtml = TemplateService.generatePdfString(transaction, "confirmation");
+        String pdfHtml = TemplateService.generatePdfString(transaction, type);
         return pdfService.generatePdfByte(pdfHtml);
     }
 }

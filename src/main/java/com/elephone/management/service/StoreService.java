@@ -117,8 +117,13 @@ public class StoreService {
 
             //Filter transactions which is wait or done.
             CriteriaBuilder.In<EnumTransactionStatus> inClause = cb.in(root.get("status"));
-            inClause.value(EnumTransactionStatus.WAIT);
-            inClause.value(EnumTransactionStatus.DONE);
+            inClause.value(EnumTransactionStatus.RECEIVED)
+                    .value(EnumTransactionStatus.IN_TRANSITION_TO_TECHNICIAN)
+                    .value(EnumTransactionStatus.RECEIVED_BY_TECHNICIAN)
+                    .value(EnumTransactionStatus.FIX_IN_PROGRESS)
+                    .value(EnumTransactionStatus.IN_TRANSITION_TO_STORE)
+                    .value(EnumTransactionStatus.TO_BE_COLLECTED);
+
             predicates.add(inClause);
 
             //Filter current store

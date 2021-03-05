@@ -8,14 +8,14 @@ import org.mapstruct.Mapper;
 public interface EnumTransactionStatusMapper {
     default String toString(EnumTransactionStatus transactionStatus) {
         if (transactionStatus == null) {
-            return EnumTransactionStatus.WAIT.toString();
+            return EnumTransactionStatus.RECEIVED.toString();
         }
         return transactionStatus.getKey();
     }
 
     default EnumTransactionStatus toEnum(String key) {
         if (key == null) {
-            return EnumTransactionStatus.WAIT;
+            return EnumTransactionStatus.RECEIVED;
         }
         return EnumTransactionStatus.fromKey(key);
     }

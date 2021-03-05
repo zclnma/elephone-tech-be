@@ -25,13 +25,23 @@ public class PdfResource {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation(value = "Generate Pdf of an transaction", notes = "Generate Pdf of an transaction")
-    public ResponseEntity<byte[]> generatePdf(@PathVariable UUID id) throws IOException {
-        byte[] pdfBytes = transactionService.getTransactionPdfByte(id);
+    @GetMapping("/{id}/confirmation")
+    @ApiOperation(value = "Generate confirmation pdf of an transaction", notes = "Generate confirmation pdf of an transaction")
+    public ResponseEntity<byte[]> generateConfPdf(@PathVariable UUID id) throws IOException {
+        byte[] pdfBytes = transactionService.getTransactionPdfByte(id, "confirmation");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.builder("inline").filename("Confirmation.pdf").build());
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/authorisation")
+    @ApiOperation(value = "Generate authorisation pdf of an transaction", notes = "Generate authorisation pdf of an transaction")
+    public ResponseEntity<byte[]> generateAuthPdf(@PathVariable UUID id) throws IOException {
+        byte[] pdfBytes = transactionService.getTransactionPdfByte(id, "authorisation");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename("Authorisation.pdf").build());
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }

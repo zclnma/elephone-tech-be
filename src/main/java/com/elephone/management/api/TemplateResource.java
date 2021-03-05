@@ -1,6 +1,8 @@
 package com.elephone.management.api;
 
 import com.elephone.management.api.dto.BaseEnumDTO;
+import com.elephone.management.api.dto.StatusEnumDTO;
+import com.elephone.management.api.dto.StatusGroupDTO;
 import com.elephone.management.domain.EnumGender;
 import com.elephone.management.domain.EnumInspection;
 import com.elephone.management.domain.EnumRole;
@@ -64,16 +66,21 @@ public class TemplateResource {
     @GetMapping("/status")
     @ApiOperation(value = "Get available status", notes = "Get available status")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<List<BaseEnumDTO>> getTransactionStatus() {
-        List<BaseEnumDTO> baseEnumDTOs = new ArrayList<>();
+    public ResponseEntity<List<StatusEnumDTO>> getTransactionStatus() {
+        List<StatusEnumDTO> statusEnumDTOS = new ArrayList<>();
         for (EnumTransactionStatus transactionStatus : EnumTransactionStatus.values()) {
-            BaseEnumDTO baseEnumDTO = BaseEnumDTO.builder()
+            StatusEnumDTO statusEnumDTO = StatusEnumDTO.builder()
                     .key(transactionStatus.getKey())
                     .displayName(transactionStatus.getDisplayName())
+                    .statusGroup(StatusGroupDTO.builder()
+                            .key(transactionStatus.getEnumTransactionStatusGroup().getKey())
+                            .displayName(transactionStatus.getEnumTransactionStatusGroup().getDisplayName())
+                            .order(transactionStatus.getEnumTransactionStatusGroup().getOrder())
+                            .build())
                     .build();
-            baseEnumDTOs.add(baseEnumDTO);
+            statusEnumDTOS.add(statusEnumDTO);
         }
-        return new ResponseEntity<>(baseEnumDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(statusEnumDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/role")
