@@ -31,6 +31,9 @@ public class TransactionStatus {
     @Column
     private Boolean isActive;
 
+    @Column
+    private Boolean isDefault;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_status_group_id")
     private TransactionStatusGroup transactionStatusGroup;

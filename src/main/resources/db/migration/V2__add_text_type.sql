@@ -17,8 +17,8 @@ create table transaction_status_group
     is_active          boolean,
     group_order        int4,
     created_date       timestamp default now(),
-    last_modified_date timestamp default now()
-        primary key (id)
+    last_modified_date timestamp default now(),
+    primary key (id)
 );
 
 insert into transaction_status_group(id, key, display_name, is_active, group_order)
@@ -34,15 +34,15 @@ create table transaction_status
     is_active                   boolean,
     is_default                  boolean,
     transaction_status_group_id uuid not null,
-    created_date                timestamp default now(),
-    last_modified_date          timestamp default now()
-        primary key (id)
+    created_date                timestamp,
+    last_modified_date          timestamp,
+    primary key (id)
 );
 
-alter table transaction_status
-    add constraint FK_transaction_status_and_transaction_status_group foreign key (transaction_status_group_id) references transaction_status_group;
+alter table if exists transaction_status
+    add constraint FKpdwhddoyous87y01agj2t5kkb foreign key (transaction_status_group_id) references transaction_status_group;
 
-insert into transaction_status(id, key, display_name, is_active, transaction_status_group_id)
+insert into transaction_status(id, key, display_name, is_active, is_default, transaction_status_group_id)
 values (uuid_generate_v4(), 'RECEIVED', 'Item received', true, true, '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
        (uuid_generate_v4(), 'IN_TRANSITION_TO_TECHNICIAN', 'In Transition to technician', true, false,
         '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
@@ -72,9 +72,8 @@ where transaction.status = transaction_status.key;
 
 alter table transaction
     drop column status;
-
-alter table transaction
-    add constraint FK_transaction_transaction_status foreign key (transaction_status_id) references transaction_status;
+alter table if exists transaction
+    add constraint FKdb3nt6iipyx0tqg3synr73fpu foreign key (transaction_status_id) references transaction_status;
 
 
 
