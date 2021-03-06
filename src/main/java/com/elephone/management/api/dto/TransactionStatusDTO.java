@@ -13,8 +13,8 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StatusGroupDTO {
+public class TransactionStatusDTO {
     String key;
     String displayName;
-    Integer order;
+    TransactionStatusGroupDTO transactionStatusGroup;
 }

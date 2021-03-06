@@ -72,9 +72,6 @@ public class Transaction {
     private String reference;
 
     @Column
-    private EnumTransactionStatus status;
-
-    @Column
     private Boolean isDeleted;
 
     @Column
@@ -96,6 +93,10 @@ public class Transaction {
     @OrderColumn
     @Builder.Default
     private Set<MovePath> movePaths = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "transaction_status_id")
+    private TransactionStatus transactionStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "init_store_id")

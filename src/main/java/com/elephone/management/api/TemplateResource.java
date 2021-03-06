@@ -1,13 +1,12 @@
 package com.elephone.management.api;
 
 import com.elephone.management.api.dto.BaseEnumDTO;
-import com.elephone.management.api.dto.StatusEnumDTO;
-import com.elephone.management.api.dto.StatusGroupDTO;
-import com.elephone.management.domain.EnumGender;
-import com.elephone.management.domain.EnumInspection;
-import com.elephone.management.domain.EnumRole;
-import com.elephone.management.domain.EnumTransactionStatus;
+import com.elephone.management.api.dto.TransactionStatusDTO;
+import com.elephone.management.api.dto.TransactionStatusGroupDTO;
+import com.elephone.management.api.mapper.TransactionStatusMapper;
+import com.elephone.management.domain.*;
 import com.elephone.management.service.AuthService;
+import com.elephone.management.service.TransactionStatusService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/template")
@@ -27,10 +27,14 @@ import java.util.List;
 public class TemplateResource {
 
     private final AuthService authService;
+    private final TransactionStatusService transactionStatusService;
+    private final TransactionStatusMapper transactionStatusMapper;
 
     @Autowired
-    public TemplateResource(AuthService authService) {
+    public TemplateResource(AuthService authService, TransactionStatusService transactionStatusService, TransactionStatusMapper transactionStatusMapper) {
         this.authService = authService;
+        this.transactionStatusService = transactionStatusService;
+        this.transactionStatusMapper = transactionStatusMapper;
     }
 
     @GetMapping("/gender")
@@ -66,21 +70,10 @@ public class TemplateResource {
     @GetMapping("/status")
     @ApiOperation(value = "Get available status", notes = "Get available status")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
-    public ResponseEntity<List<StatusEnumDTO>> getTransactionStatus() {
-        List<StatusEnumDTO> statusEnumDTOS = new ArrayList<>();
-        for (EnumTransactionStatus transactionStatus : EnumTransactionStatus.values()) {
-            StatusEnumDTO statusEnumDTO = StatusEnumDTO.builder()
-                    .key(transactionStatus.getKey())
-                    .displayName(transactionStatus.getDisplayName())
-                    .statusGroup(StatusGroupDTO.builder()
-                            .key(transactionStatus.getEnumTransactionStatusGroup().getKey())
-                            .displayName(transactionStatus.getEnumTransactionStatusGroup().getDisplayName())
-                            .order(transactionStatus.getEnumTransactionStatusGroup().getOrder())
-                            .build())
-                    .build();
-            statusEnumDTOS.add(statusEnumDTO);
-        }
-        return new ResponseEntity<>(statusEnumDTOS, HttpStatus.OK);
+    public ResponseEntity<List<TransactionStatusDTO>> getTransactionStatus() {
+        List<TransactionStatus> transactionStatuses = transactionStatusService.list();
+        List<TransactionStatusDTO> transactionStatusDTOS = transactionStatuses.stream().map(transactionStatusMapper::toDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(transactionStatusDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/role")

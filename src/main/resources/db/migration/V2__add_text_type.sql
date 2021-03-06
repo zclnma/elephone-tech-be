@@ -9,54 +9,73 @@ alter table elephone.public.transaction
 alter table elephone.public.transaction
     alter column addition_info type text;
 
-alter type transaction_status add value 'RECEIVED';
-alter type transaction_status add value 'TO_BE_COLLECTED';
+create table transaction_status_group
+(
+    id                 uuid not null,
+    key                varchar(255),
+    display_name       varchar(255),
+    is_active          boolean,
+    group_order        int4,
+    created_date       timestamp default now(),
+    last_modified_date timestamp default now()
+        primary key (id)
+);
+
+insert into transaction_status_group(id, key, display_name, is_active, group_order)
+values ('08e11f20-5ef2-4da8-8a17-c2f05fa40b88', 'TO_BE_FIXED', 'To be fixed', true, 1),
+       ('d34c9776-f40c-4aa6-9edd-e58caae3abdd', 'TO_BE_COLLECTED', 'To be collected', true, 2),
+       ('1fe32dd9-986d-4d50-b8e9-ad9781e2cb77', 'FINALISED', 'Transaction finalised', true, 3);
+
+create table transaction_status
+(
+    id                          uuid not null,
+    key                         varchar(255),
+    display_name                varchar(255),
+    is_active                   boolean,
+    is_default                  boolean,
+    transaction_status_group_id uuid not null,
+    created_date                timestamp default now(),
+    last_modified_date          timestamp default now()
+        primary key (id)
+);
+
+alter table transaction_status
+    add constraint FK_transaction_status_and_transaction_status_group foreign key (transaction_status_group_id) references transaction_status_group;
+
+insert into transaction_status(id, key, display_name, is_active, transaction_status_group_id)
+values (uuid_generate_v4(), 'RECEIVED', 'Item received', true, true, '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
+       (uuid_generate_v4(), 'IN_TRANSITION_TO_TECHNICIAN', 'In Transition to technician', true, false,
+        '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
+       (uuid_generate_v4(), 'RECEIVED_BY_TECHNICIAN', 'Received by technician, fix in queue', true, false,
+        '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
+       (uuid_generate_v4(), 'FIX_IN_PROGRESS', 'Repair in progress', true, false,
+        '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
+       (uuid_generate_v4(), 'IN_TRANSITION_TO_STORE', 'In transition to store', true, false,
+        '08e11f20-5ef2-4da8-8a17-c2f05fa40b88'),
+       (uuid_generate_v4(), 'TO_BE_COLLECTED', 'Waiting to be collected', true, false,
+        'd34c9776-f40c-4aa6-9edd-e58caae3abdd'),
+       (uuid_generate_v4(), 'FINALISED', 'Transaction finalised', true, false, '1fe32dd9-986d-4d50-b8e9-ad9781e2cb77');
 
 update transaction
 set status = 'RECEIVED'
 where transaction.status = 'WAIT';
-
 update transaction
 set status = 'TO_BE_COLLECTED'
 where transaction.status = 'DONE';
-
-create type transaction_status_group as enum ('TO_BE_FIXED','TO_BE_COLLECTED','FINALISED');
-create type new_transaction_status as enum ('RECEIVED','IN_TRANSITION_TO_TECHNICIAN','RECEIVED_BY_TECHNICIAN','FIX_IN_PROGRESS','IN_TRANSITION_TO_STORE','TO_BE_COLLECTED','FINALISED');
-
-create table transaction_status
-(
-    id          uuid not null,
-    key         new_transaction_status,
-    displayName varchar(255),
-    group       transaction_status_group,
-    primary key (id)
-);
-
 alter table transaction
-    alter column status type new_transaction_status using (transaction.status::text::new_transaction_status);
-drop type transaction_status;
-alter type new_transaction_status rename to transaction_status;
-
-insert into transaction_status(id, key, displayName, group)
-values (uuid_generate_v4(), 'RECEIVED', 'Item received', 'TO_BE_FIXED'),
-       (uuid_generate_v4(), 'IN_TRANSITION_TO_TECHNICIAN', 'In Transition to technician', 'TO_BE_FIXED'),
-       (uuid_generate_v4(), 'RECEIVED_BY_TECHNICIAN', 'Received by technician, fix in queue', 'TO_BE_FIXED'),
-       (uuid_generate_v4(), 'FIX_IN_PROGRESS', 'Repair in progress', 'TO_BE_FIXED'),
-       (uuid_generate_v4(), 'IN_TRANSITION_TO_STORE', 'In transition to store', 'TO_BE_FIXED'),
-       (uuid_generate_v4(), 'TO_BE_COLLECTED', 'Waiting to be collected', 'TO_BE_COLLECTED'),
-       (uuid_generate_v4(), 'FINALISED', 'Transaction finalised', 'FINALISED');
-
-
-alter table transaction
-    add transaction_status_id uuid not null;
+    add transaction_status_id uuid not null default uuid_generate_v4();
 
 update transaction
 set transaction_status_id = transaction_status.id
+from transaction_status
 where transaction.status = transaction_status.key;
 
 alter table transaction
     drop column status;
+
 alter table transaction
-    add constraint FK_transaction_transaction_tatus foreign key (transaction_status_id) references transaction_status;
+    add constraint FK_transaction_transaction_status foreign key (transaction_status_id) references transaction_status;
+
+
 
 

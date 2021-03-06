@@ -29,6 +29,7 @@ import java.util.UUID;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final TransactionStatusService transactionStatusService;
     private final StoreService storeService;
     private final EmployeeService employeeService;
     private final TransactionMapper transactionMapper;
@@ -37,7 +38,7 @@ public class TransactionService {
     private final PdfService pdfService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService, TransactionStatusService transactionStatusService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
@@ -45,6 +46,7 @@ public class TransactionService {
         this.emailService = emailService;
         this.authService = authService;
         this.pdfService = pdfService;
+        this.transactionStatusService = transactionStatusService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -60,13 +62,13 @@ public class TransactionService {
         String year = String.format("%04d", LocalDate.now(zoneId).getYear());
         String month = String.format("%02d", LocalDate.now(zoneId).getMonthValue());
         String date = String.format("%02d", LocalDate.now(zoneId).getDayOfMonth());
+        Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
+
         Store transactionStore = storeService.getStoreById(createTransactionDTO.getStoreId());
         Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
-        Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
         Integer newStoreReference = transactionStore.getReference() + 1;
         String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
-
         transaction.getProducts().forEach(transactionProduct -> transactionProduct.setTransaction(transaction));
 
         MovePath movePath = MovePath.builder()
@@ -74,12 +76,14 @@ public class TransactionService {
                 .store(transactionStore)
                 .build();
 
+        TransactionStatus defaultStatus = transactionStatusService.findDefaultStatus();
+
         transaction.addMovePath(movePath);
         transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
         transaction.setCreatedBy(transactionCreatedBy);
-        transaction.setStatus(EnumTransactionStatus.RECEIVED);
+        transaction.setTransactionStatus(defaultStatus);
         transaction.getCustomer().setTransaction(transaction);
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
@@ -114,7 +118,7 @@ public class TransactionService {
         return transactionRepository.save(transactionToUpdate);
     }
 
-    public Page<Transaction> listTransactions(int page, int pageSize, String reference, String customerName, String contact, String storeId, Boolean hasWarranty, Boolean showCreatedAt, EnumTransactionStatus status, EnumTransactionStatusGroup statusGroup) {
+    public Page<Transaction> listTransactions(int page, int pageSize, String reference, String customerName, String contact, String storeId, Boolean hasWarranty, Boolean showCreatedAt, String status, String statusGroup) {
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -153,12 +157,13 @@ public class TransactionService {
             }
 
             if (statusGroup != null) {
-                CriteriaBuilder.In<EnumTransactionStatus> inClause = cb.in(root.get("status"));
-                List<EnumTransactionStatus> enumTransactionStatuses = EnumTransactionStatus.fromStatusOrder(statusGroup);
-                enumTransactionStatuses.forEach(enumTransactionStatus -> inClause.value(EnumTransactionStatus.RECEIVED));
-                predicates.add(inClause);
+                Join<Transaction, TransactionStatus> transactionStatusJoin = root.join("transactionStatus");
+                Join<TransactionStatusGroup, TransactionStatus> transactionStatusGroupJoin = transactionStatusJoin.join("transactionStatusGroup");
+                Predicate predicate = cb.equal(transactionStatusGroupJoin.get("key"), statusGroup);
+                predicates.add(predicate);
             } else if (status != null) {
-                Predicate predicate = cb.equal(root.get("status"), status);
+                Join<Transaction, TransactionStatus> transactionStatusJoin = root.join("transactionStatus");
+                Predicate predicate = cb.equal(transactionStatusJoin.get("key"), status);
                 predicates.add(predicate);
             }
 
@@ -191,24 +196,25 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction updateTransactionStatus(UUID id, UUID updatedBy, EnumTransactionStatus status) {
+    public Transaction updateTransactionStatus(UUID id, UUID updatedBy, String status) {
         if (id == null) {
             throw new TransactionException("Transaction id is required");
         }
 
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
-
+        TransactionStatus newTransactionStatus = transactionStatusService.findByKey(status);
         boolean isAdmin = authService.getAuthorities().contains("ADMIN");
 
-        if (transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
-            if (!isAdmin) {
-                throw new TransactionException("You don't have permission to modify status of a finalised transaction.");
-            }
+        if (newTransactionStatus.getTransactionStatusGroup().getGroupOrder() < transaction.getTransactionStatus().getTransactionStatusGroup().getGroupOrder() && !isAdmin) {
+            throw new TransactionException("You don't have permission to perform the action. Please refer to an admin user or contact administrator");
+        }
+
+        if (!"FINALISED".equals(newTransactionStatus.getKey()) && "FINALISED".equals(transaction.getTransactionStatus())) {
             transaction.setConfSignature(null);
         }
 
-        if (status.equals(EnumTransactionStatus.FINALISED)) {
+        if ("FINALISED".equals(newTransactionStatus.getKey()) && !"FINALISED".equals(transaction.getTransactionStatus())) {
             if (StringUtils.isBlank(transaction.getConfSignature())) {
                 throw new TransactionException("Please sign the confirmation form before finalising it.");
             }
@@ -219,9 +225,7 @@ public class TransactionService {
                 emailService.sendEmail(transaction, "confirmation");
             }
         }
-
-        transaction.setStatus(status);
-
+        transaction.setTransactionStatus(newTransactionStatus);
         return transactionRepository.save(transaction);
     }
 
@@ -250,7 +254,7 @@ public class TransactionService {
     public byte[] getTransactionPdfByte(UUID id, String type) throws IOException {
         Transaction transaction = getTransactionById(id);
         //If type != authorisation && transaction is not finalised, throw error
-        if ("confirmation".equalsIgnoreCase(type) && !transaction.getStatus().equals(EnumTransactionStatus.FINALISED)) {
+        if ("confirmation".equalsIgnoreCase(type) && !transaction.getTransactionStatus().getKey().equals("FINALISED")) {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
 

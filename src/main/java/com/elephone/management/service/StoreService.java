@@ -1,9 +1,7 @@
 package com.elephone.management.service;
 
 import com.elephone.management.dispose.exception.StoreException;
-import com.elephone.management.domain.EnumTransactionStatus;
-import com.elephone.management.domain.Store;
-import com.elephone.management.domain.Transaction;
+import com.elephone.management.domain.*;
 import com.elephone.management.repository.EmployeeRepository;
 import com.elephone.management.repository.StoreRepository;
 import com.elephone.management.repository.TransactionRepository;
@@ -115,14 +113,11 @@ public class StoreService {
         Specification<Transaction> specs = (Root<Transaction> root, CriteriaQuery<?> cq, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            //Filter transactions which is wait or done.
-            CriteriaBuilder.In<EnumTransactionStatus> inClause = cb.in(root.get("status"));
-            inClause.value(EnumTransactionStatus.RECEIVED)
-                    .value(EnumTransactionStatus.IN_TRANSITION_TO_TECHNICIAN)
-                    .value(EnumTransactionStatus.RECEIVED_BY_TECHNICIAN)
-                    .value(EnumTransactionStatus.FIX_IN_PROGRESS)
-                    .value(EnumTransactionStatus.IN_TRANSITION_TO_STORE)
-                    .value(EnumTransactionStatus.TO_BE_COLLECTED);
+            Join<Transaction, TransactionStatus> transactionStatusJoin = root.join("transactionStatus");
+            Join<TransactionStatusGroup, TransactionStatus> transactionStatusGroupJoin = transactionStatusJoin.join("transactionStatusGroup");
+            CriteriaBuilder.In<String> inClause = cb.in(transactionStatusGroupJoin.get("key"));
+            inClause.value("TO_BE_FIXED")
+                    .value("TO_BE_COLLECTED");
 
             predicates.add(inClause);
 

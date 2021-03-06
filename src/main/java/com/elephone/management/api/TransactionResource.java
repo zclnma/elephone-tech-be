@@ -70,9 +70,9 @@ public class TransactionResource {
             @ApiParam(name = "page", defaultValue = "0") @RequestParam(name = "page", defaultValue = "0") int page,
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
             @ApiParam(name = "storeId") @RequestParam(name = "storeId", required = false) String storeId,
-            @ApiParam(name = "status") @RequestParam(name = "status", required = false) EnumTransactionStatus status,
+            @ApiParam(name = "status") @RequestParam(name = "status", required = false) String status,
             //Ignore status if statusOrder is passedIn
-            @ApiParam(name = "statusOrder") @RequestParam(name = "statusOrder", required = false) EnumTransactionStatusGroup statusOrder,
+            @ApiParam(name = "statusGroup") @RequestParam(name = "statusGroup", required = false) String statusGroup,
             @ApiParam(name = "reference") @RequestParam(name = "reference", required = false) String reference,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,
             @ApiParam(name = "contact") @RequestParam(name = "contact", required = false) String contact,
@@ -80,7 +80,7 @@ public class TransactionResource {
             @ApiParam(name = "showCreatedAt") @RequestParam(name = "showCreatedAt", required = false) Boolean showCreatedAt
     ) {
 
-        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, reference, customerName, contact, storeId, hasWarranty, showCreatedAt, status, statusOrder);
+        Page<Transaction> transactions = transactionService.listTransactions(page, perPage, reference, customerName, contact, storeId, hasWarranty, showCreatedAt, status, statusGroup);
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));
@@ -99,8 +99,7 @@ public class TransactionResource {
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody UpdateTransactionStatusDTO updateTransactionStatusDTO) {
-        EnumTransactionStatus transactionStatus = EnumTransactionStatus.fromKey(updateTransactionStatusDTO.getStatus());
-        Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), transactionStatus);
+        Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), updateTransactionStatusDTO.getStatus());
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 
