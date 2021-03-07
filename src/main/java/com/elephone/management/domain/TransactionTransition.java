@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
-public class MovePath {
+public class TransactionTransition {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

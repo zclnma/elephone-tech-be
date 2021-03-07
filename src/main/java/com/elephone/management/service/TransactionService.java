@@ -30,6 +30,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final TransactionStatusService transactionStatusService;
+    private final TransactionStatusGroupService transactionStatusGroupService;
     private final StoreService storeService;
     private final EmployeeService employeeService;
     private final TransactionMapper transactionMapper;
@@ -38,7 +39,7 @@ public class TransactionService {
     private final PdfService pdfService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService, TransactionStatusService transactionStatusService) {
+    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService) {
         this.transactionRepository = transactionRepository;
         this.storeService = storeService;
         this.employeeService = employeeService;
@@ -47,6 +48,7 @@ public class TransactionService {
         this.authService = authService;
         this.pdfService = pdfService;
         this.transactionStatusService = transactionStatusService;
+        this.transactionStatusGroupService = transactionStatusGroupService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -62,23 +64,43 @@ public class TransactionService {
         String year = String.format("%04d", LocalDate.now(zoneId).getYear());
         String month = String.format("%02d", LocalDate.now(zoneId).getMonthValue());
         String date = String.format("%02d", LocalDate.now(zoneId).getDayOfMonth());
+
+        // The actual transaction
         Transaction transaction = transactionMapper.fromCreateDTO(createTransactionDTO);
 
+        // Find the store object where this transaction is created
         Store transactionStore = storeService.getStoreById(createTransactionDTO.getStoreId());
+
+        // Find the employee object for whom created this transaction.
         Employee transactionCreatedBy = employeeService.getEmployeeById(createTransactionDTO.getCreatedById());
 
+        // Generate the new reference to store in the store
         Integer newStoreReference = transactionStore.getReference() + 1;
+
+        // Generate the reference numbe for transaction
         String reference = String.format("%04d", Integer.parseInt(transactionStore.getSequence())) + year + month + date + String.format("%06d", newStoreReference);
+
+        // Add bi-directional reference for each transaction product
         transaction.getProducts().forEach(transactionProduct -> transactionProduct.setTransaction(transaction));
 
-        MovePath movePath = MovePath.builder()
+        // Created the first transition (store that transaction is created)
+        TransactionTransition transactionTransition = TransactionTransition.builder()
                 .transaction(transaction)
                 .store(transactionStore)
                 .build();
 
+        // Find the default transaction status
         TransactionStatus defaultStatus = transactionStatusService.findDefaultStatus();
 
-        transaction.addMovePath(movePath);
+        // Created the first action (RECEIVED)
+        TransactionAction transactionAction = TransactionAction.builder()
+                .transaction(transaction)
+                .performedBy(transactionCreatedBy)
+                .transactionStatus(defaultStatus)
+                .build();
+
+        transaction.addTransactionTransition(transactionTransition);
+        transaction.addTransactionAction(transactionAction);
         transaction.setReference(reference);
         transaction.setStore(transactionStore);
         transaction.setInitStore(transactionStore);
@@ -201,31 +223,61 @@ public class TransactionService {
             throw new TransactionException("Transaction id is required");
         }
 
-        Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new TransactionException("Can't find a valid transaction"));
+        // Find the max order defined in the transaction status group
+        Integer maxOrder = transactionStatusGroupService.getMaxGroupOrder();
+
+        // Find the transaction to be updated
+        Transaction transaction = getTransactionById(id);
+
+        // Find the transaction status to be updated
         TransactionStatus newTransactionStatus = transactionStatusService.findByKey(status);
+
+        // Find the employee that performs the action
+        Employee employee = employeeService.getEmployeeById(updatedBy);
+
+        // Check if current user is admin
         boolean isAdmin = authService.getAuthorities().contains("ADMIN");
 
-        if (newTransactionStatus.getTransactionStatusGroup().getGroupOrder() < transaction.getTransactionStatus().getTransactionStatusGroup().getGroupOrder() && !isAdmin) {
+        // Get the old status group order
+        int groupOrder = transaction.getTransactionStatus().getTransactionStatusGroup().getGroupOrder();
+
+        // Get the new status group order
+        int newGroupOrder = newTransactionStatus.getTransactionStatusGroup().getGroupOrder();
+
+        // If moving the status back one level, need admin permission
+        if (newGroupOrder < groupOrder && !isAdmin) {
             throw new TransactionException("You don't have permission to perform the action. Please refer to an admin user or contact administrator");
         }
 
-        if (!"FINALISED".equals(newTransactionStatus.getKey()) && "FINALISED".equals(transaction.getTransactionStatus())) {
+        // If moving from finalised status to previous status, reset confirmation signature
+        if (newGroupOrder != maxOrder && groupOrder == maxOrder) {
             transaction.setConfSignature(null);
+            transaction.setFinalisedBy(null);
+            transaction.setFinalisedTime(null);
         }
 
-        if ("FINALISED".equals(newTransactionStatus.getKey()) && !"FINALISED".equals(transaction.getTransactionStatus())) {
+
+        // If moving to finalised status, try finalising it
+        if (newGroupOrder == maxOrder && groupOrder != maxOrder) {
             if (StringUtils.isBlank(transaction.getConfSignature())) {
                 throw new TransactionException("Please sign the confirmation form before finalising it.");
             }
-            Employee employee = employeeService.getEmployeeById(updatedBy);
             transaction.setFinalisedBy(employee);
             transaction.setFinalisedTime(LocalDateTime.now());
             if (!StringUtils.isEmpty(transaction.getCustomer().getEmail())) {
                 emailService.sendEmail(transaction, "confirmation");
             }
         }
+
+        // No error, then add a new transaction action entry
+        TransactionAction transactionAction = TransactionAction.builder()
+                .performedBy(employee)
+                .transaction(transaction)
+                .transactionStatus(newTransactionStatus)
+                .build();
+
         transaction.setTransactionStatus(newTransactionStatus);
+        transaction.addTransactionAction(transactionAction);
         return transactionRepository.save(transaction);
     }
 
@@ -233,13 +285,13 @@ public class TransactionService {
     public Transaction moveTransaction(UUID id, UUID storeId) {
         Store store = storeService.getStoreById(storeId);
         Transaction transaction = getTransactionById(id);
-        MovePath newPath = MovePath.builder()
+        TransactionTransition newTransition = TransactionTransition.builder()
                 .transaction(transaction)
                 .store(store)
                 .build();
 
         transaction.setStore(store);
-        transaction.addMovePath(newPath);
+        transaction.addTransactionTransition(newTransition);
         return transactionRepository.save(transaction);
     }
 

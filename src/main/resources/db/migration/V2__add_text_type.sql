@@ -76,5 +76,24 @@ alter table if exists transaction
     add constraint FKdb3nt6iipyx0tqg3synr73fpu foreign key (transaction_status_id) references transaction_status;
 
 
+alter table move_path
+    rename to transaction_transition;
 
+create table transaction_action
+(
+    id                    uuid not null,
+    employee_id           uuid not null,
+    transaction_id        uuid not null,
+    transaction_status_id uuid not null,
+    created_date          timestamp,
+    last_modified_date    timestamp,
+    primary key (id)
+);
+
+alter table if exists transaction_action
+    add constraint FKr7ou7832ed0m9j6q38scpavh5 foreign key (employee_id) references employee;
+alter table if exists transaction_action
+    add constraint FKe84ibdusucdhypomr22209o83 foreign key (transaction_id) references transaction;
+alter table if exists transaction_action
+    add constraint FKl8boshdk62kuuafax2504obgh foreign key (transaction_status_id) references transaction_status;
 

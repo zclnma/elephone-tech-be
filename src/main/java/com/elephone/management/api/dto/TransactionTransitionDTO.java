@@ -14,9 +14,8 @@ import java.util.UUID;
 @SuperBuilder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MovePathDTO {
+public class TransactionTransitionDTO {
 
-    private UUID id;
     private StoreDTO store;
     private LocalDateTime createdDate;
 }

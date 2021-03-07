@@ -92,7 +92,12 @@ public class Transaction {
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
     @OrderColumn
     @Builder.Default
-    private Set<MovePath> movePaths = new HashSet<>();
+    private Set<TransactionTransition> transactionTransitions = new HashSet<>();
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OrderColumn
+    @Builder.Default
+    private Set<TransactionAction> transactionActions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_status_id")
@@ -142,9 +147,14 @@ public class Transaction {
         transactionProduct.setTransaction(this);
     }
 
-    public void addMovePath(MovePath movePath) {
-        movePaths.add(movePath);
-        movePath.setTransaction(this);
+    public void addTransactionTransition(TransactionTransition transactionTransition) {
+        transactionTransitions.add(transactionTransition);
+        transactionTransition.setTransaction(this);
+    }
+
+    public void addTransactionAction(TransactionAction transactionAction) {
+        transactionActions.add(transactionAction);
+        transactionAction.setTransaction(this);
     }
 
     public void addWarrantyHistory(WarrantyHistory warrantyHistory) {

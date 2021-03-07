@@ -57,13 +57,15 @@ public class TransactionDTO {
 
     private String reference;
 
-    private String status;
+    private String transactionStatus;
 
     private String additionInfo;
 
     private Set<TransactionProductDTO> products;
 
-    private Set<MovePathDTO> movePaths;
+    private Set<TransactionTransitionDTO> transactionTransitions;
+
+    private Set<TransactionActionDTO> transactionActions;
 
     private String deposit;
 
