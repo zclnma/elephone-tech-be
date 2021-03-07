@@ -57,7 +57,7 @@ public class TransactionDTO {
 
     private String reference;
 
-    private String transactionStatus;
+    private TransactionStatusDTO transactionStatus;
 
     private String additionInfo;
 

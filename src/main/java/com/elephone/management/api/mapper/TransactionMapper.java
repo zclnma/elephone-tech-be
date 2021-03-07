@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
-@Mapper(config = MapstructConfig.class, uses = {CommentMapper.class, StoreMapper.class, EmployeeMapper.class, EnumInspectionMapper.class, EnumRoleMapper.class, EnumNotificationMethodMapper.class, TransactionProductMapper.class, WarrantyHistoryMapper.class, TransactionTransitionMapper.class, TransactionActionMapper.class})
+@Mapper(config = MapstructConfig.class, uses = {CommentMapper.class, StoreMapper.class, EmployeeMapper.class, EnumInspectionMapper.class, EnumRoleMapper.class, EnumNotificationMethodMapper.class, TransactionProductMapper.class, WarrantyHistoryMapper.class, TransactionTransitionMapper.class, TransactionActionMapper.class, TransactionStatusMapper.class})
 public interface TransactionMapper {
 
     @Mappings({

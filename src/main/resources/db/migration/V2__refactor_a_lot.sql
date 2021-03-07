@@ -12,7 +12,7 @@ alter table elephone.public.transaction
 create table transaction_status_group
 (
     id                 uuid not null,
-    key                varchar(255),
+    key                varchar(255) unique,
     display_name       varchar(255),
     is_active          boolean,
     group_order        int4,
@@ -29,7 +29,7 @@ values ('08e11f20-5ef2-4da8-8a17-c2f05fa40b88', 'TO_BE_FIXED', 'To be fixed', tr
 create table transaction_status
 (
     id                          uuid not null,
-    key                         varchar(255),
+    key                         varchar(255) unique,
     display_name                varchar(255),
     is_active                   boolean,
     is_default                  boolean,

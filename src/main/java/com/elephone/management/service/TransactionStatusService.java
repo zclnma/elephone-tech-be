@@ -3,6 +3,7 @@ package com.elephone.management.service;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.TransactionStatus;
 import com.elephone.management.repository.TransactionStatusRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 public class TransactionStatusService {
     private final TransactionStatusRepository transactionStatusRepository;
 
+    @Autowired
     public TransactionStatusService(TransactionStatusRepository transactionStatusRepository) {
         this.transactionStatusRepository = transactionStatusRepository;
     }
@@ -28,5 +30,13 @@ public class TransactionStatusService {
 
     public List<TransactionStatus> list() {
         return transactionStatusRepository.findAll();
+    }
+
+    public TransactionStatus create(TransactionStatus transactionStatus) {
+        return transactionStatusRepository.save(transactionStatus);
+    }
+
+    public TransactionStatus update(TransactionStatus transactionStatus) {
+        return transactionStatusRepository.save(transactionStatus);
     }
 }
