@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
+import java.util.UUID;
+
 @Getter
 @Setter
 @Jacksonized
@@ -14,7 +17,18 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionStatusGroupDTO {
+
+    UUID id;
+
+    @NotBlank
     String key;
+
+    @NotBlank
     String displayName;
+
+    @NotBlank
+    Boolean isActive;
+
+    @NotBlank
     Integer groupOrder;
 }

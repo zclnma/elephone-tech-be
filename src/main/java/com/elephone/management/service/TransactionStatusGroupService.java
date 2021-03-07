@@ -1,7 +1,6 @@
 package com.elephone.management.service;
 
 import com.elephone.management.dispose.exception.TransactionException;
-import com.elephone.management.domain.TransactionStatus;
 import com.elephone.management.domain.TransactionStatusGroup;
 import com.elephone.management.repository.TransactionStatusGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ public class TransactionStatusGroupService {
     }
 
     public TransactionStatusGroup create(TransactionStatusGroup transactionStatusGroup) {
+        transactionStatusGroup.setIsActive(true);
         return transactionStatusGroupRepository.save(transactionStatusGroup);
     }
 

@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapstructConfig.class)
 public interface TransactionStatusGroupMapper {
     TransactionStatusGroupDTO toDTO(TransactionStatusGroup transactionStatusGroup);
+
+    TransactionStatusGroup fromDTO(TransactionStatusGroupDTO transactionStatusGroupDTO);
 }

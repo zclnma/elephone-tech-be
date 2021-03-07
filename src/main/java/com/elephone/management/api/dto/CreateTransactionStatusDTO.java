@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Getter
@@ -15,10 +16,20 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TransactionStatusDTO {
-
+public class CreateTransactionStatusDTO {
     UUID id;
+
+    @NotBlank
     String key;
+
+    @NotBlank
     String displayName;
-    TransactionStatusGroupDTO transactionStatusGroup;
+
+    @NotBlank
+    Boolean isDefault;
+
+    Boolean isActive;
+
+    @NotBlank
+    UUID transactionStatusGroupId;
 }
