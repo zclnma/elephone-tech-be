@@ -22,6 +22,7 @@ public interface TransactionMapper {
             @Mapping(source = "device.color", target = "color"),
             @Mapping(source = "device.imei", target = "imei"),
             @Mapping(source = "device.passcode", target = "passcode"),
+            @Mapping(source = "transactionStatus.key", target = "transactionStatus", qualifiedByName = "fromTransactionStatus"),
     })
     TransactionDTO toDTO(Transaction transaction);
 
@@ -34,6 +35,7 @@ public interface TransactionMapper {
             @Mapping(source = "color", target = "device.color"),
             @Mapping(source = "imei", target = "device.imei"),
             @Mapping(source = "passcode", target = "device.passcode"),
+            @Mapping(target = "transactionStatus", ignore = true),
     })
     Transaction fromDTO(TransactionDTO transaction);
 
@@ -69,5 +71,10 @@ public interface TransactionMapper {
             return "0";
         }
         return depositDto;
+    }
+
+    @Named("fromTransactionStatus")
+    default String fromTransactionStatus(String transactionStatus) {
+        return null;
     }
 }

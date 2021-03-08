@@ -23,18 +23,15 @@ public class TransactionAction {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "transaction_status_id")
-    @Column(updatable = false)
+    @JoinColumn(name = "transaction_status_id", updatable = false)
     private TransactionStatus transactionStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "employee_id")
-    @Column(updatable = false)
+    @JoinColumn(name = "employee_id", updatable = false)
     private Employee performedBy;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "transaction_id")
-    @Column(updatable = false)
+    @JoinColumn(name = "transaction_id", updatable = false)
     private Transaction transaction;
 
     @LastModifiedDate

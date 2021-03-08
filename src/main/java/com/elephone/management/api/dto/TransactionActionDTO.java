@@ -16,6 +16,6 @@ import java.time.LocalDateTime;
 public class TransactionActionDTO {
 
     private TransactionStatusDTO transactionStatus;
-    private EmployeeDTO employeeDTO;
-    private LocalDateTime createdDate;
+    private EmployeeDTO performedBy;
+    private LocalDateTime performedDate;
 }

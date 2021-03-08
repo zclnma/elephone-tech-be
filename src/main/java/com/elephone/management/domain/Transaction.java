@@ -104,18 +104,15 @@ public class Transaction {
     private TransactionStatus transactionStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "init_store_id")
-    @Column(updatable = false, nullable = false)
+    @JoinColumn(name = "init_store_id", updatable = false)
     private Store initStore;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "store_id")
-    @Column(nullable = false)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "created_by")
-    @Column(updatable = false, nullable = false)
+    @JoinColumn(name = "created_by", updatable = false)
     private Employee createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
