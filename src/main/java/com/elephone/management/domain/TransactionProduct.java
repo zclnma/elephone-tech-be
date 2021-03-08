@@ -34,6 +34,7 @@ public class TransactionProduct {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_id", updatable = false)
+    @Column(updatable = false)
     private Transaction transaction;
 
     @CreatedDate

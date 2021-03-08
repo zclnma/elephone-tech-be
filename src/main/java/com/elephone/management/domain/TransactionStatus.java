@@ -22,7 +22,7 @@ public class TransactionStatus {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
+    @Column(updatable = false, unique = true, nullable = false)
     private String key;
 
     @Column

@@ -24,10 +24,12 @@ public class TransactionTransition {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "store_id")
+    @Column(updatable = false)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_id")
+    @Column(updatable = false)
     private Transaction transaction;
 
     @LastModifiedDate

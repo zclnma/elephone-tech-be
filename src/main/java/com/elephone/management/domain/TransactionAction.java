@@ -24,14 +24,17 @@ public class TransactionAction {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_status_id")
+    @Column(updatable = false)
     private TransactionStatus transactionStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employee_id")
+    @Column(updatable = false)
     private Employee performedBy;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "transaction_id")
+    @Column(updatable = false)
     private Transaction transaction;
 
     @LastModifiedDate

@@ -68,10 +68,10 @@ public class Transaction {
     @Column
     private String deposit;
 
-    @Column(unique = true, updatable = false)
+    @Column(updatable = false, unique = true, nullable = false)
     private String reference;
 
-    @Column
+    @Column(nullable = false)
     private Boolean isDeleted;
 
     @Column
@@ -105,14 +105,17 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "init_store_id")
+    @Column(updatable = false, nullable = false)
     private Store initStore;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "store_id")
+    @Column(nullable = false)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "created_by")
+    @Column(updatable = false, nullable = false)
     private Employee createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
