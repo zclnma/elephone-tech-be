@@ -307,8 +307,9 @@ public class TransactionService {
 
     public byte[] getTransactionPdfByte(UUID id, String type) throws IOException {
         Transaction transaction = getTransactionById(id);
+        Integer maxOrder = transactionStatusGroupService.getMaxGroupOrder();
         //If type != authorisation && transaction is not finalised, throw error
-        if ("confirmation".equalsIgnoreCase(type) && !transaction.getTransactionStatus().getKey().equals("FINALISED")) {
+        if ("confirmation".equalsIgnoreCase(type) && transaction.getTransactionStatus().getTransactionStatusGroup().getGroupOrder() != maxOrder) {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
 
