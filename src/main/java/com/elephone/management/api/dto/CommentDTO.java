@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ public class CommentDTO {
 
     private UUID id;
 
+    @NotBlank
     private String content;
 
     private EmployeeDTO employee;

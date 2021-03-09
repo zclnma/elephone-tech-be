@@ -6,6 +6,7 @@ import com.elephone.management.api.dto.TransactionStatusGroupDTO;
 import com.elephone.management.api.mapper.TransactionStatusMapper;
 import com.elephone.management.domain.*;
 import com.elephone.management.service.AuthService;
+import com.elephone.management.service.RepairTypeService;
 import com.elephone.management.service.TransactionStatusGroupService;
 import com.elephone.management.service.TransactionStatusService;
 import io.swagger.annotations.Api;
@@ -30,12 +31,14 @@ public class TemplateResource {
     private final AuthService authService;
     private final TransactionStatusService transactionStatusService;
     private final TransactionStatusMapper transactionStatusMapper;
+    private final RepairTypeService repairTypeService;
 
     @Autowired
-    public TemplateResource(AuthService authService, TransactionStatusService transactionStatusService, TransactionStatusMapper transactionStatusMapper) {
+    public TemplateResource(AuthService authService, TransactionStatusService transactionStatusService, TransactionStatusMapper transactionStatusMapper, RepairTypeService repairTypeService) {
         this.authService = authService;
         this.transactionStatusService = transactionStatusService;
         this.transactionStatusMapper = transactionStatusMapper;
+        this.repairTypeService = repairTypeService;
     }
 
     @GetMapping("/gender")
@@ -57,15 +60,12 @@ public class TemplateResource {
     @ApiOperation(value = "Get available inspection", notes = "Get available inspection")
     @PreAuthorize("hasAnyAuthority('OWNER','ADMIN','USER')")
     public ResponseEntity<List<BaseEnumDTO>> getInspections() {
-        List<BaseEnumDTO> baseEnumDTOS = new ArrayList<>();
-        for (EnumInspection inspection : EnumInspection.values()) {
-            BaseEnumDTO baseEnumDTO = BaseEnumDTO.builder()
-                    .key(inspection.getKey())
-                    .displayName(inspection.getDisplayName())
-                    .build();
-            baseEnumDTOS.add(baseEnumDTO);
-        }
-        return new ResponseEntity<>(baseEnumDTOS, HttpStatus.OK);
+        List<RepairType> repairTypes = repairTypeService.list();
+        List<BaseEnumDTO> baseEnumDTOs = repairTypes.stream().map(repairType -> BaseEnumDTO.builder()
+                .key(repairType.getKey())
+                .displayName(repairType.getDisplayName())
+                .build()).collect(Collectors.toList());
+        return new ResponseEntity<>(baseEnumDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/status")

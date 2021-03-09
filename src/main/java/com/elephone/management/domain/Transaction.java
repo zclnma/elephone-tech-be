@@ -60,10 +60,10 @@ public class Transaction {
     private EnumNotificationMethod notificationMethod;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private Set<EnumInspection> initInspections;
+    private Set<String> initInspections;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private Set<EnumInspection> finalInspections;
+    private Set<String> finalInspections;
 
     @Column
     private String deposit;

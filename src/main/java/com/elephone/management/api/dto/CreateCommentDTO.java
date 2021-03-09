@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +19,7 @@ public class CreateCommentDTO {
 
     private UUID id;
 
+    @NotBlank
     private String content;
 
     private UUID employeeId;

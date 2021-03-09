@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
-public class TransactionStatus {
+public class RepairType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -30,13 +30,6 @@ public class TransactionStatus {
 
     @Column(nullable = false)
     private Boolean isActive;
-
-    @Column(nullable = false)
-    private Boolean isDefault;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "transaction_status_group_id")
-    private TransactionStatusGroup transactionStatusGroup;
 
     @CreatedDate
     @Column(updatable = false)

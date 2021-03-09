@@ -1,20 +1,24 @@
 package com.elephone.management.service;
 
-import com.elephone.management.domain.EnumInspection;
+import com.elephone.management.domain.RepairType;
 import com.elephone.management.domain.Transaction;
 import com.elephone.management.domain.TransactionProduct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+@Service
 public class TemplateService {
     private static final String PDF_TEMPLATE_PATH = "/templates/pdf/index.html";
     private static final String REPAIR_ESTIMATE_TEMPLATE_PATH = "/templates/pdf/repairEstimate.html";
@@ -22,7 +26,14 @@ public class TemplateService {
     private static final String INSPECTION_NOT_TICK_TEMPLATE_PATH = "/templates/pdf/inspectionNotTick.html";
     private static final String EMAIL_TEMPLATE_PATH = "/templates/email/index.html";
 
-    private static String generateAgreement(String type, Integer warranty) {
+    private final RepairTypeService repairTypeService;
+
+    @Autowired
+    public TemplateService(RepairTypeService repairTypeService) {
+        this.repairTypeService = repairTypeService;
+    }
+
+    private String generateAgreement(String type, Integer warranty) {
         return "authorisation".equalsIgnoreCase(type) ? "I accept that Elephone is not responsible for any loss, corruption or breach of\n" +
                 "                    the data on my product during service. I assume the risk that the data on my product may be lost,\n" +
                 "                    corrupted or compromised during service. By signing below, I agree that the repair Terms and\n" +
@@ -38,7 +49,7 @@ public class TemplateService {
                 "                    I understood and agreed with the warranty Terms and Conditions stated for this service, will accept and follow the Elephone warranty procedure.";
     }
 
-    private static String generateHTMLFromTemplate(String templatePath, Map<String, String> placeHolder) throws IOException {
+    private String generateHTMLFromTemplate(String templatePath, Map<String, String> placeHolder) throws IOException {
         Resource resource = new ClassPathResource(templatePath);
         InputStream inputStream = resource.getInputStream();
         String template = new Scanner(inputStream, StandardCharsets.UTF_8.toString()).useDelimiter("\\A").next();
@@ -50,7 +61,7 @@ public class TemplateService {
         return templateSub.replace(template);
     }
 
-    public static String generatePdfString(Transaction transaction, String type) throws IOException {
+    public String generatePdfString(Transaction transaction, String type) throws IOException {
         StringBuilder repairEstimateHtml = new StringBuilder();
         int index = 1;
         int total = 0;
@@ -67,7 +78,8 @@ public class TemplateService {
         }
 
         StringBuilder inspectionHtml = new StringBuilder();
-        for (EnumInspection item : EnumInspection.values()) {
+        List<RepairType> repairTypes = repairTypeService.list();
+        for (RepairType item : repairTypes) {
             Map<String, String> inspectionPlaceholder = new HashMap<>();
             inspectionPlaceholder.put("name", item.getDisplayName());
             if ("authorisation".equalsIgnoreCase(type)) {
@@ -128,7 +140,7 @@ public class TemplateService {
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 
-    public static String generateEmailString(Transaction transaction, String type) throws IOException {
+    public String generateEmailString(Transaction transaction, String type) throws IOException {
         Map<String, String> emailPlaceholder = new HashMap<>();
 
         //Replace ${name} to customer name.

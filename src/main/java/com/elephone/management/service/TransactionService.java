@@ -28,27 +28,29 @@ import java.util.UUID;
 @Service
 public class TransactionService {
 
+    private final TransactionMapper transactionMapper;
     private final TransactionRepository transactionRepository;
     private final TransactionStatusService transactionStatusService;
     private final TransactionStatusGroupService transactionStatusGroupService;
     private final StoreService storeService;
     private final EmployeeService employeeService;
-    private final TransactionMapper transactionMapper;
     private final EmailService emailService;
     private final AuthService authService;
     private final PdfService pdfService;
+    private final TemplateService templateService;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, StoreService storeService, EmployeeService employeeService, TransactionMapper transactionMapper, EmailService emailService, AuthService authService, PdfService pdfService, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService) {
+    public TransactionService(TransactionMapper transactionMapper, TransactionRepository transactionRepository, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService, StoreService storeService, EmployeeService employeeService, EmailService emailService, AuthService authService, PdfService pdfService, TemplateService templateService) {
+        this.transactionMapper = transactionMapper;
         this.transactionRepository = transactionRepository;
+        this.transactionStatusService = transactionStatusService;
+        this.transactionStatusGroupService = transactionStatusGroupService;
         this.storeService = storeService;
         this.employeeService = employeeService;
-        this.transactionMapper = transactionMapper;
         this.emailService = emailService;
         this.authService = authService;
         this.pdfService = pdfService;
-        this.transactionStatusService = transactionStatusService;
-        this.transactionStatusGroupService = transactionStatusGroupService;
+        this.templateService = templateService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -310,7 +312,7 @@ public class TransactionService {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
 
-        String pdfHtml = TemplateService.generatePdfString(transaction, type);
+        String pdfHtml = templateService.generatePdfString(transaction, type);
         return pdfService.generatePdfByte(pdfHtml);
     }
 }

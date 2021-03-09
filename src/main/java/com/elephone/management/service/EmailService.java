@@ -27,20 +27,22 @@ public class EmailService {
 
     private final SesService sesService;
     private final PdfService pdfService;
+    private final TemplateService templateService;
 
     @Autowired
-    public EmailService(SesService sesService, PdfService pdfService) {
+    public EmailService(SesService sesService, PdfService pdfService, TemplateService templateService) {
         this.sesService = sesService;
         this.pdfService = pdfService;
+        this.templateService = templateService;
     }
 
     public MimeMessage generateEmail(Transaction transaction, String type) throws Exception {
 
         Session session = Session.getDefaultInstance(new Properties());
         MimeMessage mimeMessage = new MimeMessage(session);
-        String emailContent = TemplateService.generateEmailString(transaction, type);
+        String emailContent = templateService.generateEmailString(transaction, type);
 
-        String pdfHtml = TemplateService.generatePdfString(transaction, type);
+        String pdfHtml = templateService.generatePdfString(transaction, type);
         byte[] pdfBytes = pdfService.generatePdfByte(pdfHtml);
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
         helper.setSubject("authorisation".equalsIgnoreCase(type) ? "Elephone Repair Authorisation" : "Elephone Repair Confirmation");

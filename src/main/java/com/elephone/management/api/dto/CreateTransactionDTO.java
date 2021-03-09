@@ -47,7 +47,7 @@ public class CreateTransactionDTO {
 
     private Set<String> initInspections;
 
-    @NotBlank
+    @NotBlank(message = "Email can't be empty.")
     @Email(message = "Email format is not valid")
     private String email;
 

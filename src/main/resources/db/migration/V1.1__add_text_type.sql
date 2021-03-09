@@ -6,3 +6,6 @@ alter table elephone.public.transaction
     alter column resolution type text;
 alter table elephone.public.transaction
     alter column addition_info type text;
+
+alter table comment
+    drop column reason;

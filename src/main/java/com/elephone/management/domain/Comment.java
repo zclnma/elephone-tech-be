@@ -26,9 +26,6 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
-    private String reason;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;

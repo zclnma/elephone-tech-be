@@ -25,13 +25,13 @@ public class TransactionStatusGroup {
     @Column(updatable = false, unique = true, nullable = false)
     private String key;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String displayName;
 
-    @Column
+    @Column(nullable = false)
     private Boolean isActive;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private Integer groupOrder;
 
     @CreatedDate

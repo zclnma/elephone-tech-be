@@ -30,7 +30,6 @@ repositories {
 
 dependencies {
     implementation(
-            "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.1",
             "org.flywaydb:flyway-core:$flyway",
             "com.itextpdf:html2pdf:$itextpdf",
             "io.springfox:springfox-swagger2:$swagger",
