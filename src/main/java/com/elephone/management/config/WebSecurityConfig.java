@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/actuator/prometheus",
+        web.ignoring().antMatchers("/actuator/**",
                 "/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",
