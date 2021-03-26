@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Service
 public class TemplateService {
@@ -83,7 +86,7 @@ public class TemplateService {
             Map<String, String> inspectionPlaceholder = new HashMap<>();
             inspectionPlaceholder.put("name", item.getDisplayName());
             if ("authorisation".equalsIgnoreCase(type)) {
-                if (transaction.getInitInspections().contains(item)) {
+                if (transaction.getInitInspections().contains(item.getKey())) {
                     inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
                 } else {
                     inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
@@ -142,8 +145,6 @@ public class TemplateService {
 
     public String generateEmailString(Transaction transaction, String type) throws IOException {
         Map<String, String> emailPlaceholder = new HashMap<>();
-
-        //Replace ${name} to customer name.
 
         emailPlaceholder.put("name", transaction.getCustomer().getName());
         emailPlaceholder.put("storeName", transaction.getStore().getName());
