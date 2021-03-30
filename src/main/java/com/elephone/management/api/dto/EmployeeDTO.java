@@ -37,4 +37,6 @@ public class EmployeeDTO {
     private String tfn;
 
     private Set<StoreDTO> stores;
+
+    private StoreDTO defaultStore;
 }

@@ -66,6 +66,10 @@ public class Employee {
     @Builder.Default
     private Set<Store> stores = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "default_store_id")
+    private Store defaultStore;
+
     @Column
     private Boolean isActive;
 
