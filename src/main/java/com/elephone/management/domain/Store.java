@@ -60,15 +60,12 @@ public class Store {
     private Integer warranty;
 
     @ManyToMany(mappedBy = "stores")
-    @Builder.Default
     private Set<Employee> employees = new HashSet<>();
 
     @Column
-    @Builder.Default
     private Integer reference = 0;
 
     @Column
-    @Builder.Default
     private Boolean isDeleted = false;
 
     @Column

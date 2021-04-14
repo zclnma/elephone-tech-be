@@ -25,9 +25,6 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 @Service
 public class EmailService {
 
-    @Value("${spring.profiles.active:default}")
-    private String profile;
-
     private final SesService sesService;
     private final PdfService pdfService;
     private final TemplateService templateService;
@@ -51,9 +48,6 @@ public class EmailService {
         helper.setSubject("authorisation".equalsIgnoreCase(type) ? "Elephone Repair Authorisation" : "Elephone Repair Confirmation");
         helper.setFrom(new InternetAddress(transaction.getStore().getEmail()));
         helper.addTo(transaction.getCustomer().getEmail());
-        if (!"local".equalsIgnoreCase(profile)) {
-            helper.addBcc("info@elephone.com.au");
-        }
         helper.setText(emailContent, true);
         helper.addAttachment("authorisation".equalsIgnoreCase(type) ? "Authorisation.pdf" : "Confirmation.pdf", new ByteArrayResource(pdfBytes), "application/pdf");
 

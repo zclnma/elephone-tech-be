@@ -63,7 +63,6 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "store_id")
     )
-    @Builder.Default
     private Set<Store> stores = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

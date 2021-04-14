@@ -59,10 +59,10 @@ public class Transaction {
     @Column(updatable = false)
     private EnumNotificationMethod notificationMethod;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> initInspections;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER )
     private Set<String> finalInspections;
 
     @Column
@@ -75,28 +75,23 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TransactionProduct> products = new HashSet<>();
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @Builder.Default
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Comment> comments = new HashSet<>();
 
     @Column
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    @Builder.Default
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<WarrantyHistory> warrantyHistories = new HashSet<>();
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderColumn
-    @Builder.Default
     private Set<TransactionTransition> transactionTransitions = new HashSet<>();
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderColumn
-    @Builder.Default
     private Set<TransactionAction> transactionActions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -107,7 +102,7 @@ public class Transaction {
     @JoinColumn(name = "init_store_id", updatable = false)
     private Store initStore;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "store_id")
     private Store store;
 
