@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ManagementApplication {
 
     public static void main(String[] args) {
-        System.out.println(System.getenv().toString());
         SpringApplication.run(ManagementApplication.class, args);
     }
 

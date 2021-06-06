@@ -17,6 +17,6 @@ public interface EnumNotificationMethodMapper {
         if (key == null) {
             return null;
         }
-        return EnumNotificationMethod.fromkey(key);
+        return EnumNotificationMethod.fromKey(key);
     }
 }

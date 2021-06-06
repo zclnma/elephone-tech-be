@@ -13,7 +13,7 @@ public enum EnumNotificationMethod {
     private String key;
     private String displayName;
 
-    public static EnumNotificationMethod fromkey(String key) {
+    public static EnumNotificationMethod fromKey(String key) {
         for (EnumNotificationMethod enumNotificationMethod : EnumNotificationMethod.values()) {
             if (StringUtils.equals(enumNotificationMethod.getKey(), key)) {
                 return enumNotificationMethod;
