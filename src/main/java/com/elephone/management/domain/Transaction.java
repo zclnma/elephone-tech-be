@@ -74,6 +74,12 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
+    private Boolean agreeMember;
+
+    @Column
+    private Boolean agreeReceiveMessage;
+
+    @Column
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TransactionProduct> products = new HashSet<>();
 

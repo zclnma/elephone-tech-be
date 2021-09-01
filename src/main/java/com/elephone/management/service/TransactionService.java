@@ -2,6 +2,7 @@ package com.elephone.management.service;
 
 import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.dto.UpdateTransactionDTO;
+import com.elephone.management.api.dto.VendCustomerInput;
 import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.*;
@@ -38,9 +39,10 @@ public class TransactionService {
     private final AuthService authService;
     private final PdfService pdfService;
     private final TemplateService templateService;
+    private final VendMemberService vendMemberService;
 
     @Autowired
-    public TransactionService(TransactionMapper transactionMapper, TransactionRepository transactionRepository, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService, StoreService storeService, EmployeeService employeeService, EmailService emailService, AuthService authService, PdfService pdfService, TemplateService templateService) {
+    public TransactionService(TransactionMapper transactionMapper, TransactionRepository transactionRepository, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService, StoreService storeService, EmployeeService employeeService, EmailService emailService, AuthService authService, PdfService pdfService, TemplateService templateService, VendMemberService vendMemberService) {
         this.transactionMapper = transactionMapper;
         this.transactionRepository = transactionRepository;
         this.transactionStatusService = transactionStatusService;
@@ -51,6 +53,7 @@ public class TransactionService {
         this.authService = authService;
         this.pdfService = pdfService;
         this.templateService = templateService;
+        this.vendMemberService = vendMemberService;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -111,10 +114,36 @@ public class TransactionService {
         transaction.getCustomer().setTransaction(transaction);
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
+        transaction.setAgreeMember(createTransactionDTO.getAgreeMember());
+        transaction.setAgreeReceiveMessage(createTransactionDTO.getAgreeReceiveMessage());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
             emailService.sendEmail(savedTransaction, "authorisation");
+        }
+        String contact = createTransactionDTO.getContact();
+        String email = createTransactionDTO.getEmail();
+        if((contact != null && !"".equals(contact)) || (email != null && !"".equals(email))){
+            Boolean isMember = vendMemberService.verifyMember(contact, email);
+            if (!isMember){
+                VendCustomerInput vendCustomerInput = new VendCustomerInput();
+                vendCustomerInput.setPhone(contact);
+                vendCustomerInput.setEmail(email);
+                if (createTransactionDTO.getAgreeReceiveMessage()){
+                    vendCustomerInput.setDo_not_email(false);
+                }else{
+                    vendCustomerInput.setDo_not_email(true);
+                }
+                String customerName = createTransactionDTO.getCustomerName();
+                String[] customerNameArr = customerName.split(" ");
+                vendCustomerInput.setFirst_name(customerNameArr[0]);
+                if (customerNameArr.length > 1){
+                    vendCustomerInput.setLast_name(customerNameArr[1]);
+                }else{
+                    vendCustomerInput.setLast_name(null);
+                }
+                vendMemberService.saveCustomer(vendCustomerInput);
+            }
         }
         return savedTransaction;
     }
@@ -139,6 +168,8 @@ public class TransactionService {
         transactionToUpdate.getProducts().clear();
         transactionToUpdate.getProducts().addAll(transaction.getProducts());
         transactionToUpdate.setConfSignature(transaction.getConfSignature());
+        transactionToUpdate.setAgreeMember(updateTransactionDTO.getAgreeMember());
+        transactionToUpdate.setAgreeReceiveMessage(updateTransactionDTO.getAgreeReceiveMessage());
         return transactionRepository.save(transactionToUpdate);
     }
 
