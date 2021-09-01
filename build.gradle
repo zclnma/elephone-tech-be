@@ -55,6 +55,8 @@ dependencies {
             "software.amazon.awssdk:sqs",
             "software.amazon.awssdk:s3",
             "software.amazon.awssdk:sns",
+            "com.squareup.okhttp3:okhttp:$okhttp3",
+            "com.google.code.gson:gson:$gson",
     )
 
     compileOnly(

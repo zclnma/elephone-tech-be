@@ -39,6 +39,17 @@ cloud:
       secretKey: ${AWS_SECRET_ACCESS_KEY}
       region: ${AWS_REGION}
 
+ok:
+  http:
+    connect-timeout: 30
+    read-timeout: 30
+    write-timeout: 30
+    max-idle-connections: 30
+    keep-alive-duration: 300 
+
+vend:
+  url: https://elephone.vendhq.com/api/2.0
+
 
 
 

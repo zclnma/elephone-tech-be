@@ -62,4 +62,8 @@ public class CreateTransactionDTO {
     private List<TransactionProductDTO> products;
 
     private String deposit;
+
+    private Boolean agreeMember;
+
+    private Boolean agreeReceiveMessage;
 }
