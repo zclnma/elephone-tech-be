@@ -92,7 +92,7 @@ public class TemplateService {
                     inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));
                 }
             } else {
-                if (transaction.getFinalInspections().contains(item)) {
+                if (transaction.getFinalInspections().contains(item.getKey())) {
                     inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_TEMPLATE_PATH, inspectionPlaceholder));
                 } else {
                     inspectionHtml.append(generateHTMLFromTemplate(INSPECTION_NOT_TICK_TEMPLATE_PATH, inspectionPlaceholder));

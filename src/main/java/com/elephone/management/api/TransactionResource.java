@@ -71,7 +71,6 @@ public class TransactionResource {
             @ApiParam(name = "perPage", defaultValue = "10") @RequestParam(name = "perPage", defaultValue = "10") int perPage,
             @ApiParam(name = "storeId") @RequestParam(name = "storeId", required = false) String storeId,
             @ApiParam(name = "status") @RequestParam(name = "status", required = false) String status,
-            //Ignore status if statusOrder is passedIn
             @ApiParam(name = "statusGroup") @RequestParam(name = "statusGroup", required = false) String statusGroup,
             @ApiParam(name = "reference") @RequestParam(name = "reference", required = false) String reference,
             @ApiParam(name = "customerName") @RequestParam(name = "customerName", required = false) String customerName,

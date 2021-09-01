@@ -9,7 +9,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 @Service
 public class CognitoService {
 
-    @Value("${cloud.aws.cognito.userpoolId}")
+    @Value("${aws.cognito.userpoolId}")
     private String userpoolId;
 
     private final CognitoIdentityProviderClient cognitoClient;

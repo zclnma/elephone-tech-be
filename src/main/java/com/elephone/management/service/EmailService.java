@@ -63,7 +63,7 @@ public class EmailService {
 
         String from = transaction.getStore().getEmail();
         String to = transaction.getCustomer().getEmail();
-        List<String> bcc = new ArrayList<>(Collections.singletonList("info@elephone.com"));
+        List<String> bcc = new ArrayList<>();
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MimeMessage mimeMessage;
