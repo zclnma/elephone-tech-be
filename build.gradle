@@ -122,12 +122,9 @@ jib {
         creationTime = "USE_CURRENT_TIMESTAMP"
         jvmFlags = ['-XX:MaxRAMPercentage=85.0']
         environment = [
-                AWS_REGION           : "",
-                AWS_SECRET           : "",
-                AWS_DB_URL           : "",
-                AWS_USERPOOL_ID      : "",
-                AWS_ACCESS_KEY_ID    : "",
-                AWS_SECRET_ACCESS_KEY: ""
+                AWS_SECRET            : "",
+                AWS_DB_URL            : "",
+                AWS_COGNITO_USERPOOLID: "",
         ]
         ports = ["8080"]
     }
