@@ -290,7 +290,7 @@
             line-height: 11px;
             border: none;
             border-bottom: 1px solid #979797;
-            padding-bottom: 4 px;
+            padding-bottom: 4px;
         }
 
         .descriptionInput {
@@ -379,7 +379,7 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
         }
 
         .totalItem {
@@ -683,7 +683,7 @@
                             class="infoInput"
                             name="device"
                             placeholder="Device Type"
-                            value="{device}"
+                            value="${device}"
                     />
                 </div>
                 <div
@@ -699,7 +699,7 @@
                                 name="color"
                                 class="infoInput"
                                 placeholder="Color"
-                                value="{color}"
+                                value="${color}"
                         />
                     </div>
                     <div class="infoItem" style="width: 45%">
@@ -708,7 +708,7 @@
                                 name="passcode"
                                 class="infoInput"
                                 placeholder="Passcode"
-                                value="{passcode}"
+                                value="${passcode}"
                         />
                     </div>
                 </div>
@@ -718,7 +718,7 @@
                             name="imei"
                             class="infoInput"
                             placeholder="IMEI"
-                            value="{imei}"
+                            value="${imei}"
                     />
                 </div>
                 <span class="infoTitle" style="margin-top: 26px">
@@ -731,7 +731,7 @@
                             name="issue"
                             class="infoInput"
                             placeholder="Device Issue"
-                            value="{issue}"
+                            value="${issue}"
                     />
                 </div>
                 <div class="infoItem" }>
@@ -740,7 +740,7 @@
                             name="resolution"
                             class="infoInput"
                             placeholder="Proposed Solution"
-                            value="{resolution}"
+                            value="${resolution}"
                     />
                 </div>
                 <div class="infoItem">
@@ -776,27 +776,11 @@
                 </div>
                 <div class="totalWrapper">
                     <div class="totalItem">
-                        <span class="totalLabel">Deposit</span>
-
-                        <div class="totalContentWrapper">
-                            <span class="totalIcon">$</span>
-                            <input name="deposit" class="totalContent" />
-                        </div>
-                    </div>
-                    <div class="totalItem">
-                        <span class="totalLabel">Balance</span>
-
-                        <div class="totalContentWrapper">
-                            <span class="totalIcon">$</span>
-                            <input name="balance" class="totalContent" />
-                        </div>
-                    </div>
-                    <div class="totalItem">
                         <span class="totalLabel">Total</span>
 
                         <div class="totalContentWrapper">
                             <span class="totalIcon">$</span>
-                            <input class="totalContent" value="{total}"/>
+                            <input class="totalContent" value="${total}"/>
                         </div>
                     </div>
                 </div>
@@ -832,7 +816,7 @@
                     <input
                             class="infoInput"
                             placeholder="Name"
-                            value="{customerName}"
+                            value="${customerName}"
                     />
                 </div>
                 <div class="infoItem">
@@ -842,7 +826,7 @@
                     <input
                             class="infoInput"
                             placeholder="Email"
-                            value="{customerEmail}"
+                            value="${customerEmail}"
                     />
                 </div>
                 <div class="infoItem">
@@ -853,7 +837,7 @@
                     <input
                             class="infoInput"
                             placeholder="Phone Number"
-                            value="{customerContact}"
+                            value="${customerContact}"
                     />
                 </div>
                 <span class="agreementTitle"> Agreement (wording) </span>
