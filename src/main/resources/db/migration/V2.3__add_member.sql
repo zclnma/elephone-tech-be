@@ -1,4 +1,4 @@
 alter table elephone.public.transaction
-    alter column agree_member type BOOLEAN;
+    alter column membership type BOOLEAN;
 alter table elephone.public.transaction
-    alter column agree_receive_message type BOOLEAN;
+    alter column notification type BOOLEAN;

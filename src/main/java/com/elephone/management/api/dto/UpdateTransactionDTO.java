@@ -64,7 +64,7 @@ public class UpdateTransactionDTO {
 
     private String deposit;
 
-    private Boolean agreeMember;
+    private Boolean membership;
 
-    private Boolean agreeReceiveMessage;
+    private Boolean notification;
 }

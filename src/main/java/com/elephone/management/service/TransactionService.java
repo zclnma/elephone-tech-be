@@ -114,8 +114,8 @@ public class TransactionService {
         transaction.getCustomer().setTransaction(transaction);
         transaction.getDevice().setTransaction(transaction);
         transactionStore.setReference(newStoreReference);
-        transaction.setAgreeMember(createTransactionDTO.getAgreeMember());
-        transaction.setAgreeReceiveMessage(createTransactionDTO.getAgreeReceiveMessage());
+        transaction.setMembership(createTransactionDTO.getMembership());
+        transaction.setNotification(createTransactionDTO.getNotification());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
@@ -129,7 +129,7 @@ public class TransactionService {
                 VendCustomerInput vendCustomerInput = new VendCustomerInput();
                 vendCustomerInput.setPhone(contact);
                 vendCustomerInput.setEmail(email);
-                if (createTransactionDTO.getAgreeReceiveMessage()){
+                if (createTransactionDTO.getNotification()){
                     vendCustomerInput.setDo_not_email(false);
                 }else{
                     vendCustomerInput.setDo_not_email(true);
@@ -168,8 +168,8 @@ public class TransactionService {
         transactionToUpdate.getProducts().clear();
         transactionToUpdate.getProducts().addAll(transaction.getProducts());
         transactionToUpdate.setConfSignature(transaction.getConfSignature());
-        transactionToUpdate.setAgreeMember(updateTransactionDTO.getAgreeMember());
-        transactionToUpdate.setAgreeReceiveMessage(updateTransactionDTO.getAgreeReceiveMessage());
+        transactionToUpdate.setMembership(updateTransactionDTO.getMembership());
+        transactionToUpdate.setNotification(updateTransactionDTO.getNotification());
         return transactionRepository.save(transactionToUpdate);
     }
 

@@ -74,10 +74,10 @@ public class Transaction {
     private Boolean isDeleted;
 
     @Column
-    private Boolean agreeMember;
+    private Boolean membership;
 
     @Column
-    private Boolean agreeReceiveMessage;
+    private Boolean notification;
 
     @Column
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
