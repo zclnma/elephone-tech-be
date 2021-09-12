@@ -1,14 +1,21 @@
-<div class="width: 100%">
-    <div style="display: inline-block; width: 15%;">
-        <div class="value-big">${i}) ${number}</div>
-        <div class="divider-not-full"></div>
-    </div>
-    <div style="display: inline-block; width: 65%;">
-        <div class="value-big">${description}</div>
-        <div class="divider-not-full"></div>
-    </div>
-    <div style="display: inline-block; width: 20%;">
-        <div class="value-big">${price}</div>
-        <div class="divider-not-full"></div>
+<div style="margin-top: 15px; display: flex; flex-direction: row; justify-content: space-between; align-items: flex-end;">
+    <span class="repairEstimateNo" style="width: 19%">${i}) ${number}</span>
+    <input
+            id="description"
+            name="{`products[${index}].description`}"
+            class="descriptionInput"
+            style="width: 45%"
+            value={description}
+    />
+    <div
+            style="
+              width: 30%;
+              position: relative;
+              display: flex;
+              flex-direction: row;
+            "
+    >
+        <span class="moneyIcon">$</span>
+        <input id="price" class="amountInput" value={price}/>
     </div>
 </div>

@@ -67,7 +67,7 @@ public class TemplateService {
     public String generatePdfString(Transaction transaction, String type) throws IOException {
         StringBuilder repairEstimateHtml = new StringBuilder();
         int index = 1;
-        int total = 0;
+        float total = 0;
         for (TransactionProduct product : transaction.getProducts()) {
             Map<String, String> repairPlaceholder = new HashMap<>();
             repairPlaceholder.put("i", Integer.toString(index));
@@ -75,7 +75,7 @@ public class TemplateService {
             repairPlaceholder.put("description", StringUtils.isEmpty(product.getDescription()) ? "N/A" : product.getDescription());
             repairPlaceholder.put("price", StringUtils.isEmpty(product.getPrice()) ? "0" : product.getPrice());
             String repairItem = generateHTMLFromTemplate(REPAIR_ESTIMATE_TEMPLATE_PATH, repairPlaceholder);
-            total += Integer.parseInt(StringUtils.isEmpty(product.getPrice()) ? "0" : product.getPrice());
+            total += Float.parseFloat(StringUtils.isEmpty(product.getPrice()) ? "0.00" : product.getPrice());
             repairEstimateHtml.append(repairItem);
             index += 1;
         }
@@ -119,11 +119,18 @@ public class TemplateService {
         pdfPlaceholder.put("comment", StringUtils.isEmpty(transaction.getAdditionInfo()) ? "N/A" : transaction.getAdditionInfo());
         pdfPlaceholder.put("issue", StringUtils.isEmpty(transaction.getIssue()) ? "N/A" : transaction.getIssue());
         pdfPlaceholder.put("deposit", StringUtils.isEmpty(transaction.getDeposit()) ? "N/A" : transaction.getDeposit());
-        pdfPlaceholder.put("balance", Integer.toString(total - Integer.parseInt(StringUtils.isEmpty(transaction.getDeposit()) ? "0" : transaction.getDeposit())));
-        pdfPlaceholder.put("total", Integer.toString(total));
+        float balance = total - Float.parseFloat(StringUtils.isEmpty(transaction.getDeposit()) ? "0.00" : transaction.getDeposit());
+        pdfPlaceholder.put("balance", Float.toString((float)(Math.round(balance * 100))/100));
         pdfPlaceholder.put("signature", "authorisation".equalsIgnoreCase(type) ? transaction.getAuthSignature() : transaction.getConfSignature());
         pdfPlaceholder.put("inspection", inspectionHtml.toString());
         pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
+        float memberBenefits = 0.00f;
+        if (transaction.getMembership()){
+            memberBenefits = (float)(Math.round(total * 0.05 * 100))/100;
+        }
+        pdfPlaceholder.put("memberBenefits", Float.toString(memberBenefits));
+        total = total - memberBenefits;
+        pdfPlaceholder.put("total", Float.toString(total));
 
         //Store info
         pdfPlaceholder.put("storeContact", transaction.getStore().getContact());
