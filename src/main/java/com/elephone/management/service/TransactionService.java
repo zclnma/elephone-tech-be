@@ -121,28 +121,31 @@ public class TransactionService {
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
             emailService.sendEmail(savedTransaction, "authorisation");
         }
-        String contact = createTransactionDTO.getContact();
-        String email = createTransactionDTO.getEmail();
-        if((contact != null && !"".equals(contact)) || (email != null && !"".equals(email))){
-            Boolean isMember = vendMemberService.verifyMember(contact, email);
-            if (!isMember){
-                VendCustomerInput vendCustomerInput = new VendCustomerInput();
-                vendCustomerInput.setPhone(contact);
-                vendCustomerInput.setEmail(email);
-                if (createTransactionDTO.getNotification()){
-                    vendCustomerInput.setDo_not_email(false);
-                }else{
-                    vendCustomerInput.setDo_not_email(true);
+        Boolean membership = createTransactionDTO.getMembership();
+        if (membership != null && membership){
+            String contact = createTransactionDTO.getContact();
+            String email = createTransactionDTO.getEmail();
+            if((contact != null && !"".equals(contact)) || (email != null && !"".equals(email))){
+                Boolean isMember = vendMemberService.verifyMember(contact, email);
+                if (!isMember){
+                    VendCustomerInput vendCustomerInput = new VendCustomerInput();
+                    vendCustomerInput.setPhone(contact);
+                    vendCustomerInput.setEmail(email);
+                    if (createTransactionDTO.getNotification()){
+                        vendCustomerInput.setDo_not_email(false);
+                    }else{
+                        vendCustomerInput.setDo_not_email(true);
+                    }
+                    String customerName = createTransactionDTO.getCustomerName();
+                    String[] customerNameArr = customerName.split(" ");
+                    vendCustomerInput.setFirst_name(customerNameArr[0]);
+                    if (customerNameArr.length > 1){
+                        vendCustomerInput.setLast_name(customerNameArr[1]);
+                    }else{
+                        vendCustomerInput.setLast_name(null);
+                    }
+                    vendMemberService.saveCustomer(vendCustomerInput);
                 }
-                String customerName = createTransactionDTO.getCustomerName();
-                String[] customerNameArr = customerName.split(" ");
-                vendCustomerInput.setFirst_name(customerNameArr[0]);
-                if (customerNameArr.length > 1){
-                    vendCustomerInput.setLast_name(customerNameArr[1]);
-                }else{
-                    vendCustomerInput.setLast_name(null);
-                }
-                vendMemberService.saveCustomer(vendCustomerInput);
             }
         }
         return savedTransaction;
