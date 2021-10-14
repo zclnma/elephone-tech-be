@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc-secretsmanager:postgresql://elephone-dev.cwj4a30evopq.ap-southeast-2.rds.amazonaws.com:5432/elephone
+    username: test-tf
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v
+aws:
+  cognito:
+    userpoolId: ap-southeast-2_8ovxzl36v
+
+
+
