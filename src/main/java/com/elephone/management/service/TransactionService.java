@@ -142,7 +142,7 @@ public class TransactionService {
                     if (customerNameArr.length > 1){
                         vendCustomerInput.setLast_name(customerNameArr[1]);
                     }else{
-                        vendCustomerInput.setLast_name(null);
+                        vendCustomerInput.setLast_name("");
                     }
                     vendMemberService.saveCustomer(vendCustomerInput);
                 }
