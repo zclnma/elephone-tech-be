@@ -173,6 +173,33 @@ public class TransactionService {
         transactionToUpdate.setConfSignature(transaction.getConfSignature());
         transactionToUpdate.setMembership(updateTransactionDTO.getMembership());
         transactionToUpdate.setNotification(updateTransactionDTO.getNotification());
+        Boolean membership = updateTransactionDTO.getMembership();
+        if (membership != null && membership){
+            String contact = transaction.getCustomer().getContact();
+            String email = transaction.getCustomer().getEmail();
+            if((contact != null && !"".equals(contact)) || (email != null && !"".equals(email))){
+                Boolean isMember = vendMemberService.verifyMember(contact, email);
+                if (!isMember){
+                    VendCustomerInput vendCustomerInput = new VendCustomerInput();
+                    vendCustomerInput.setPhone(contact);
+                    vendCustomerInput.setEmail(email);
+                    if (updateTransactionDTO.getNotification()){
+                        vendCustomerInput.setDo_not_email(false);
+                    }else{
+                        vendCustomerInput.setDo_not_email(true);
+                    }
+                    String customerName = transaction.getCustomer().getName();
+                    String[] customerNameArr = customerName.split(" ");
+                    vendCustomerInput.setFirst_name(customerNameArr[0]);
+                    if (customerNameArr.length > 1){
+                        vendCustomerInput.setLast_name(customerNameArr[1]);
+                    }else{
+                        vendCustomerInput.setLast_name("");
+                    }
+                    vendMemberService.saveCustomer(vendCustomerInput);
+                }
+            }
+        }
         return transactionRepository.save(transactionToUpdate);
     }
 
