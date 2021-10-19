@@ -31,10 +31,7 @@
 
         .topWrapper {
             width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
+            overflow: hidden;
         }
 
         .logo {
@@ -46,11 +43,16 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            justify-content: flex-end;
+            float: right;
+            overflow: hidden;
         }
 
         .tewWrapper {
             display: flex;
             flex-direction: column;
+            float: right;
+            margin-right: 20px;
         }
 
         .tewItem {
@@ -76,10 +78,9 @@
         }
 
         .watergardensWrapper {
-            margin-left: 21px;
+            float: right;
             display: flex;
             flex-direction: column;
-            width: 200px;
         }
 
         .watergardensTitle {
@@ -88,6 +89,7 @@
             font-weight: 600;
             color: #484848;
             line-height: 13px;
+            display: block;
         }
 
         .watergardensText {
@@ -109,6 +111,7 @@
         .bottomLeftWrapper {
             display: flex;
             flex-direction: column;
+            float: left;
         }
 
         .workAuthorisationForm {
@@ -152,6 +155,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            overflow: hidden;
         }
 
         .mainLeftWrapper {
@@ -162,6 +166,7 @@
         }
 
         .infoTitle {
+            display: block;
             margin-top: 18px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
@@ -429,6 +434,7 @@
             width: 47%;
             display: flex;
             flex-direction: column;
+            float: right;
         }
 
         .inspectionTitleWrapper {
@@ -629,36 +635,8 @@
 <div class="wrapper">
     <div class="firstWrapper">
         <div class="topWrapper">
-            <img class="logo" src="images/elephoneLogo.png" alt="" />
-
-            <div class="topRightWrapper">
-                <div class="tewWrapper">
-                    <div class="tewItem">
-                        <span class="tewItemTitle">T</span>
-                        <span class="tewItemText"> ${storeContact} </span>
-                    </div>
-                    <div class="tewItem">
-                        <span class="tewItemTitle">E</span>
-                        <span class="tewItemText"> ${storeEmail} </span>
-                    </div>
-                    <div class="tewItem">
-                        <span class="tewItemTitle">W</span>
-                        <a href="https://www.elephone.com.au" class="tewItemText"
-                        >${website}</a
-                        >
-                    </div>
-                </div>
-                <div class="watergardensWrapper">
-                    <span class="watergardensTitle"> Elephone ${storeName} </span>
-                    <span class="watergardensText">
-                ${storeAddress}
-                <br />
-                ${storeSuburb} ${storePostcode}
-              </span>
-                </div>
-            </div>
-        </div>
-        <div class="bottomWrapper">
+<!--            <img class="logo" src="./images/elephoneLogo.png" alt="" />-->
+<!---->
             <div class="bottomLeftWrapper">
                 <span class="workAuthorisationForm"> Work Authorisation Form </span>
 
@@ -671,7 +649,48 @@
                     <span class="workAuthorisationText"> ${date} </span>
                 </div>
             </div>
+            <div class="topRightWrapper">
+
+                <div class="watergardensWrapper">
+                    <span class="watergardensTitle"> Elephone ${storeName} </span>
+                    <span class="watergardensText">
+                ${storeAddress}
+                <br />
+                ${storeSuburb} ${storePostcode}
+              </span>
+                </div>
+                <div class="tewWrapper">
+                    <div class="tewItem">
+                        <span class="tewItemTitle">T</span>
+                        <span class="tewItemText"> ${ storeContact} </span>
+                    </div>
+                    <div class="tewItem">
+                        <span class="tewItemTitle">E</span>
+                        <span class="tewItemText"> ${ storeEmail} </span>
+                    </div>
+                    <div class="tewItem">
+                        <span class="tewItemTitle">W</span>
+                        <a href="https://www.elephone.com.au" class="tewItemText"
+                        >${website}</a
+                        >
+                    </div>
+                </div>
+            </div>
         </div>
+<!--        <div class="bottomWrapper">-->
+<!--            <div class="bottomLeftWrapper">-->
+<!--                <span class="workAuthorisationForm"> Work Authorisation Form </span>-->
+
+<!--                <div class="workAuthorisationItem">-->
+<!--                    <span class="workAuthorisationTitle"> Reference No.： </span>-->
+<!--                    <span class="workAuthorisationText"> ${reference} </span>-->
+<!--                </div>-->
+<!--                <div class="workAuthorisationItem">-->
+<!--                    <span class="workAuthorisationTitle"> Date： </span>-->
+<!--                    <span class="workAuthorisationText"> ${date} </span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="line"></div>
         <div class="mainWrapper">
             <div class="mainLeftWrapper">
@@ -691,9 +710,10 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
+                overflow: hidden;
               "
                 >
-                    <div class="infoItem" style="width: 45%">
+                    <div class="infoItem" style="width: 45%; float: left">
                         <span class="infoLabel">Color</span>
                         <input
                                 name="color"
@@ -702,7 +722,7 @@
                                 value="${color}"
                         />
                     </div>
-                    <div class="infoItem" style="width: 45%">
+                    <div class="infoItem" style="width: 45%;float: right">
                         <span class="infoLabel">Passcode</span>
                         <input
                                 name="passcode"
