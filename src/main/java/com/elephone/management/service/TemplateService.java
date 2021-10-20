@@ -27,6 +27,8 @@ public class TemplateService {
     private static final String REPAIR_ESTIMATE_TEMPLATE_PATH = "/templates/pdf/repairEstimate.html";
     private static final String INSPECTION_TEMPLATE_PATH = "/templates/pdf/inspectionTick.html";
     private static final String INSPECTION_NOT_TICK_TEMPLATE_PATH = "/templates/pdf/inspectionNotTick.html";
+    private static final String CHECKED = "/templates/pdf/checked.html";
+    private static final String NOT_CHECKED = "/templates/pdf/notChecked.html";
     private static final String EMAIL_TEMPLATE_PATH = "/templates/email/index.html";
 
     private final RepairTypeService repairTypeService;
@@ -143,7 +145,20 @@ public class TemplateService {
         pdfPlaceholder.put("storeWarranty", transaction.getStore().getWarranty().toString());
         pdfPlaceholder.put("storeAbn", transaction.getStore().getAbn());
         pdfPlaceholder.put("storeCompanyName", transaction.getStore().getCompanyName());
-
+        StringBuilder membershipCheckHtml = new StringBuilder();
+        StringBuilder notificationCheckHtml = new StringBuilder();
+        if (transaction.getMembership()) {
+            membershipCheckHtml.append(generateHTMLFromTemplate(CHECKED, null));
+        } else {
+            membershipCheckHtml.append(generateHTMLFromTemplate(NOT_CHECKED, null));
+        }
+        if (transaction.getNotification()) {
+            notificationCheckHtml.append(generateHTMLFromTemplate(CHECKED, null));
+        } else {
+            notificationCheckHtml.append(generateHTMLFromTemplate(NOT_CHECKED, null));
+        }
+        pdfPlaceholder.put("membership", membershipCheckHtml.toString());
+        pdfPlaceholder.put("notification", notificationCheckHtml.toString());
         //Agreement
         pdfPlaceholder.put("agreement", generateAgreement(type, transaction.getStore().getWarranty()));
 

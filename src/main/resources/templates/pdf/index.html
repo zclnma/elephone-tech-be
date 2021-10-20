@@ -337,9 +337,10 @@
 
         .discountWrapper {
             margin-top: 41px;
-            padding-right: 40px;
+            width: 100%;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .discountItem {
@@ -347,24 +348,27 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
+            float: right;
+            overflow: hidden;
         }
 
         .discountLabel {
+            float: left;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
             line-height: 11px;
             margin-right: 12px;
+            display: inline-block;
+            float: right;
         }
 
         .discountContentWrapper {
             position: relative;
-            width: 56%;
             float: right;
         }
 
         .discountContent {
-            width: 100%;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             border: none;
             border-bottom: 1px solid #616161;
@@ -381,7 +385,6 @@
 
         .totalWrapper {
             margin-top: 41px;
-            padding-right: 40px;
             box-sizing: border-box;
             flex-direction: row;
             align-items: center;
@@ -391,7 +394,7 @@
 
         .totalItem {
             float: right;
-            width: 30%;
+            width: 100%;
             flex-direction: row;
         }
 
@@ -402,12 +405,13 @@
             color: #616161;
             line-height: 11px;
             margin-right: 12px;
+            display: inline-block;
+            float: right;
         }
 
         .totalContentWrapper {
             float: right;
             position: relative;
-            width: 79%;
         }
 
         .totalIcon {
@@ -467,6 +471,15 @@
             width: 12px;
             height: 12px;
             background-color: #2ab3e7;
+            cursor: pointer;
+            margin-right: 8px;
+            display: inline-block;
+            float: left;
+        }
+        .notCheckered {
+            width: 12px;
+            height: 12px;
+            background-color: #ffffff;
             cursor: pointer;
             margin-right: 8px;
             display: inline-block;
@@ -558,7 +571,8 @@
         }
 
         .membershipItem {
-            margin-top: 12px;
+            margin-top: 18px;
+            display: block;
             display: flex;
             flex-direction: row;
             overflow: hidden;
@@ -680,11 +694,11 @@
                 <div class="tewWrapper">
                     <div class="tewItem">
                         <span class="tewItemTitle">T</span>
-                        <span class="tewItemText"> ${ storeContact} </span>
+                        <span class="tewItemText"> ${storeContact} </span>
                     </div>
                     <div class="tewItem">
                         <span class="tewItemTitle">E</span>
-                        <span class="tewItemText"> ${ storeEmail} </span>
+                        <span class="tewItemText"> ${storeEmail} </span>
                     </div>
                     <div class="tewItem">
                         <span class="tewItemTitle">W</span>
@@ -804,22 +818,22 @@
                 ${repairEstimate}
                 <div class="discountWrapper">
                     <div class="discountItem">
-                        <span class="discountLabel"> Member benefits </span>
 
                         <div class="discountContentWrapper">
                             <span class="totalIcon">$</span>
-                            <input class="discountContent"/>
+                            <input class="discountContent" value="${memberBenefits}"/>
                         </div>
+                        <span class="discountLabel"> Member benefits </span>
                     </div>
                 </div>
                 <div class="totalWrapper">
                     <div class="totalItem">
-                        <span class="totalLabel">Total</span>
 
                         <div class="totalContentWrapper">
                             <span class="totalIcon">$</span>
                             <input class="totalContent" value="${total}"/>
                         </div>
+                        <span class="totalLabel">Total</span>
                     </div>
                 </div>
             </div>
@@ -840,7 +854,7 @@
               be at customer’s own cost.
             </span>
 
-                <div style="width: 100%; height: 194px; box-sizing: border-box; overflow: hidden;">
+                <div style="width: 100%; height: auto; box-sizing: border-box; overflow: hidden;">
                     ${inspection}
                 </div>
                 <span class="infoTitle" style="margin-top: 25px">
@@ -892,22 +906,22 @@
               to proceed with the service. Click
             </span>
                 <span class="membershipTitle"> Membership </span>
-                <div class="membershipItem">
-                    <div class="checkered"></div>
+                <div class="memb4ershipItem">
+<!--                    <div class="checkered"></div>-->
+                    ${membership}
                     <span class="membershipText"
                     >I agree to be a part of Elephone Member to get 5% discount,
                 Loyalty Points ($50 = $1) & other weekly special offers</span
                     >
                 </div>
                 <div class="membershipItem">
-                    <div class="checkered"></div>
+<!--                    <div class="checkered"></div>-->
+                    ${notification}
                     <span class="membershipText"
                     >I agree to receive newsletter for special offer and new
                 products information from Elephone</span
                     >
                 </div>
-                <div class="membershipItem"></div>
-                <div class="membershipItem"></div>
                 <div class="signatureTitleWrapper">
               <span class="signatureTitle">
                 Signature<span style="color: red">*</span>
