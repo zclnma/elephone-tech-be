@@ -1,15 +1,15 @@
 <div style=" margin-top: 15px; flex-direction: row; justify-content: space-between; align-items: flex-end; overflow: hidden;"
 >
-  <span class="repairEstimateNo" style="width: 19%; display: inline-block; float: left">${i}) ${number}</span>
+  <span class="repairEstimateNo" style="width: 17%; display: inline-block; float: left; margin-top: 6px">${i}</span>
     <input
         id="description"
-        name="{`products[${index}].description`}"
+        name="products[0].description"
         class="descriptionInput"
-        style="width: 45%; float: left; margin: 0 auto" ;
-        value="{description}"
+        style="width: 45%; float: left; margin-left: 10px" ;
+        value="${description}"
     />
-    <div style="width: 30%; position: relative; flex-direction: row; float: right">
+    <div style="width: 30%; position: relative; flex-direction: row; float: left;margin-left: 12px">
         <span class="moneyIcon">$</span>
-        <input id="price" class="amountInput" value="{price}" />
+        <input id="price" name="products[0].price" class="amountInput" value="${price}" />
     </div>
 </div>
