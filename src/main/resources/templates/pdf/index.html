@@ -163,6 +163,7 @@
             margin-right: 33px;
             display: flex;
             flex-direction: column;
+            float: left;
         }
 
         .infoTitle {
@@ -358,7 +359,8 @@
 
         .discountContentWrapper {
             position: relative;
-            width: 22%;
+            width: 56%;
+            float: right;
         }
 
         .discountContent {
@@ -381,19 +383,20 @@
             margin-top: 41px;
             padding-right: 40px;
             box-sizing: border-box;
-            display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-end;
+            overflow: hidden;
         }
 
         .totalItem {
+            float: right;
             width: 30%;
-            display: flex;
             flex-direction: row;
         }
 
         .totalLabel {
+            float: left;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
@@ -402,8 +405,9 @@
         }
 
         .totalContentWrapper {
+            float: right;
             position: relative;
-            width: 100%;
+            width: 79%;
         }
 
         .totalIcon {
@@ -443,6 +447,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            overflow: hidden;
         }
 
         .inspectionTitle {
@@ -454,8 +459,8 @@
         }
 
         .applicableWrapper {
-            display: flex;
             flex-direction: row;
+            float: right;
         }
 
         .checkered {
@@ -464,6 +469,8 @@
             background-color: #2ab3e7;
             cursor: pointer;
             margin-right: 8px;
+            display: inline-block;
+            float: left;
         }
 
         .applicable {
@@ -471,6 +478,7 @@
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
             line-height: 13px;
+            float: right;
         }
 
         .inspectionContent {
@@ -479,6 +487,7 @@
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
             line-height: 15px;
+            display: inline-block;
         }
 
         .problemTypeWrapper {
@@ -525,6 +534,8 @@
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
             line-height: 14px;
+            font-weight: 600;
+            display: block;
         }
 
         .agreementContent {
@@ -533,6 +544,7 @@
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
             line-height: 14px;
+            display: inline-block;
         }
 
         .membershipTitle {
@@ -541,12 +553,15 @@
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
             line-height: 14px;
+            font-weight: 600;
+            display: block;
         }
 
         .membershipItem {
             margin-top: 12px;
             display: flex;
             flex-direction: row;
+            overflow: hidden;
         }
 
         .membershipText {
@@ -556,6 +571,9 @@
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
             line-height: 14px;
+            float: left;
+            display: inline-block;
+            width: 90%;
         }
 
         .signatureTitleWrapper {
