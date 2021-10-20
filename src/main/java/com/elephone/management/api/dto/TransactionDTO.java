@@ -74,4 +74,10 @@ public class TransactionDTO {
     private Set<WarrantyHistoryDTO> warrantyHistories;
 
     private LocalDateTime createdDate;
+
+    private Boolean membership;
+
+    private Boolean notification;
+
+
 }
