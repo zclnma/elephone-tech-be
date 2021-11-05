@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Confimration Pdf</title>
-    <meta name="description" content="Confirmation Pdf" />
+    <meta content="Confirmation Pdf" name="description"/>
     <style>
         h1 {
             font-size: 24px;
@@ -24,9 +24,6 @@
             width: auto;
             display: flex;
             flex-direction: column;
-            margin-top: 20px;
-            margin-left: 48px;
-            margin-right: 34px;
         }
 
         .topWrapper {
@@ -168,7 +165,7 @@
 
         .infoTitle {
             display: block;
-            margin-top: 18px;
+            margin-top: 16px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
@@ -178,13 +175,13 @@
 
         .infoItem {
             width: 100%;
-            margin-top: 15px;
+            margin-top: 6px;
             display: flex;
             flex-direction: column;
         }
 
         .infoLabel {
-            margin-top: 7px;
+            margin-top: 4px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
@@ -446,7 +443,7 @@
         }
 
         .inspectionTitleWrapper {
-            margin-top: 18px;
+            margin-top: 10px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -460,6 +457,7 @@
             color: #484848;
             font-weight: 600;
             line-height: 14px;
+            float: left;
         }
 
         .applicableWrapper {
@@ -476,6 +474,7 @@
             display: inline-block;
             float: left;
         }
+
         .notCheckered {
             width: 12px;
             height: 12px;
@@ -542,7 +541,7 @@
         }
 
         .agreementTitle {
-            margin-top: 21px;
+            margin-top: 12px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
@@ -561,7 +560,7 @@
         }
 
         .membershipTitle {
-            margin-top: 16px;
+            margin-top: 12px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
@@ -591,7 +590,7 @@
         }
 
         .signatureTitleWrapper {
-            margin-top: 22px;
+            margin-top: 12px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -667,8 +666,8 @@
 <div class="wrapper">
     <div class="firstWrapper">
         <div class="topWrapper">
-<!--            <img class="logo" src="./images/elephoneLogo.png" alt="" />-->
-<!---->
+            <!--            <img class="logo" src="./images/elephoneLogo.png" alt="" />-->
+            <!---->
             <div class="bottomLeftWrapper">
                 <span class="workAuthorisationForm"> Work Authorisation Form </span>
 
@@ -687,7 +686,7 @@
                     <span class="watergardensTitle"> Elephone ${storeName} </span>
                     <span class="watergardensText">
                 ${storeAddress}
-                <br />
+                <br/>
                 ${storeSuburb} ${storePostcode}
               </span>
                 </div>
@@ -702,27 +701,27 @@
                     </div>
                     <div class="tewItem">
                         <span class="tewItemTitle">W</span>
-                        <a href="https://www.elephone.com.au" class="tewItemText"
+                        <a class="tewItemText" href="https://www.elephone.com.au"
                         >${website}</a
                         >
                     </div>
                 </div>
             </div>
         </div>
-<!--        <div class="bottomWrapper">-->
-<!--            <div class="bottomLeftWrapper">-->
-<!--                <span class="workAuthorisationForm"> Work Authorisation Form </span>-->
+        <!--        <div class="bottomWrapper">-->
+        <!--            <div class="bottomLeftWrapper">-->
+        <!--                <span class="workAuthorisationForm"> Work Authorisation Form </span>-->
 
-<!--                <div class="workAuthorisationItem">-->
-<!--                    <span class="workAuthorisationTitle"> Reference No.： </span>-->
-<!--                    <span class="workAuthorisationText"> ${reference} </span>-->
-<!--                </div>-->
-<!--                <div class="workAuthorisationItem">-->
-<!--                    <span class="workAuthorisationTitle"> Date： </span>-->
-<!--                    <span class="workAuthorisationText"> ${date} </span>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--                <div class="workAuthorisationItem">-->
+        <!--                    <span class="workAuthorisationTitle"> Reference No.： </span>-->
+        <!--                    <span class="workAuthorisationText"> ${reference} </span>-->
+        <!--                </div>-->
+        <!--                <div class="workAuthorisationItem">-->
+        <!--                    <span class="workAuthorisationTitle"> Date： </span>-->
+        <!--                    <span class="workAuthorisationText"> ${date} </span>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
         <div class="line"></div>
         <div class="mainWrapper">
             <div class="mainLeftWrapper">
@@ -748,8 +747,8 @@
                     <div class="infoItem" style="width: 45%; float: left">
                         <span class="infoLabel">Color</span>
                         <input
-                                name="color"
                                 class="infoInput"
+                                name="color"
                                 placeholder="Color"
                                 value="${color}"
                         />
@@ -757,8 +756,8 @@
                     <div class="infoItem" style="width: 45%;float: right">
                         <span class="infoLabel">Passcode</span>
                         <input
-                                name="passcode"
                                 class="infoInput"
+                                name="passcode"
                                 placeholder="Passcode"
                                 value="${passcode}"
                         />
@@ -767,8 +766,8 @@
                 <div class="infoItem">
                     <span class="infoLabel">IMEI</span>
                     <input
-                            name="imei"
                             class="infoInput"
+                            name="imei"
                             placeholder="IMEI"
                             value="${imei}"
                     />
@@ -780,8 +779,8 @@
                 <div class="infoItem">
                     <span class="infoLabel">Device Issue</span>
                     <input
-                            name="issue"
                             class="infoInput"
+                            name="issue"
                             placeholder="Device Issue"
                             value="${issue}"
                     />
@@ -789,8 +788,8 @@
                 <div class="infoItem" }>
                     <span class="infoLabel"> Proposed Solution </span>
                     <input
-                            name="resolution"
                             class="infoInput"
+                            name="resolution"
                             placeholder="Proposed Solution"
                             value="${resolution}"
                     />
@@ -798,8 +797,8 @@
                 <div class="infoItem">
                     <span class="infoLabel">Comments</span>
                     <textarea
-                            name="additionInfo"
                             class="textareaInput"
+                            name="additionInfo"
                             placeholder="Comments"
                     >${comment}</textarea>
                 </div>
@@ -842,7 +841,6 @@
                     <span class="inspectionTitle"> Inspection </span>
 
                     <div class="applicableWrapper">
-                        <div class="checkered"></div>
                         <span class="applicable">Applicable?</span>
                     </div>
                 </div>
@@ -857,7 +855,7 @@
                 <div style="width: 100%; height: auto; box-sizing: border-box; overflow: hidden;">
                     ${inspection}
                 </div>
-                <span class="infoTitle" style="margin-top: 25px">
+                <span class="infoTitle" style="margin-top: 12px">
               Customer Details
             </span>
 
@@ -894,32 +892,21 @@
                 </div>
                 <span class="agreementTitle"> Agreement (wording) </span>
                 <span class="agreementContent">
-              I accept that Elephone is not responsible for any loss, corruption
-              or breach of the data on my product during service. I assume the
-              risk that the data on my product may be lost, corrupted or
-              compromised during service. By signing below, I agree that the
-              repair Terms and Conditions will apply to the service of the
-              product identified above; It is my responsibility to make backup
-              copy of my data before bringing my product to Elephone for
-              service. Warranty is valid for any parts used for repair. Does not
-              cover any physical or water damage. I here by authorise Elephone
-              to proceed with the service. Click
+                    I accept that Elephone is not responsible for any loss, corruption or breach of the data on my product during service. I assume the risk that the data on my product may be lost, corrupted or compromised during service. By signing below, I agree that the repair <span style="color: #2AB3E7">Terms and Conditions</span> will apply to the service of the product identified above; It is my responsibility to make backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any parts used for repair. Does not cover any physical or water damage. I here by authories Elephone to proceed with the service.
             </span>
                 <span class="membershipTitle"> Membership </span>
                 <div class="memb4ershipItem">
-<!--                    <div class="checkered"></div>-->
+                    <!--                    <div class="checkered"></div>-->
                     ${membership}
                     <span class="membershipText"
-                    >I agree to be a part of Elephone Member to get 5% discount,
-                Loyalty Points ($50 = $1) & other weekly special offers</span
+                    >I would like to be an Elephone Member to receive, Loyalty Rewards & Member only deals</span
                     >
                 </div>
                 <div class="membershipItem">
-<!--                    <div class="checkered"></div>-->
+                    <!--                    <div class="checkered"></div>-->
                     ${notification}
                     <span class="membershipText"
-                    >I agree to receive newsletter for special offer and new
-                products information from Elephone</span
+                    >I would like to receive a monthly Elephone Newsletter for tech news, tips and specials and 5% Member Discount.</span
                     >
                 </div>
                 <div class="signatureTitleWrapper">
@@ -929,7 +916,7 @@
                 </div>
                 <div class="signatureWrapper">
                     <div style="border: 1px solid black; width: 320px; height: 100px">
-                        <img style="width: 100%; height: auto;" src="${signature}" alt="signature"></img>
+                        <img alt="signature" src="${signature}" style="width: 100%; height: auto;"></img>
                     </div>
                 </div>
             </div>
@@ -942,9 +929,9 @@
         </div>
         <div style="margin-top: 16px; font-size: 11px; width: 100%">
             Conditions governing the repair of your product by ${storeCompanyName}
-            Pty Ltd trading as Elephone, ABN ${storeAbn}.<br />
+            Pty Ltd trading as Elephone, ABN ${storeAbn}.<br/>
             1. Elephone will service your product as described and for the charges
-            shown on the Work Authorisation. <br />
+            shown on the Work Authorisation. <br/>
             2. Unless your product is repaired under warranty or extended service
             contract without charge, you will pay Elephone the amount shown on the
             reverse side. Your payment is due when the product is returned to you.
@@ -959,14 +946,14 @@
             Elephone branded — or are needed due to damage caused by abuse, misuse
             or misapplication — Elephone reserves the right to return the product
             to you without repairing it, and will hold you responsible for the
-            diagnostic fee on the reverse side. <br />
+            diagnostic fee on the reverse side. <br/>
             3. Labour charges may also apply for any cancellation or reversals of
             repairs after confirmation to proceed with repair works. If the
             requested repairs require labour and/or parts not specified on the
             reverse side, Elephone may seek your approval of a revised estimate.
             If you do not agree that Elephone may revise the charges, Elephone may
             return your product and hold you responsible for the diagnostic fee
-            shown on the reverse side.<br />
+            shown on the reverse side.<br/>
             4. Elephone does not provide any warranty for any spare parts supplied
             by the third parties (dealer or customer).Liquid/water ingress will
             have only 30 days warranty, no refund or warranty after 30days from
@@ -992,7 +979,7 @@
             by Elephone for value. If you and Elephone agree for Elephone to
             return a replaced part to you, you agree to pay Elephone the cost of
             the replacement item in addition to any other charges for the repair
-            service.<br />
+            service.<br/>
             5. All supplied parts are compatible/equivalent to the original parts,
             your original manufacturer’s warranty will be void for any repair
             service. If Elephone repairs your product under warranty or extended
@@ -1032,7 +1019,7 @@
             so, Elephone limits its liability in respect of any claim under those
             provisions to at Elephone’s option (1) the supplying of the services
             again or (2) the payment of the cost of having the services supplied
-            again. <br />
+            again. <br/>
             6. If the phone/device cannot turn on or no display on the
             phone/device, our company will not have any liabilities to any other
             parts apart from the replaced parts and services. All other problems
@@ -1071,7 +1058,7 @@
             information or media may be lost, corrupted or compromised during
             service or repair, you further acknowledge and agree that Elephone
             cannot guarantee the safety, security or integrity of any data that
-            remains on you product while it is undergoing service or repair.<br />
+            remains on you product while it is undergoing service or repair.<br/>
             7. It is a condition of Elephone accepting your product for repair
             that the product is subject to disposal of uncollected goods
             legislation and that legislation confers on Elephone a right of sale
@@ -1090,23 +1077,23 @@
             without liability to you. Elephone may deduct from the disposal
             proceeds any amounts owing to Elephone and any remainder will be dealt
             with in accordance with law. Elephone reserves its statutory and any
-            other lawful liens for unpaid charges.<br />
+            other lawful liens for unpaid charges.<br/>
             8. If repair service involves transferring information or installing
             software, you represent that you have the legal right to copy the
             information and agree to the terms of software licence, and you
             authorise Elephone to transfer the information and accept such terms
-            on your behalf in performing the service.<br />
+            on your behalf in performing the service.<br/>
             9. Warranty for repair is ${storeWarranty} days (except Liquid/water
             damage service). Warranty can be extended, only if customer purchases
             the extra warranty (no warranty extension for Liquid/water damage
-            services).<br />
+            services).<br/>
             10. There Terms and Conditions are the only ones that govern
             Elephone’s repair of your product. Except as otherwise stated in these
             Terms and Conditions, no other oral or written Terms or Conditions
             apply. No one has the authority from Elephone to vary any of these
             Terms and Conditions. Elephone resserves the right to alter the Terms
             and Conditions without prior notice and make the final decision in the
-            event of any dispute.<br />
+            event of any dispute.<br/>
             11. You agree and understand that it is necessary for Elephone to
             collect, process and use your data in order to perform the service and
             support obligations under these Terms and Conditions. In Elephone, you

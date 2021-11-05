@@ -38,10 +38,10 @@ public class VendMemberService {
         String url = vendProperties.getUrl() + "/search";
         Map<String, String> params = new HashMap<>();
         params.put("type", "customers");
-        if (phone != null && !"".equals(phone)){
-            params.put("phone", phone);
-        }else{
+        if (email != null && !"".equals(email)){
             params.put("email", email);
+        }else{
+            params.put("phone", phone);
         }
         String[] headers =  new String[]{"Authorization", "Bearer BQoSDDIat2Kr2R8Fxw9Jw_6gR0LBbXg1IbInE1q8"};
         String resultString = okHttpCli.doGet(url, params, headers);
