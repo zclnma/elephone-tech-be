@@ -66,4 +66,6 @@ public class CreateTransactionDTO {
     private Boolean membership;
 
     private Boolean notification;
+
+    private String pickupTime;
 }

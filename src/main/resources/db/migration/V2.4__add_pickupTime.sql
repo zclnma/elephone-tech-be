@@ -1,0 +1,1 @@
+alter table elephone.public.transaction add column pickup_time VARCHAR(255) default false;

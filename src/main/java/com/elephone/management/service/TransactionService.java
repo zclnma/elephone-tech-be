@@ -116,6 +116,7 @@ public class TransactionService {
         transactionStore.setReference(newStoreReference);
         transaction.setMembership(createTransactionDTO.getMembership());
         transaction.setNotification(createTransactionDTO.getNotification());
+        transaction.setPickupTime(createTransactionDTO.getPickupTime());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
@@ -173,6 +174,7 @@ public class TransactionService {
         transactionToUpdate.setConfSignature(transaction.getConfSignature());
         transactionToUpdate.setMembership(updateTransactionDTO.getMembership());
         transactionToUpdate.setNotification(updateTransactionDTO.getNotification());
+        transactionToUpdate.setPickupTime(updateTransactionDTO.getPickupTime());
         Boolean membership = updateTransactionDTO.getMembership();
         if (membership != null && membership){
             String contact = transaction.getCustomer().getContact();
