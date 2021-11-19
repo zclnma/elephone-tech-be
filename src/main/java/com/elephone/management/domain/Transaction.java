@@ -80,6 +80,9 @@ public class Transaction {
     private Boolean notification;
 
     @Column
+    private String pickupTime;
+
+    @Column
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TransactionProduct> products = new HashSet<>();
 

@@ -67,4 +67,6 @@ public class UpdateTransactionDTO {
     private Boolean membership;
 
     private Boolean notification;
+
+    private String pickupTime;
 }
