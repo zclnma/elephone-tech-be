@@ -79,5 +79,7 @@ public class TransactionDTO {
 
     private Boolean notification;
 
+    private String pickupTime;
+
 
 }

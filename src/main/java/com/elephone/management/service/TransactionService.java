@@ -165,6 +165,7 @@ public class TransactionService {
         transactionToUpdate.getDevice().setPasscode(transaction.getDevice().getPasscode());
         transactionToUpdate.setDeposit(transaction.getDeposit());
         transactionToUpdate.setFinalInspections(transaction.getFinalInspections());
+        transactionToUpdate.setInitInspections(transaction.getInitInspections());
         transactionToUpdate.setBattery(transaction.getBattery());
         transactionToUpdate.setIssue(transaction.getIssue());
         transactionToUpdate.setResolution(transaction.getResolution());
