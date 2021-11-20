@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +118,9 @@ public class TemplateService {
         pdfPlaceholder.put("passcode", StringUtils.isEmpty(transaction.getDevice().getPasscode()) ? "N/A" : transaction.getDevice().getPasscode());
         pdfPlaceholder.put("battery", StringUtils.isEmpty(transaction.getBattery()) ? "N/A" : transaction.getBattery());
         pdfPlaceholder.put("reference", transaction.getReference());
-        pdfPlaceholder.put("date", transaction.getCreatedDate().toString());
+        LocalDateTime createdDate = transaction.getCreatedDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        pdfPlaceholder.put("date", createdDate.format(formatter));
         pdfPlaceholder.put("resolution", StringUtils.isEmpty(transaction.getResolution()) ? "N/A" : transaction.getResolution());
         pdfPlaceholder.put("comment", StringUtils.isEmpty(transaction.getAdditionInfo()) ? "N/A" : transaction.getAdditionInfo());
         pdfPlaceholder.put("issue", StringUtils.isEmpty(transaction.getIssue()) ? "N/A" : transaction.getIssue());
@@ -161,7 +165,7 @@ public class TemplateService {
         pdfPlaceholder.put("notification", notificationCheckHtml.toString());
         //Agreement
         pdfPlaceholder.put("agreement", generateAgreement(type, transaction.getStore().getWarranty()));
-
+        pdfPlaceholder.put("pickupTime", transaction.getPickupTime());
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 
