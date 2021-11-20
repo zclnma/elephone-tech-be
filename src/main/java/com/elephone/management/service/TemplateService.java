@@ -136,7 +136,7 @@ public class TemplateService {
         }
         pdfPlaceholder.put("memberBenefits", Float.toString(memberBenefits));
         total = total - memberBenefits;
-        pdfPlaceholder.put("total", Float.toString(total));
+        pdfPlaceholder.put("total", Float.toString((Math.round(total * 100f) / 100f)));
 
         //Store info
         pdfPlaceholder.put("storeContact", transaction.getStore().getContact());

@@ -1,11 +1,14 @@
 package com.elephone.management.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.elephone.management.api.dto.CreateTransactionDTO;
 import com.elephone.management.api.dto.UpdateTransactionDTO;
 import com.elephone.management.api.dto.VendCustomerInput;
 import com.elephone.management.api.mapper.TransactionMapper;
 import com.elephone.management.dispose.exception.TransactionException;
 import com.elephone.management.domain.*;
+import com.elephone.management.modules.oss.OssProperties;
+import com.elephone.management.modules.oss.service.OssTemplate;
 import com.elephone.management.repository.TransactionRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.persistence.criteria.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -40,9 +49,11 @@ public class TransactionService {
     private final PdfService pdfService;
     private final TemplateService templateService;
     private final VendMemberService vendMemberService;
+    private final OssProperties ossProperties;
+    private final OssTemplate ossTemplate;
 
     @Autowired
-    public TransactionService(TransactionMapper transactionMapper, TransactionRepository transactionRepository, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService, StoreService storeService, EmployeeService employeeService, EmailService emailService, AuthService authService, PdfService pdfService, TemplateService templateService, VendMemberService vendMemberService) {
+    public TransactionService(TransactionMapper transactionMapper, TransactionRepository transactionRepository, TransactionStatusService transactionStatusService, TransactionStatusGroupService transactionStatusGroupService, StoreService storeService, EmployeeService employeeService, EmailService emailService, AuthService authService, PdfService pdfService, TemplateService templateService, VendMemberService vendMemberService, OssProperties ossProperties, OssTemplate ossTemplate) {
         this.transactionMapper = transactionMapper;
         this.transactionRepository = transactionRepository;
         this.transactionStatusService = transactionStatusService;
@@ -54,6 +65,8 @@ public class TransactionService {
         this.pdfService = pdfService;
         this.templateService = templateService;
         this.vendMemberService = vendMemberService;
+        this.ossProperties = ossProperties;
+        this.ossTemplate = ossTemplate;
     }
 
     public Page<Transaction> list(int page, int perPage) {
@@ -61,7 +74,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction create(CreateTransactionDTO createTransactionDTO) {
+    public Transaction create(CreateTransactionDTO createTransactionDTO) throws Exception{
         if (createTransactionDTO.getId() != null) {
             throw new TransactionException("Transaction id should be empty");
         }
@@ -149,6 +162,13 @@ public class TransactionService {
                 }
             }
         }
+
+        byte[] pdfByte = getTransactionPdfByte(savedTransaction.getId(), "authorisation");
+        InputStream inputStream = new ByteArrayInputStream(pdfByte);
+        ossTemplate.putObject(ossProperties.getBucketName(), "pdf/"+savedTransaction.getId() + ".pdf", inputStream);
+        String pdfUrl = String.format("https://" + ossProperties.getBucketName() + StrUtil.DOT + ossProperties.getEndpoint() + "/pdf/" + savedTransaction.getId() + ".pdf");
+        savedTransaction.setPdfUrl(pdfUrl);
+        transactionRepository.save(savedTransaction);
         return savedTransaction;
     }
 
@@ -376,8 +396,8 @@ public class TransactionService {
         if ("confirmation".equalsIgnoreCase(type) && transaction.getTransactionStatus().getTransactionStatusGroup().getGroupOrder() != maxOrder) {
             throw new TransactionException("Please finalise the transaction before downloading it.");
         }
-
         String pdfHtml = templateService.generatePdfString(transaction, type);
-        return pdfService.generatePdfByte(pdfHtml);
+        byte[] pdfByte = pdfService.generatePdfByte(pdfHtml);
+        return pdfByte;
     }
 }

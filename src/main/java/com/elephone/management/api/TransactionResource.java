@@ -50,7 +50,7 @@ public class TransactionResource {
     @PostMapping
     @ApiOperation(value = "create transaction", notes = "create transaction")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public ResponseEntity<TransactionDTO> create(@Valid @RequestBody CreateTransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> create(@Valid @RequestBody CreateTransactionDTO transactionDTO) throws Exception{
         Transaction transaction = transactionService.create(transactionDTO);
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
