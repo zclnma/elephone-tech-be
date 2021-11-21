@@ -49,6 +49,12 @@ ok:
 vend:
   url: https://elephone.vendhq.com/api/2.0
 
-
-
-
+oss:
+  enable: true
+  info: true
+  path-style-access: true
+  region: ap-southeast-2
+  endpoint: s3-ap-southeast-2.amazonaws.com
+  access-key: AKIAY2SZAZO3LKWTVNPV
+  secret-key: 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
+  bucket-name: elephone-server

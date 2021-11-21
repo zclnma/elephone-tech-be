@@ -46,6 +46,8 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-validation:$springboot",
             "org.springframework.boot:spring-boot-starter-oauth2-resource-server:$springboot",
             "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:$springSecutiry",
+            "com.amazonaws:aws-java-sdk-s3:$awsS3",
+            "cn.hutool:hutool-all:$hutool",
 
             platform("software.amazon.awssdk:bom:$awsJavaSdk"),
             "software.amazon.awssdk:sesv2",
