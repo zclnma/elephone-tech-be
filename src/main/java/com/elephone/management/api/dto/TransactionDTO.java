@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -83,5 +82,7 @@ public class TransactionDTO {
     private String pickupTime;
 
     private String pdfUrl;
+
+    private String warrantyPeriod;
 
 }

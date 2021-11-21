@@ -68,4 +68,6 @@ public class CreateTransactionDTO {
     private Boolean notification;
 
     private String pickupTime;
+
+    private String warrantyPeriod;
 }
