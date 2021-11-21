@@ -5,95 +5,95 @@
     <style>
         @font-face {
             font-family: "Termina-Black";
-            src: url(./Termina/Termina-Black.otf);
+            src: url(templates/pdf/Termina/Termina-Black.otf);
         }
         @font-face {
             font-family: "Termina-Bold";
-            src: url(./Termina/Termina-Bold.otf);
+            src: url(templates/pdf/Termina/Termina-Bold.otf);
         }
         @font-face {
             font-family: "Termina-Demi";
-            src: url(./Termina/Termina-Demi.otf);
+            src: url(templates/pdf/Termina/Termina-Demi.otf);
         }
         @font-face {
             font-family: "Termina-ExtraLight";
-            src: url(./Termina/Termina-ExtraLight.otf);
+            src: url(templates/pdf/Termina/Termina-ExtraLight.otf);
         }
         @font-face {
             font-family: "Termina-Heavy";
-            src: url(./Termina/Termina-Heavy.otf);
+            src: url(templates/pdf/Termina/Termina-Heavy.otf);
         }
         @font-face {
             font-family: "Termina-Light";
-            src: url(./Termina/Termina-Light.otf);
+            src: url(templates/pdf/Termina/Termina-Light.otf);
         }
         @font-face {
             font-family: "Termina-Medium";
-            src: url(./Termina/Termina-Medium.otf);
+            src: url(templates/pdf/Termina/Termina-Medium.otf);
         }
         @font-face {
             font-family: "Termina-Regular";
-            src: url(./Termina/Termina-Regular.otf);
+            src: url(templates/pdf/Termina/Termina-Regular.otf);
         }
         @font-face {
             font-family: "Termina-Thin";
-            src: url(./Termina/Termina-Thin.otf);
+            src: url(templates/pdf/Termina/Termina-Thin.otf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-Bold";
-            src: url(./Neue/NeueHaasDisplay-Bold.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-Bold.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-BoldItalic";
-            src: url(./Neue/NeueHaasDisplay-BoldItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-BoldItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-Light";
-            src: url(./Neue/NeueHaasDisplay-Light.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-Light.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-LightItalic";
-            src: url(./Neue/NeueHaasDisplay-LightItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-LightItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-Mediu";
-            src: url(./Neue/NeueHaasDisplay-Mediu.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-Mediu.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-MediumItalic";
-            src: url(./Neue/NeueHaasDisplay-MediumItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-MediumItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-Roman";
-            src: url(./Neue/NeueHaasDisplay-Roman.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-Roman.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-RomanItalic";
-            src: url(./Neue/NeueHaasDisplay-RomanItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-RomanItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-Thin";
-            src: url(./Neue/NeueHaasDisplay-Thin.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-Thin.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-ThinItalic";
-            src: url(./Neue/NeueHaasDisplay-ThinItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-ThinItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-XThin";
-            src: url(./Neue/NeueHaasDisplay-XThin.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-XThin.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-XThinItalic";
-            src: url(./Neue/NeueHaasDisplay-XThinItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-XThinItalic.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-XXThin";
-            src: url(./Neue/NeueHaasDisplay-XXThin.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-XXThin.ttf);
         }
         @font-face {
             font-family: "NeueHaasDisplay-XXThinItalic";
-            src: url(./Neue/NeueHaasDisplay-XXThinItalic.ttf);
+            src: url(templates/pdf/Neue/NeueHaasDisplay-XXThinItalic.ttf);
         }
         h1 {
             font-size: 24px;
@@ -775,6 +775,10 @@
                 <div class="workAuthorisationItem">
                     <span class="workAuthorisationTitle"> Estimated Pickup Date: </span>
                     <span class="workAuthorisationText"> &nbsp;${pickupTime} </span>
+                </div>
+                <div class="workAuthorisationItem">
+                    <span class="workAuthorisationTitle"> Warranty Period: </span>
+                    <span class="workAuthorisationText"> &nbsp;${warrantyPeriod} </span>
                 </div>
             </div>
             <div class="topRightWrapper">

@@ -130,6 +130,7 @@ public class TemplateService {
         pdfPlaceholder.put("signature", "authorisation".equalsIgnoreCase(type) ? transaction.getAuthSignature() : transaction.getConfSignature());
         pdfPlaceholder.put("inspection", inspectionHtml.toString());
         pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
+        pdfPlaceholder.put("warrantyPeriod", transaction.getWarrantyPeriod());
         float memberBenefits = 0.00f;
         if (transaction.getMembership() && transaction.getNotification()){
             memberBenefits = (float)(Math.round(total * 0.05 * 100))/100;
