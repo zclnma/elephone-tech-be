@@ -1,1 +1,1 @@
-alter table elephone.public.transaction add column pdf_url VARCHAR(255) default false;
+alter table elephone.public.transaction add column pdf_url VARCHAR(255) default "";

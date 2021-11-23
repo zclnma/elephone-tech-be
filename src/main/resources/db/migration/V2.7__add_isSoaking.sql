@@ -1,0 +1,1 @@
+alter table elephone.public.transaction add column is_soaking boolean default false;

@@ -780,6 +780,10 @@
                     <span class="workAuthorisationTitle"> Warranty Period: </span>
                     <span class="workAuthorisationText"> &nbsp;${warrantyPeriod} </span>
                 </div>
+                <div class="workAuthorisationItem">
+                    <span class="workAuthorisationTitle"> Warranty Expiry Date: </span>
+                    <span class="workAuthorisationText"> &nbsp;${warrantyExpiryDate} </span>
+                </div>
             </div>
             <div class="topRightWrapper">
 
@@ -951,6 +955,13 @@
             </span>
 
                 <div style="width: 100%; height: auto; box-sizing: border-box; overflow: hidden;">
+                    <div class="membershipItem">
+                        <!--                    <div class="checkered"></div>-->
+                        ${isSoaking}
+                        <span class="membershipText"
+                        >Has this device been previously liquid damaged?</span
+                        >
+                    </div>
                     ${inspection}
                 </div>
                 <span class="infoTitle" style="margin-top: 12px">
@@ -994,7 +1005,7 @@
                         style="color: #2AB3E7">Terms and Conditions</span> will apply to the service of the product identified above; It is my responsibility to make backup copy of my data before bringing my product to Elephone for service. Warranty is valid for any parts used for repair. Does not cover any physical or water damage. I here by authories Elephone to proceed with the service.
             </span>
                 <span class="membershipTitle"> Membership </span>
-                <div class="memb4ershipItem">
+                <div class="membershipItem">
                     <!--                    <div class="checkered"></div>-->
                     ${membership}
                     <span class="membershipText"

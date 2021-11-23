@@ -71,4 +71,6 @@ public class UpdateTransactionDTO {
     private String pickupTime;
 
     private String warrantyPeriod;
+
+    private Boolean isSoaking;
 }

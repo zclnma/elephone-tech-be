@@ -131,6 +131,7 @@ public class TransactionService {
         transaction.setNotification(createTransactionDTO.getNotification());
         transaction.setPickupTime(createTransactionDTO.getPickupTime());
         transaction.setWarrantyPeriod(createTransactionDTO.getWarrantyPeriod());
+        transaction.setIsSoaking(createTransactionDTO.getIsSoaking());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
@@ -198,6 +199,7 @@ public class TransactionService {
         transactionToUpdate.setNotification(updateTransactionDTO.getNotification());
         transactionToUpdate.setPickupTime(updateTransactionDTO.getPickupTime());
         transactionToUpdate.setWarrantyPeriod(updateTransactionDTO.getWarrantyPeriod());
+        transactionToUpdate.setIsSoaking(updateTransactionDTO.getIsSoaking());
         Boolean membership = updateTransactionDTO.getMembership();
         if (membership != null && membership){
             String contact = transaction.getCustomer().getContact();
@@ -288,7 +290,6 @@ public class TransactionService {
             }
 
             predicates.add(cb.equal(root.get("isDeleted"), false));
-
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };
 
@@ -339,7 +340,7 @@ public class TransactionService {
 
         // If moving from finalised status to previous status, reset confirmation signature
         if (newGroupOrder != maxOrder && groupOrder == maxOrder) {
-            transaction.setConfSignature(null);
+//            transaction.setConfSignature(null);
             transaction.setFinalisedBy(null);
             transaction.setFinalisedTime(null);
         }

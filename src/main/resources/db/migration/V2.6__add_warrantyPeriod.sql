@@ -1,1 +1,1 @@
-alter table elephone.public.transaction add column warranty_period VARCHAR(255) default false;
+alter table elephone.public.transaction add column warranty_period VARCHAR(255) default "";

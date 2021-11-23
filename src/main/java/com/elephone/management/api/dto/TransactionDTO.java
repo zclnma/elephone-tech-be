@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.Pattern;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Jacksonized
 @Builder
 @AllArgsConstructor
@@ -84,5 +86,9 @@ public class TransactionDTO {
     private String pdfUrl;
 
     private String warrantyPeriod;
+
+    private Boolean isSoaking;
+
+    private String warrantyExpiryDate;
 
 }
