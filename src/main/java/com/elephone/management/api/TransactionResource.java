@@ -20,6 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -83,6 +86,27 @@ public class TransactionResource {
         List<TransactionDTO> dtoTransactions = transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", Long.toString(transactions.getTotalElements()));
+        for (TransactionDTO transactionDTO : dtoTransactions){
+            String pickupTime = transactionDTO.getPickupTime();
+            String warrantyPeriod = transactionDTO.getWarrantyPeriod();
+            if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+                String[] warrantyPeriodArr = warrantyPeriod.split(" ");
+                int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date pickupTimeDate = format.parse(pickupTime);
+                    long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
+                    long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
+                    time += day; // 相加得到新的毫秒数
+                    String warrantyExpiryDate = format.format(new Date(time));
+                    transactionDTO.setWarrantyExpiryDate(warrantyExpiryDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                transactionDTO.setWarrantyExpiryDate("");
+            }
+        }
         return new ResponseEntity<>(dtoTransactions, headers, HttpStatus.OK);
     }
 
@@ -91,6 +115,25 @@ public class TransactionResource {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> getById(@PathVariable UUID id) {
         Transaction transaction = transactionService.getTransactionById(id);
+        String pickupTime = transaction.getPickupTime();
+        String warrantyPeriod = transaction.getWarrantyPeriod();
+        if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+            String[] warrantyPeriodArr = warrantyPeriod.split(" ");
+            int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date pickupTimeDate = format.parse(pickupTime);
+                long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
+                long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
+                time += day; // 相加得到新的毫秒数
+                String warrantyExpiryDate = format.format(new Date(time));
+                transaction.setWarrantyExpiryDate(warrantyExpiryDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            transaction.setWarrantyExpiryDate("");
+        }
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 

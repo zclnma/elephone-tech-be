@@ -14,12 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
@@ -152,6 +151,7 @@ public class TemplateService {
         pdfPlaceholder.put("storeCompanyName", transaction.getStore().getCompanyName());
         StringBuilder membershipCheckHtml = new StringBuilder();
         StringBuilder notificationCheckHtml = new StringBuilder();
+        StringBuilder isSoakingCheckHtml = new StringBuilder();
         if (transaction.getMembership()) {
             membershipCheckHtml.append(generateHTMLFromTemplate(CHECKED, null));
         } else {
@@ -162,11 +162,35 @@ public class TemplateService {
         } else {
             notificationCheckHtml.append(generateHTMLFromTemplate(NOT_CHECKED, null));
         }
+        if (transaction.getIsSoaking()){
+            isSoakingCheckHtml.append(generateHTMLFromTemplate(CHECKED, null));
+        }else{
+            isSoakingCheckHtml.append(generateHTMLFromTemplate(NOT_CHECKED, null));
+        }
         pdfPlaceholder.put("membership", membershipCheckHtml.toString());
         pdfPlaceholder.put("notification", notificationCheckHtml.toString());
+        pdfPlaceholder.put("isSoaking", isSoakingCheckHtml.toString());
         //Agreement
         pdfPlaceholder.put("agreement", generateAgreement(type, transaction.getStore().getWarranty()));
         pdfPlaceholder.put("pickupTime", transaction.getPickupTime());
+        String pickupTime = transaction.getPickupTime();
+        String warrantyPeriod = transaction.getWarrantyPeriod();
+        String warrantyExpiryDate = "";
+        if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+            String[] warrantyPeriodArr = warrantyPeriod.split(" ");
+            int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date pickupTimeDate = format.parse(pickupTime);
+                long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
+                long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
+                time += day; // 相加得到新的毫秒数
+                warrantyExpiryDate = format.format(new Date(time));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        pdfPlaceholder.put("warrantyExpiryDate", warrantyExpiryDate);
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 
