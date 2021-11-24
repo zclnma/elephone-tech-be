@@ -89,12 +89,12 @@ public class TransactionResource {
         for (TransactionDTO transactionDTO : dtoTransactions){
             String pickupTime = transactionDTO.getPickupTime();
             String warrantyPeriod = transactionDTO.getWarrantyPeriod();
-            if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+            if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false")){
                 String[] warrantyPeriodArr = warrantyPeriod.split(" ");
-                int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+                long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date pickupTimeDate = format.parse(pickupTime);
+                    Date pickupTimeDate = format.parse(pickupTime.replace("/", "-"));
                     long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
                     long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
                     time += day; // 相加得到新的毫秒数
@@ -119,12 +119,12 @@ public class TransactionResource {
         String warrantyPeriod = transaction.getWarrantyPeriod();
         if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
             String[] warrantyPeriodArr = warrantyPeriod.split(" ");
-            int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+            long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
             try {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 Date pickupTimeDate = format.parse(pickupTime);
                 long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
-                long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
+                long day = warrantyPeriodDay * 24 * 60 * 60 * 1000l; // 要加上的天数转换成毫秒数
                 time += day; // 相加得到新的毫秒数
                 String warrantyExpiryDate = format.format(new Date(time));
                 transaction.setWarrantyExpiryDate(warrantyExpiryDate);

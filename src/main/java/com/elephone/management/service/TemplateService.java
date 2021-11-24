@@ -176,12 +176,12 @@ public class TemplateService {
         String pickupTime = transaction.getPickupTime();
         String warrantyPeriod = transaction.getWarrantyPeriod();
         String warrantyExpiryDate = "";
-        if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+        if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false")){
             String[] warrantyPeriodArr = warrantyPeriod.split(" ");
-            int warrantyPeriodDay = Integer.parseInt(warrantyPeriodArr[0]);
+            long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
             try {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                Date pickupTimeDate = format.parse(pickupTime);
+                Date pickupTimeDate = format.parse(pickupTime.replace("/", "-"));
                 long time = pickupTimeDate.getTime(); // 得到指定日期的毫秒数
                 long day = warrantyPeriodDay * 24 * 60 * 60 * 1000; // 要加上的天数转换成毫秒数
                 time += day; // 相加得到新的毫秒数
@@ -197,6 +197,10 @@ public class TemplateService {
     public String generateEmailString(Transaction transaction, String type) throws IOException {
         Map<String, String> emailPlaceholder = new HashMap<>();
 
+        emailPlaceholder.put("title", "authorisation".equalsIgnoreCase(type) ? "Authorisation Email" : "Confirmation/Repair Finished");
+        emailPlaceholder.put("subject", "authorisation".equalsIgnoreCase(type) ? "Your repair at Elephone" : "Your repair has been finalised!");
+        emailPlaceholder.put("firstParagraph", "authorisation".equalsIgnoreCase(type) ? "Your repair request has been received!" : "Please find attached the work confirmation form for your device. Please save this file for warranty purposes.");
+        emailPlaceholder.put("secondParagraph", "authorisation".equalsIgnoreCase(type) ? "Thank you for choosing Elephone to service your device. Please see the attached copy of the repair authorisation form. Our mission is to deliver the best repair service to our customers. If you have any questions or feedback please don’t hesitate to give us a call or message us!" : "Thanks again for choosing Elephone, we’re always here to answer any questions you have about your devices simply come chat to our friendly staff or message us online, we’re here to help.");
         emailPlaceholder.put("name", transaction.getCustomer().getName());
         emailPlaceholder.put("storeName", transaction.getStore().getName());
         emailPlaceholder.put("address", transaction.getStore().getAddress());

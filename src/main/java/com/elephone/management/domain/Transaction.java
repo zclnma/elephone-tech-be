@@ -91,6 +91,7 @@ public class Transaction {
     @Column
     private Boolean isSoaking;
 
+    @Transient
     private String warrantyExpiryDate;
 
     @Column

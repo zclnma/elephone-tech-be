@@ -268,7 +268,7 @@
 
         .infoItem {
             width: 100%;
-            margin-top: 6px;
+            margin-top: 2px;
             display: flex;
             flex-direction: column;
         }
@@ -282,7 +282,7 @@
         }
 
         .infoInput {
-            margin-top: 7px;
+            margin-top: 4px;
             width: 100%;
             height: 33px;
             padding-left: 14px;
@@ -634,7 +634,7 @@
         }
 
         .agreementTitle {
-            margin-top: 12px;
+            margin-top: 6px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
@@ -653,7 +653,7 @@
         }
 
         .membershipTitle {
-            margin-top: 12px;
+            margin-top: 6px;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Mediu, NeueHaasDisplay";
             color: #484848;
@@ -663,7 +663,7 @@
         }
 
         .membershipItem {
-            margin-top: 18px;
+            margin-top: 4px;
             display: block;
             display: flex;
             flex-direction: row;
@@ -683,7 +683,7 @@
         }
 
         .signatureTitleWrapper {
-            margin-top: 12px;
+            margin-top: 6px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -762,7 +762,7 @@
             <!--            <img class="logo" src="./images/elephoneLogo.png" alt="" />-->
             <!---->
             <div class="bottomLeftWrapper">
-                <span class="workAuthorisationForm"> Work Confirmation </span>
+                <span class="workAuthorisationForm"> Work ${type} </span>
 
                 <div class="workAuthorisationItem">
                     <span class="workAuthorisationTitle"> Reference No.: </span>
@@ -945,9 +945,7 @@
                 <div class="inspectionTitleWrapper">
                     <span class="inspectionTitle"> Inspection </span>
 
-                    <div class="applicableWrapper">
-                        <span class="applicable">Applicable?</span>
-                    </div>
+                    <span class="applicable">Applicable?</span>
                 </div>
                 <span class="inspectionContent">
               *Inspection: If the phone/device will not turn on or the display is too damaged prior to service,
@@ -958,13 +956,13 @@
                     <div class="membershipItem">
                         <!--                    <div class="checkered"></div>-->
                         ${isSoaking}
-                        <span class="membershipText"
+                        <span style="font-size: 12px; margin-top: 8px; margin-left: 4px;"
                         >Has this device been previously liquid damaged?</span
                         >
                     </div>
                     ${inspection}
                 </div>
-                <span class="infoTitle" style="margin-top: 12px">
+                <span class="infoTitle" style="margin-top: 6px">
               Customer Details
             </span>
 
