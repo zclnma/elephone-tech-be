@@ -129,8 +129,8 @@ public class TransactionService {
         transactionStore.setReference(newStoreReference);
         transaction.setMembership(createTransactionDTO.getMembership());
         transaction.setNotification(createTransactionDTO.getNotification());
-        transaction.setPickupTime(createTransactionDTO.getPickupTime());
-        transaction.setWarrantyPeriod(createTransactionDTO.getWarrantyPeriod());
+        transaction.setPickupTime(createTransactionDTO.getPickupTime() == null ? "" : createTransactionDTO.getPickupTime());
+        transaction.setWarrantyPeriod(createTransactionDTO.getWarrantyPeriod() == null ? "" : createTransactionDTO.getWarrantyPeriod());
         transaction.setIsSoaking(createTransactionDTO.getIsSoaking());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);

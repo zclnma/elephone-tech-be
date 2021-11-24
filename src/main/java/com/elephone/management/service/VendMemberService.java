@@ -47,9 +47,13 @@ public class VendMemberService {
         String resultString = okHttpCli.doGet(url, params, headers);
         Gson gson = new Gson();
         VendCustomerListDto vendCustomerListDto = gson.fromJson(resultString, VendCustomerListDto.class);
-        List<VendCustomerDto> data = vendCustomerListDto.getData();
-        if (data != null && data.size() > 0){
-            return true;
+        if (vendCustomerListDto != null){
+            List<VendCustomerDto> data = vendCustomerListDto.getData();
+            if (data != null && data.size() > 0){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
