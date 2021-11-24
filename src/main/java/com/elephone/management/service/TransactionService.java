@@ -132,6 +132,7 @@ public class TransactionService {
         transaction.setPickupTime(createTransactionDTO.getPickupTime() == null ? "" : createTransactionDTO.getPickupTime());
         transaction.setWarrantyPeriod(createTransactionDTO.getWarrantyPeriod() == null ? "" : createTransactionDTO.getWarrantyPeriod());
         transaction.setIsSoaking(createTransactionDTO.getIsSoaking());
+        transaction.setBatteryHealth(createTransactionDTO.getBatteryHealth() == null ? "" : createTransactionDTO.getBatteryHealth());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
@@ -200,6 +201,7 @@ public class TransactionService {
         transactionToUpdate.setPickupTime(updateTransactionDTO.getPickupTime());
         transactionToUpdate.setWarrantyPeriod(updateTransactionDTO.getWarrantyPeriod());
         transactionToUpdate.setIsSoaking(updateTransactionDTO.getIsSoaking());
+        transactionToUpdate.setBatteryHealth(updateTransactionDTO.getBatteryHealth());
         Boolean membership = updateTransactionDTO.getMembership();
         if (membership != null && membership){
             String contact = transaction.getCustomer().getContact();

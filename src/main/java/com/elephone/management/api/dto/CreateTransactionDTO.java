@@ -73,4 +73,6 @@ public class CreateTransactionDTO {
 
     private Boolean isSoaking;
 
+    private String batteryHealth;
+
 }

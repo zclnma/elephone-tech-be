@@ -95,6 +95,9 @@ public class Transaction {
     private String warrantyExpiryDate;
 
     @Column
+    private String batteryHealth;
+
+    @Column
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TransactionProduct> products = new HashSet<>();
 

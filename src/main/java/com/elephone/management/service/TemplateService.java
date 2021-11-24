@@ -191,6 +191,7 @@ public class TemplateService {
             }
         }
         pdfPlaceholder.put("warrantyExpiryDate", warrantyExpiryDate);
+        pdfPlaceholder.put("batteryHealth", transaction.getBatteryHealth());
         return generateHTMLFromTemplate(PDF_TEMPLATE_PATH, pdfPlaceholder);
     }
 

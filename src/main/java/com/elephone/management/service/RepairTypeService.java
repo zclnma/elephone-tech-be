@@ -5,6 +5,7 @@ import com.elephone.management.repository.RepairTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +18,13 @@ public class RepairTypeService {
     }
 
     public List<RepairType> list() {
-        return repairTypeRepository.findAll();
+        List<RepairType> repairTypeList = repairTypeRepository.findAll();
+        List<RepairType> repairTypes = new ArrayList<>();
+        for (RepairType repairType : repairTypeList){
+            if (repairType.getIsActive()){
+                repairTypes.add(repairType);
+            }
+        }
+        return repairTypes;
     }
 }
