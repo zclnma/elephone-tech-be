@@ -91,4 +91,6 @@ public class TransactionDTO {
 
     private String warrantyExpiryDate;
 
+    private String batteryHealth;
+
 }

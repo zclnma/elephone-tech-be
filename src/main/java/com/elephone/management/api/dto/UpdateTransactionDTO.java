@@ -73,4 +73,6 @@ public class UpdateTransactionDTO {
     private String warrantyPeriod;
 
     private Boolean isSoaking;
+
+    private String batteryHealth;
 }

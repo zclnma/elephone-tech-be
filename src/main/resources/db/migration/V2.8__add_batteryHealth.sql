@@ -1,0 +1,1 @@
+alter table elephone.public.transaction add column battery_health VARCHAR(255) default null;
