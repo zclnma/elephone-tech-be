@@ -89,7 +89,7 @@ public class TransactionResource {
         for (TransactionDTO transactionDTO : dtoTransactions){
             String pickupTime = transactionDTO.getPickupTime();
             String warrantyPeriod = transactionDTO.getWarrantyPeriod();
-            if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false")){
+            if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false") && !warrantyPeriod.equals("No Warranty")){
                 String[] warrantyPeriodArr = warrantyPeriod.split(" ");
                 long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
                 try {
@@ -117,7 +117,7 @@ public class TransactionResource {
         Transaction transaction = transactionService.getTransactionById(id);
         String pickupTime = transaction.getPickupTime();
         String warrantyPeriod = transaction.getWarrantyPeriod();
-        if (pickupTime != null && !pickupTime.equals("") && warrantyPeriod != null && !warrantyPeriod.equals("")){
+        if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false") && !warrantyPeriod.equals("No Warranty")){
             String[] warrantyPeriodArr = warrantyPeriod.split(" ");
             long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
             try {
