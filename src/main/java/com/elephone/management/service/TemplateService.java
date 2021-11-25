@@ -176,7 +176,7 @@ public class TemplateService {
         String pickupTime = transaction.getPickupTime();
         String warrantyPeriod = transaction.getWarrantyPeriod();
         String warrantyExpiryDate = "";
-        if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false")){
+        if (pickupTime != null && !pickupTime.equals("") && !pickupTime.equals("false") && warrantyPeriod != null && !warrantyPeriod.equals("") && !warrantyPeriod.equals("false") && !warrantyPeriod.equals("No Warranty")){
             String[] warrantyPeriodArr = warrantyPeriod.split(" ");
             long warrantyPeriodDay = Long.valueOf(warrantyPeriodArr[0]);
             try {
