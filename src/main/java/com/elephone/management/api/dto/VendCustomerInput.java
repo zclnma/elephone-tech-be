@@ -26,4 +26,6 @@ public class VendCustomerInput {
     private String phone;
 
     private Boolean do_not_email;
+
+    private String customer_group_id;
 }

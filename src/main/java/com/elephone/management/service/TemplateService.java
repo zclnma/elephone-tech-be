@@ -131,7 +131,7 @@ public class TemplateService {
         pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
         pdfPlaceholder.put("warrantyPeriod", transaction.getWarrantyPeriod());
         float memberBenefits = 0.00f;
-        if (transaction.getMembership() && transaction.getNotification()){
+        if (transaction.getMembership()){
             memberBenefits = (float)(Math.round(total * 0.05 * 100))/100;
         }
         pdfPlaceholder.put("memberBenefits", Float.toString(memberBenefits));
