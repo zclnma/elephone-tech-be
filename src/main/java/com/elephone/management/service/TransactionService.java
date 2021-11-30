@@ -161,7 +161,7 @@ public class TransactionService {
                     }else{
                         vendCustomerInput.setLast_name("");
                     }
-                    vendMemberService.saveCustomer(vendCustomerInput);
+                    vendMemberService.saveCustomer(vendCustomerInput, transactionStore.getName());
                 }
             }
         }
@@ -225,7 +225,7 @@ public class TransactionService {
                     }else{
                         vendCustomerInput.setLast_name("");
                     }
-                    vendMemberService.saveCustomer(vendCustomerInput);
+                    vendMemberService.saveCustomer(vendCustomerInput, transaction.getStore().getName());
                 }
             }
         }

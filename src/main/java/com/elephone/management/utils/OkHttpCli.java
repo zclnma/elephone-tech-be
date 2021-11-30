@@ -114,9 +114,9 @@ public class OkHttpCli {
      * @param json  请求数据, json 字符串
      * @return string
      */
-    public String doPostJson(String url, String json) {
+    public String doPostJson(String url, String json, String[] headers) {
         log.info("do post request and url[{}]", url);
-        return exectePost(url, json, JSON);
+        return exectePost(url, json, JSON, headers);
     }
     /**
      * post 请求, 请求数据为 xml 的字符串
@@ -124,13 +124,23 @@ public class OkHttpCli {
      * @param xml  请求数据, xml 字符串
      * @return string
      */
-    public String doPostXml(String url, String xml) {
+    public String doPostXml(String url, String xml, String[] headers) {
         log.info("do post request and url[{}]", url);
-        return exectePost(url, xml, XML);
+        return exectePost(url, xml, XML, headers);
     }
-    private String exectePost(String url, String data, MediaType contentType) {
+    private String exectePost(String url, String data, MediaType contentType, String[] headers) {
         RequestBody requestBody = RequestBody.create(contentType, data);
-        Request request = new Request.Builder().url(url).post(requestBody).build();
+        Request.Builder builder = new Request.Builder();
+        Request request = builder.url(url).post(requestBody).build();
+        if (headers != null && headers.length > 0) {
+            if (headers.length % 2 == 0) {
+                for (int i = 0; i < headers.length; i = i + 2) {
+                    builder.addHeader(headers[i], headers[i + 1]);
+                }
+            } else {
+                log.warn("headers length[{}] is error.", headers.length);
+            }
+        }
         return execute(request);
     }
     private String execute(Request request) {

@@ -1,11 +1,9 @@
 package com.elephone.management.service;
 
+import cn.hutool.json.JSONUtil;
+import com.elephone.management.api.dto.*;
 import com.elephone.management.config.VendProperties;
 import com.elephone.management.dispose.exception.CommentException;
-import com.elephone.management.api.dto.VendCustomerDataDto;
-import com.elephone.management.api.dto.VendCustomerDto;
-import com.elephone.management.api.dto.VendCustomerInput;
-import com.elephone.management.api.dto.VendCustomerListDto;
 import com.elephone.management.utils.OkHttpCli;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -59,29 +57,37 @@ public class VendMemberService {
         }
     }
 
-    public Boolean saveCustomer(VendCustomerInput vendCustomerInput) {
+    public Boolean saveCustomer(VendCustomerInput vendCustomerInput, String storeName) {
+        String customerGroupsUrl = vendProperties.getUrl() + "/customer_groups";
+        Map<String, String> params = new HashMap<>();
+        String[] headers =  new String[]{"Authorization", "Bearer BQoSDDIat2Kr2R8Fxw9Jw_6gR0LBbXg1IbInE1q8"};
+        String customerGroupsResultString = okHttpCli.doGet(customerGroupsUrl, params, headers);
+        Gson gson = new Gson();
+        VendCustomerGroupListDto vendCustomerGroupListDto = gson.fromJson(customerGroupsResultString, VendCustomerGroupListDto.class);
+        if (vendCustomerGroupListDto != null){
+            List<VendCustomerGroupDto> data = vendCustomerGroupListDto.getData();
+            for (VendCustomerGroupDto vendCustomerGroupDto : data){
+                if (storeName.equals(vendCustomerGroupDto.getName())){
+                    vendCustomerInput.setCustomer_group_id(vendCustomerGroupDto.getId());
+                }
+            }
+        }
+
         String email = vendCustomerInput.getEmail();
         String phone = vendCustomerInput.getPhone();
         if ((email == null || "".equals(email)) && (phone == null || "".equals(phone))){
-            throw new CommentException("email和phone必须填一项");
+            throw new CommentException("Email and phone must be filled in");
         }
-        Map<String, String> params = new HashMap<>();
-        log.info("first_name： " + vendCustomerInput.getFirst_name());
-        log.info("last_name： " + vendCustomerInput.getLast_name());
-        log.info("getLast_name： " + email);
-        log.info("phone： " + phone);
-        log.info("do_not_email： " + vendCustomerInput.getDo_not_email().toString());
-        params.put("first_name", vendCustomerInput.getFirst_name());
-        params.put("last_name", vendCustomerInput.getLast_name());
-        params.put("email", email);
-        params.put("phone", phone);
-        params.put("do_not_email", vendCustomerInput.getDo_not_email().toString());
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("first_name", vendCustomerInput.getFirst_name());
+//        params.put("last_name", vendCustomerInput.getLast_name());
+//        params.put("email", email);
+//        params.put("phone", phone);
+//        params.put("do_not_email", vendCustomerInput.getDo_not_email());
         String url = vendProperties.getUrl() + "/customers";
         log.info("url： " + vendProperties.getUrl() + "/customers");
-        String[] headers =  new String[]{"Authorization", "Bearer BQoSDDIat2Kr2R8Fxw9Jw_6gR0LBbXg1IbInE1q8"};
-        String resultString = okHttpCli.doPost(url, params, headers);
-        System.out.println("resultString" + resultString);
-        Gson gson = new Gson();
+        String vendCustomerInputJson = JSONUtil.toJsonStr(vendCustomerInput);
+        String resultString = okHttpCli.doPostJson(url, vendCustomerInputJson, headers);
         VendCustomerDataDto vendCustomerDataDto = gson.fromJson(resultString, VendCustomerDataDto.class);
         VendCustomerDto data = vendCustomerDataDto.getData();
         if (data != null && data.getId() != null){
