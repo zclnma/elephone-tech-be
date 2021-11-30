@@ -59,9 +59,8 @@ public class VendMemberService {
 
     public Boolean saveCustomer(VendCustomerInput vendCustomerInput, String storeName) {
         String customerGroupsUrl = vendProperties.getUrl() + "/customer_groups";
-        Map<String, String> params = new HashMap<>();
         String[] headers =  new String[]{"Authorization", "Bearer BQoSDDIat2Kr2R8Fxw9Jw_6gR0LBbXg1IbInE1q8"};
-        String customerGroupsResultString = okHttpCli.doGet(customerGroupsUrl, params, headers);
+        String customerGroupsResultString = okHttpCli.doGet(customerGroupsUrl, null, headers);
         Gson gson = new Gson();
         VendCustomerGroupListDto vendCustomerGroupListDto = gson.fromJson(customerGroupsResultString, VendCustomerGroupListDto.class);
         if (vendCustomerGroupListDto != null){

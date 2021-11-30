@@ -131,7 +131,7 @@ public class OkHttpCli {
     private String exectePost(String url, String data, MediaType contentType, String[] headers) {
         RequestBody requestBody = RequestBody.create(contentType, data);
         Request.Builder builder = new Request.Builder();
-        Request request = builder.url(url).post(requestBody).build();
+        builder.url(url).post(requestBody);
         if (headers != null && headers.length > 0) {
             if (headers.length % 2 == 0) {
                 for (int i = 0; i < headers.length; i = i + 2) {
@@ -141,6 +141,7 @@ public class OkHttpCli {
                 log.warn("headers length[{}] is error.", headers.length);
             }
         }
+        Request request = builder.build();
         return execute(request);
     }
     private String execute(Request request) {
