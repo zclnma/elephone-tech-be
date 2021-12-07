@@ -75,4 +75,6 @@ public class CreateTransactionDTO {
 
     private String batteryHealth;
 
+    private Boolean isInspectable;
+
 }

@@ -459,6 +459,7 @@
         }
 
         .discountContent {
+            width: 80px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             border: none;
             border-bottom: 1px solid #616161;
@@ -472,7 +473,26 @@
             line-height: 11px;
             padding-right: 5px;
         }
-
+        .depositWrapper {
+            margin-top: 41px;
+            box-sizing: border-box;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+        .depositItem {
+            float: right;
+            width: 45%;
+            flex-direction: row;
+            overflow: hidden;
+        }
+        .balanceItem {
+            float: right;
+            width: 45%;
+            flex-direction: row;
+            overflow: hidden;
+        }
         .totalWrapper {
             margin-top: 41px;
             box-sizing: border-box;
@@ -489,7 +509,6 @@
         }
 
         .totalLabel {
-            float: left;
             font-size: 12px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             color: #616161;
@@ -513,7 +532,7 @@
         }
 
         .totalContent {
-            width: 100%;
+            width: 80px;
             font-family: "NeueHaasDisplay-Roman, NeueHaasDisplay";
             border: none;
             border-bottom: 1px solid #616161;
@@ -930,9 +949,24 @@
                         <span class="discountLabel"> Member benefits </span>
                     </div>
                 </div>
+                <div class="depositWrapper">
+                    <div class="balanceItem">
+                        <div class="totalContentWrapper">
+                            <span class="totalIcon">$</span>
+                            <input class="totalContent" value="${balance}"/>
+                        </div>
+                        <span class="totalLabel">Balance</span>
+                    </div>
+                    <div class="depositItem">
+                        <div class="totalContentWrapper">
+                            <span class="totalIcon">$</span>
+                            <input class="totalContent" value="${deposit}"/>
+                        </div>
+                        <span class="totalLabel">Deposit</span>
+                    </div>
+                </div>
                 <div class="totalWrapper">
                     <div class="totalItem">
-
                         <div class="totalContentWrapper">
                             <span class="totalIcon">$</span>
                             <input class="totalContent" value="${total}"/>
