@@ -124,8 +124,6 @@ public class TemplateService {
         pdfPlaceholder.put("comment", StringUtils.isEmpty(transaction.getAdditionInfo()) ? "N/A" : transaction.getAdditionInfo());
         pdfPlaceholder.put("issue", StringUtils.isEmpty(transaction.getIssue()) ? "N/A" : transaction.getIssue());
         pdfPlaceholder.put("deposit", StringUtils.isEmpty(transaction.getDeposit()) ? "N/A" : transaction.getDeposit());
-        float balance = total - Float.parseFloat(StringUtils.isEmpty(transaction.getDeposit()) ? "0.00" : transaction.getDeposit());
-        pdfPlaceholder.put("balance", Float.toString((float)(Math.round(balance * 100))/100));
         pdfPlaceholder.put("signature", "authorisation".equalsIgnoreCase(type) ? transaction.getAuthSignature() : transaction.getConfSignature());
         pdfPlaceholder.put("inspection", inspectionHtml.toString());
         pdfPlaceholder.put("repairEstimate", repairEstimateHtml.toString());
@@ -137,7 +135,8 @@ public class TemplateService {
         pdfPlaceholder.put("memberBenefits", Float.toString(memberBenefits));
         total = total - memberBenefits;
         pdfPlaceholder.put("total", Float.toString((Math.round(total * 100f) / 100f)));
-
+        float balance = total - Float.parseFloat(StringUtils.isEmpty(transaction.getDeposit()) ? "0.00" : transaction.getDeposit());
+        pdfPlaceholder.put("balance", Float.toString((float)(Math.round(balance * 100))/100));
         //Store info
         pdfPlaceholder.put("storeContact", transaction.getStore().getContact());
         pdfPlaceholder.put("storeEmail", transaction.getStore().getEmail());

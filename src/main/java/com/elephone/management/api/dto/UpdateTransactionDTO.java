@@ -75,4 +75,6 @@ public class UpdateTransactionDTO {
     private Boolean isSoaking;
 
     private String batteryHealth;
+
+    private Boolean isInspectable;
 }

@@ -93,4 +93,6 @@ public class TransactionDTO {
 
     private String batteryHealth;
 
+    private Boolean isInspectable;
+
 }

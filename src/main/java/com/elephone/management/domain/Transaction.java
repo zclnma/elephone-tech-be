@@ -98,6 +98,9 @@ public class Transaction {
     private String batteryHealth;
 
     @Column
+    private Boolean isInspectable;
+
+    @Column
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TransactionProduct> products = new HashSet<>();
 

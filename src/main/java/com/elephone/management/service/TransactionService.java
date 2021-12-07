@@ -133,6 +133,7 @@ public class TransactionService {
         transaction.setWarrantyPeriod(createTransactionDTO.getWarrantyPeriod() == null ? "" : createTransactionDTO.getWarrantyPeriod());
         transaction.setIsSoaking(createTransactionDTO.getIsSoaking());
         transaction.setBatteryHealth(createTransactionDTO.getBatteryHealth() == null ? "" : createTransactionDTO.getBatteryHealth());
+        transaction.setIsInspectable(createTransactionDTO.getIsInspectable());
         Transaction savedTransaction = transactionRepository.save(transaction);
         storeService.updateStore(transactionStore);
         if (!StringUtils.isEmpty(savedTransaction.getCustomer().getEmail())) {
@@ -202,6 +203,7 @@ public class TransactionService {
         transactionToUpdate.setWarrantyPeriod(updateTransactionDTO.getWarrantyPeriod());
         transactionToUpdate.setIsSoaking(updateTransactionDTO.getIsSoaking());
         transactionToUpdate.setBatteryHealth(updateTransactionDTO.getBatteryHealth());
+        transactionToUpdate.setIsInspectable(updateTransactionDTO.getIsInspectable());
         Boolean membership = updateTransactionDTO.getMembership();
         if (membership != null && membership){
             String contact = transaction.getCustomer().getContact();
