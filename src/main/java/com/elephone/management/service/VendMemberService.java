@@ -66,7 +66,7 @@ public class VendMemberService {
         if (vendCustomerGroupListDto != null){
             List<VendCustomerGroupDto> data = vendCustomerGroupListDto.getData();
             for (VendCustomerGroupDto vendCustomerGroupDto : data){
-                if (storeName.equals(vendCustomerGroupDto.getName())){
+                if ((storeName.trim() + " Customers").equals(vendCustomerGroupDto.getName())){
                     vendCustomerInput.setCustomer_group_id(vendCustomerGroupDto.getId());
                 }
             }
