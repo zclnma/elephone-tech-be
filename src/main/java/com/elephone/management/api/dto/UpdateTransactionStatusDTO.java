@@ -16,4 +16,5 @@ import java.util.UUID;
 public class UpdateTransactionStatusDTO {
     private String status;
     private UUID updatedBy;
+    private String repairedBy;
 }

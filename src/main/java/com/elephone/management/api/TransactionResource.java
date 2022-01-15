@@ -141,7 +141,7 @@ public class TransactionResource {
     @ApiOperation(value = "update transaction status", notes = "update transaction status")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<TransactionDTO> updateStatus(@PathVariable UUID id, @Valid @RequestBody UpdateTransactionStatusDTO updateTransactionStatusDTO) {
-        Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), updateTransactionStatusDTO.getStatus());
+        Transaction transaction = transactionService.updateTransactionStatus(id, updateTransactionStatusDTO.getUpdatedBy(), updateTransactionStatusDTO.getStatus(), updateTransactionStatusDTO.getRepairedBy());
         return new ResponseEntity<>(transactionMapper.toDTO(transaction), HttpStatus.OK);
     }
 

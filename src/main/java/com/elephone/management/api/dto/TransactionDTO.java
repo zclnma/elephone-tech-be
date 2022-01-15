@@ -95,4 +95,6 @@ public class TransactionDTO {
 
     private Boolean isInspectable;
 
+    private String repairedBy;
+
 }
