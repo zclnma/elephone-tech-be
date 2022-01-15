@@ -311,7 +311,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction updateTransactionStatus(UUID id, UUID updatedBy, String status) {
+    public Transaction updateTransactionStatus(UUID id, UUID updatedBy, String status, String repairedBy) {
         if (id == null) {
             throw new TransactionException("Transaction id is required");
         }
@@ -370,6 +370,7 @@ public class TransactionService {
                 .build();
 
         transaction.setTransactionStatus(newTransactionStatus);
+        transaction.setRepairedBy(repairedBy);
         transaction.addTransactionAction(transactionAction);
         return transactionRepository.save(transaction);
     }

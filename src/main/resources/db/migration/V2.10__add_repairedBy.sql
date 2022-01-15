@@ -1,0 +1,1 @@
+alter table elephone.public.transaction add column repaired_by VARCHAR(255) default null;
