@@ -26,18 +26,18 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/${AWS_USERPOOL_ID}
+          issuer-uri: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_8ovxzl36v
   jackson:
     time-zone: Australia/Sydney
 
 cloud:
   aws:
     cognito:
-      userpoolId: ${AWS_USERPOOL_ID}
+      userpoolId: ap-southeast-2_8ovxzl36v
     credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
-      region: ${AWS_REGION}
+      accessKey: AKIAY2SZAZO3CMM25PLT
+      secretKey: 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
+      region: ap-southeast-2
 
 
 
